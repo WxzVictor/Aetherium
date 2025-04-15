@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buscar Vuelos</title>
+  <!-- Incluye tus archivos de estilo CSS si los tienes -->
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h1>Buscar Vuelos</h1>
+  <!-- Formulario de búsqueda de vuelos -->
+  <form id="busquedaVuelos">
+    <label for="ciudadOrigen">Desde dónde viajas:</label>
+    <input type="text" id="ciudadOrigen" name="ciudadOrigen" placeholder="Ciudad de origen" required>
+    <ul id="sugerenciasOrigen" style="list-style-type:none; padding: 0;"></ul>
+
+    <label for="ciudadDestino">Destino:</label>
+    <input type="text" id="ciudadDestino" name="ciudadDestino" placeholder="Ciudad de destino" required>
+    <ul id="sugerenciasDestino" style="list-style-type:none; padding: 0;"></ul>
+
+    <label for="fechaDesde">Fecha de salida:</label>
+    <input type="date" id="fechaDesde" name="fechaDesde" required>
+
+    <label for="fechaHasta">Fecha de regreso:</label>
+    <input type="date" id="fechaHasta" name="fechaHasta" required>
+
+    <button type="submit">Buscar vuelos</button>
+  </form>
+
+  <!-- Muestra los resultados de la búsqueda aquí -->
+  <div id="resultados"></div>
+
+  <!-- Incluye tu script de jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    // Función para autocompletar las ciudades
+    function buscarCiudades(inputId, sugerenciasId) {
+      const query = $(`#${inputId}`).val(); // Obtener el valor del input
+
+      if (query.length >= 3) { // Solo realizar la búsqueda si hay al menos 3 caracteres
+        $.get(`/autocompletar?query=${query}`, function(data) {
+          // Mostrar las sugerencias en el frontend
+          let listaSugerencias = $(`#${sugerenciasId}`);
+          listaSugerencias.empty();
+          data.forEach(city => {
+            listaSugerencias.append(`<li>${city}</li>`);
+          });
+        });
+      }
+    }
+
+    // Detectar input del usuario para origen
+    $('#ciudadOrigen').on('input', function() {
+      buscarCiudades('ciudadOrigen', 'sugerenciasOrigen');
+    });
+
+    // Detectar input del usuario para destino
+    $('#ciudadDestino').on('input', function() {
+      buscarCiudades('ciudadDestino', 'sugerenciasDestino');
+    });
+
+    // Función para enviar la búsqueda de vuelos
+    $('#busquedaVuelos').on('submit', function(e) {
+      e.preventDefault(); // Evitar el envío normal del formulario
+
+      const origen = $('#ciudadOrigen').val();
+      const destino = $('#ciudadDestino').val();
+      const fechaDesde = $('#fechaDesde').val();
+      const fechaHasta = $('#fechaHasta').val();
+
+      // Realizar la solicitud para buscar vuelos
+      $.get(`/buscar-vuelos?origen=${origen}&destino=${destino}&fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}`, function(vuelos) {
+        // Procesar los resultados y mostrar los vuelos
+        let resultadosHTML = '<h2>Resultados de vuelos:</h2><ul>';
+        vuelos.forEach(vuelo => {
+          resultadosHTML += `<li>${vuelo.cityFrom} → ${vuelo.cityTo} | ${vuelo.price} USD | ${vuelo.duration} minutos</li>`;
+        });
+        resultadosHTML += '</ul>';
+        $('#resultados').html(resultadosHTML);
+      });
+    });
+  </script>
+</body>
+</html>
