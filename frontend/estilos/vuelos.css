@@ -1,0 +1,171 @@
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #001c3d;
+    color: white;
+  }
+
+  .barra-navegacion {
+    margin-top: 2.5%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 2rem;
+  }
+  
+  .logo-aetherium {
+    margin-left: 12%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .logo-aetherium img {
+    height: 30px;
+    width: 30px;
+    object-fit: contain;
+  }
+  
+  .navegacion-derecha a {
+    text-decoration: none;
+    font-weight: 500;
+    color: white;
+  }
+  
+  .buscador {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .buscador button {
+    background-color: #0047ab;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.5rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-top: 1rem;
+  }
+
+  .contenedor-formulario {
+    border-radius: 12px;
+    padding: 1rem;
+    margin: 2rem auto;
+    width: 90%;
+    max-width: 1100px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+  }
+
+  .grupo-input {
+    background-color: white;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    position: relative;
+  }
+
+  .etiqueta-pequeña {
+    font-size: 0.75rem;
+    color: #666;
+    font-weight: bold;
+  }
+
+  .icono-intercambiar {
+    cursor: pointer;
+    background-color: #e0e7f5;
+    border-radius: 50%;
+    padding: 0.4rem;
+    font-size: 1.2rem;
+    border: 2px solid white;
+  }
+
+  .boton-buscar {
+    background-color: #0061ff;
+    color: white;
+    border: none;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  input[type="text"],
+  input[type="date"] {
+    border: none;
+    font-size: 0.9rem;
+    width: 100%;
+    background: transparent;
+  }
+
+  input:focus {
+    outline: none;
+  }
+
+  .desplegable-viajeros {
+    position: absolute;
+    top: 100%;
+    right: 1rem;
+    margin-top: 10px;
+    background: white;
+    color: black;
+    border-radius: 16px;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+    padding: 1.2rem;
+    width: 300px;
+    z-index: 10;
+    display: none;
+  }
+
+  .fila-viajero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.8rem 0;
+  }
+
+  .controles {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .controles button {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background-color: #e8ecf5;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .controles span {
+    width: 20px;
+    text-align: center;
+  }
+
+  .boton-aplicar {
+    background-color: #0061ff;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 1rem;
+    width: 100%;
+  }

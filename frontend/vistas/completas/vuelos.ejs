@@ -1,86 +1,93 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Buscar Vuelos</title>
-  <!-- Incluye tus archivos de estilo CSS si los tienes -->
-  <link rel="stylesheet" href="/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buscador de Vuelos</title>
+  <link rel="stylesheet" href="/estilos/vuelos.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1>Buscar Vuelos</h1>
-  <!-- Formulario de búsqueda de vuelos -->
-  <form id="busquedaVuelos">
-    <label for="ciudadOrigen">Desde dónde viajas:</label>
-    <input type="text" id="ciudadOrigen" name="ciudadOrigen" placeholder="Ciudad de origen" required>
-    <ul id="sugerenciasOrigen" style="list-style-type:none; padding: 0;"></ul>
 
-    <label for="ciudadDestino">Destino:</label>
-    <input type="text" id="ciudadDestino" name="ciudadDestino" placeholder="Ciudad de destino" required>
-    <ul id="sugerenciasDestino" style="list-style-type:none; padding: 0;"></ul>
+  <nav class="barra-navegacion">
+    <div class="logo-aetherium">
+      <img src="/imagenes/logo.png" alt="Logo">
+      <span>Aetherium</span>
+    </div>
+  
+    <div class="navegacion-derecha">
+      <a href="/login">Iniciar sesión</a>
+    </div>
+  </nav>
+  
+  <div class="buscador">
+    <button>✈️ Vuelos</button>
+    <button>🏨 Hoteles</button>
+  </div>
 
-    <label for="fechaDesde">Fecha de salida:</label>
-    <input type="date" id="fechaDesde" name="fechaDesde" required>
+<h1>Millones de vuelos baratos. Una sencilla búsqueda.</h1>
 
-    <label for="fechaHasta">Fecha de regreso:</label>
-    <input type="date" id="fechaHasta" name="fechaHasta" required>
+<div class="contenedor-formulario">
+  <div class="grupo-input">
+    <div class="etiqueta-pequeña">Desde</div>
+    <input type="text" id="origen" value="España (ES)">
+  </div>
 
-    <button type="submit">Buscar vuelos</button>
-  </form>
+  <div class="icono-intercambiar" id="botonIntercambiar">↔️</div>
 
-  <!-- Muestra los resultados de la búsqueda aquí -->
-  <div id="resultados"></div>
+  <div class="grupo-input">
+    <div class="etiqueta-pequeña">A</div>
+    <input type="text" id="destino" placeholder="País, ciudad o aeropuerto">
+  </div>
 
-  <!-- Incluye tu script de jQuery -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <div class="grupo-input">
+    <div class="etiqueta-pequeña">Ida</div>
+    <input type="date" id="fechaIda">
+  </div>
 
-  <script>
-    // Función para autocompletar las ciudades
-    function buscarCiudades(inputId, sugerenciasId) {
-      const query = $(`#${inputId}`).val(); // Obtener el valor del input
+  <div class="grupo-input">
+    <div class="etiqueta-pequeña">Vuelta</div>
+    <input type="date" id="fechaVuelta">
+  </div>
 
-      if (query.length >= 3) { // Solo realizar la búsqueda si hay al menos 3 caracteres
-        $.get(`/autocompletar?query=${query}`, function(data) {
-          // Mostrar las sugerencias en el frontend
-          let listaSugerencias = $(`#${sugerenciasId}`);
-          listaSugerencias.empty();
-          data.forEach(city => {
-            listaSugerencias.append(`<li>${city}</li>`);
-          });
-        });
-      }
-    }
+  <div class="grupo-input" id="abrirDesplegable">
+    <div class="etiqueta-pequeña">Viajeros y clase de cabina</div>
+    <input type="text" id="infoViajeros" value="1 Adulto, Turista" readonly>
+  </div>
 
-    // Detectar input del usuario para origen
-    $('#ciudadOrigen').on('input', function() {
-      buscarCiudades('ciudadOrigen', 'sugerenciasOrigen');
-    });
+  <button class="boton-buscar">Buscar</button>
 
-    // Detectar input del usuario para destino
-    $('#ciudadDestino').on('input', function() {
-      buscarCiudades('ciudadDestino', 'sugerenciasDestino');
-    });
+  <div class="desplegable-viajeros" id="desplegableViajeros">
+    <h4>Clase de cabina</h4>
+    <p><strong>Solo podemos mostrar precios en clase turista para esta búsqueda.</strong></p>
+    <p style="font-size: 0.85rem; color: #444;">Indica las fechas y el destino del viaje para ver las opciones de clase business, turista prémium y primera clase.</p>
 
-    // Función para enviar la búsqueda de vuelos
-    $('#busquedaVuelos').on('submit', function(e) {
-      e.preventDefault(); // Evitar el envío normal del formulario
+    <div class="fila-viajero">
+      <div>
+        <strong>Adultos</strong><br><small>18 años o más</small>
+      </div>
+      <div class="controles">
+        <button data-tipo="adulto" data-cambio="-1">−</button>
+        <span id="contadorAdultos">1</span>
+        <button data-tipo="adulto" data-cambio="1">+</button>
+      </div>
+    </div>
 
-      const origen = $('#ciudadOrigen').val();
-      const destino = $('#ciudadDestino').val();
-      const fechaDesde = $('#fechaDesde').val();
-      const fechaHasta = $('#fechaHasta').val();
+    <div class="fila-viajero">
+      <div>
+        <strong>Niños</strong><br><small>De 0 a 17 años</small>
+      </div>
+      <div class="controles">
+        <button data-tipo="niño" data-cambio="-1">−</button>
+        <span id="contadorNiños">0</span>
+        <button data-tipo="niño" data-cambio="1">+</button>
+      </div>
+    </div>
 
-      // Realizar la solicitud para buscar vuelos
-      $.get(`/buscar-vuelos?origen=${origen}&destino=${destino}&fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}`, function(vuelos) {
-        // Procesar los resultados y mostrar los vuelos
-        let resultadosHTML = '<h2>Resultados de vuelos:</h2><ul>';
-        vuelos.forEach(vuelo => {
-          resultadosHTML += `<li>${vuelo.cityFrom} → ${vuelo.cityTo} | ${vuelo.price} USD | ${vuelo.duration} minutos</li>`;
-        });
-        resultadosHTML += '</ul>';
-        $('#resultados').html(resultadosHTML);
-      });
-    });
-  </script>
+    <button class="boton-aplicar" id="botonAplicar">Aplicar</button>
+  </div>
+</div>
+
+<script src="../scripts/vuelos.js" defer></script>
 </body>
 </html>

@@ -2,40 +2,41 @@ import express from 'express';
 import session from 'express-session';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import router from './src/rutas/autocompletar.mjs'; // Importar la ruta de autocompletar
+import router from './src/rutas/autocompletar.mjs';
 
 const app = express();
 
-// Obtener el nombre del archivo y el directorio
+// Obtener __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Cambiar la ruta para buscar vistas en frontend/vistas/completas
+// 📌 Rutas de carpetas
 const viewsPath = path.join(__dirname, '..', 'frontend', 'vistas', 'completas');
+const staticPath = path.join(__dirname, '..', 'frontend');
 
-// Configuración de la vista (si usas EJS)
+// Configuración de vistas EJS
 app.set('view engine', 'ejs');
-app.set('views', viewsPath);  // Apuntar a la ruta correcta de las vistas
+app.set('views', viewsPath);
 
-// Configuración de sesión (si es necesario)
+// Configuración de archivos estáticos (CSS, JS)
+app.use(express.static(staticPath));
+
+// Sesión (si es necesario)
 app.use(session({
   secret: 'mi_secreto',
   resave: false,
   saveUninitialized: true,
 }));
 
-// Configuración de la ruta estática para archivos públicos (por ejemplo, CSS, JS)
-app.use(express.static(path.join(__dirname, 'public')));
+// Rutas adicionales
+app.use(router);
 
-// Usar las rutas que has creado
-app.use(router); // Esto conecta la ruta de autocompletar con el servidor
-
-// Ruta de inicio o login (puedes agregar otras rutas de tu aplicación)
+// Ruta principal
 app.get('/', (req, res) => {
-  res.render('vuelos'); // Renderizar la vista vuelos.ejs en frontend/vistas/completas
+  res.render('vuelos');
 });
 
-// Configurar el puerto del servidor
+// Servidor en marcha
 app.listen(3000, () => {
   console.log('Servidor corriendo en http://localhost:3000');
 });
