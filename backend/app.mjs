@@ -4,7 +4,7 @@
   import path from 'path';
   import { fileURLToPath } from 'url';
   import dotenv from 'dotenv';
-  import router from './src/rutas/autocompletar.mjs';
+  // import router from './src/rutas/autocompletar.mjs';
 
   // 📌 Cargar variables de entorno desde la raíz del proyecto
   const __filename = fileURLToPath(import.meta.url);
@@ -36,7 +36,7 @@
   }));
 
   // 📌 Rutas de API
-  app.use(router);
+  // app.use(router);
 
   // 🏠 Ruta principal
   app.get('/', (req, res) => {
