@@ -169,3 +169,43 @@ body {
     margin-top: 1rem;
     width: 100%;
   }
+  /*.dropdown-sugerencias {
+    position: absolute;
+    z-index: 10;
+    background-color: white;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-radius: 0.5rem;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 0.3rem;
+    color: black;
+  }
+  
+  .sugerencia {
+    padding: 0.75rem;
+    cursor: pointer;
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .sugerencia:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .sugerencia-icono {
+    font-size: 1.2rem;
+  }
+  
+  .sugerencia-texto-principal {
+    font-weight: bold;
+  }
+  
+  .sugerencia-texto-secundario {
+    font-size: 0.85rem;
+    color: #555;
+  }
+  */
+  

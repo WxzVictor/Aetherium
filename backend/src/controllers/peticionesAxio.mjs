@@ -1,44 +1,35 @@
-import axios from 'axios';
+// backend/src/controllers/peticionesAxio.mjs
+import path from "path";
+import { fileURLToPath } from "url";
+import dotenv from "dotenv";
+import axios from "axios";
 
-const obtenerVuelos = async (origen, destino, fecha) => {
+// Esta parte calcula el path absoluto del archivo actual
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Configura dotenv para leer "process.env"
+dotenv.config({ path: path.join(__dirname, '..', '..', 'process.env') });
+
+
+/*export const obtenerAeropuertosPorNombre = async (busqueda) => {
   try {
-    const response = await axios.get('https://kiwi-com-cheap-flights.p.rapidapi.com/v2/search', {
+    const response = await axios.get("http://api.aviationstack.com/v1/airports", {
       params: {
-        fly_from: origen, // Ejemplo: 'NYC'
-        fly_to: destino,  // Ejemplo: 'LON'
-        date_from: fecha, // Ejemplo: '2025-06-01'
-        date_to: fecha,   // Ejemplo: '2025-06-01'
-      },
-      headers: {
-        'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
-        'X-RapidAPI-Host': 'kiwi-com-cheap-flights.p.rapidapi.com',
+        access_key: process.env.AVIATIONSTACK_API_KEY, // Asegúrate de que tu clave API esté configurada correctamente
+        search: busqueda, // El parámetro que estamos buscando
       },
     });
 
-    return response.data;
+    // Aquí mapeamos la respuesta para ajustarla al formato esperado por el frontend
+    return response.data.data.map(aeropuerto => ({
+      ciudad: aeropuerto.airport_name,
+      codigo: aeropuerto.iata_code,
+      pais: aeropuerto.country_name,
+    }));
   } catch (error) {
-    console.error('Error obteniendo vuelos:', error);
+    console.error("Error al obtener aeropuertos:", error.message);
     return [];
   }
 };
-
-
-export const obtenerCiudades = async (query, tipo) => {
-    try {
-      const respuesta = await axios.get(`https://api.skyscanner.net/apiservices/autosuggest/v1.0/US/USD/en-US`, {
-        params: {
-          query: query,
-          apiKey: process.env.SKYSKANNER_API_KEY, // Aquí debes poner tu API Key de Skyscanner
-        }
-      });
-  
-      // Si se encuentra la respuesta, devolveremos los resultados relevantes
-      return respuesta.data.Places.map(place => ({
-        name: place.PlaceName,
-        code: place.PlaceId,
-      }));
-    } catch (error) {
-      console.error("Error al obtener ciudades:", error);
-      return [];
-    }
-  };
+*/
