@@ -20,7 +20,7 @@ export const logout = (req, res) => {
 
         res.clearCookie("connect.sid");
         res.status(200).json({ mensaje: "Sesión cerrada"});
-    })
+    });
 };
 
 export const verificarSesion = (req, res) => {
@@ -29,4 +29,4 @@ export const verificarSesion = (req, res) => {
     }else{
         res.status(400).json({ error: "No hay una sesión iniciada"});
     }
-}
+};
