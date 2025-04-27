@@ -1,211 +1,208 @@
 body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
-    background-color: #001c3d;
-    color: white;
-  }
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(to bottom, #001c3d, #003366);
+  color: white;
+  min-height: 100vh;
+}
 
-  .barra-navegacion {
-    margin-top: 2.5%;
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5rem 2rem;
-  }
-  
-  .logo-aetherium {
-    margin-left: 12%;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
-  
-  .logo-aetherium img {
-    height: 30px;
-    width: 30px;
-    object-fit: contain;
-  }
-  
-  .navegacion-derecha a {
-    text-decoration: none;
-    font-weight: 500;
-    color: white;
-  }
-  
-  .buscador {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    padding: 1rem;
-  }
+.barra-navegacion {
+  margin-top: 2%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 2rem;
+}
 
-  .buscador button {
-    background-color: #0047ab;
-      color: white;
-      border: none;
-      padding: 0.6rem 1.5rem;
-      border-radius: 25px;
-      cursor: pointer;
-      font-weight: bold;
-  }
+.logo-aetherium {
+  margin-left: 10%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
 
-  h1 {
-    text-align: center;
-    font-size: 2rem;
-    margin-top: 1rem;
-  }
+.logo-aetherium img {
+  height: 36px;
+  width: 36px;
+  object-fit: contain;
+}
 
-  .contenedor-formulario {
-    border-radius: 12px;
-    padding: 1rem;
-    margin: 2rem auto;
-    width: 90%;
-    max-width: 1100px;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    position: relative;
-  }
+.navegacion-derecha a {
+  text-decoration: none;
+  font-weight: 500;
+  color: white;
+  transition: color 0.3s;
+}
 
-  .grupo-input {
-    background-color: white;
-    border-radius: 10px;
-    padding: 0.5rem 1rem;
-    border: 1px solid #ccc;
-    position: relative;
-  }
+.navegacion-derecha a:hover {
+  color: #80bfff;
+}
 
-  .etiqueta-pequeña {
-    font-size: 0.75rem;
-    color: #666;
-    font-weight: bold;
-  }
+.buscador {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  padding: 1.5rem;
+}
 
-  .icono-intercambiar {
-    cursor: pointer;
-    background-color: #e0e7f5;
-    border-radius: 50%;
-    padding: 0.4rem;
-    font-size: 1.2rem;
-    border: 2px solid white;
-  }
+.buscador button {
+  background-color: #0047ab;
+  color: white;
+  border: none;
+  padding: 0.7rem 2rem;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
 
-  .boton-buscar {
-    background-color: #0061ff;
-    color: white;
-    border: none;
-    padding: 1rem 1.5rem;
-    font-size: 1rem;
-    border-radius: 12px;
-    font-weight: bold;
-    cursor: pointer;
-  }
+.buscador button:hover {
+  background-color: #0061ff;
+}
 
-  input[type="text"],
-  input[type="date"] {
-    border: none;
-    font-size: 0.9rem;
-    width: 100%;
-    background: transparent;
-  }
+h1 {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
 
-  input:focus {
-    outline: none;
-  }
+.contenedor-formulario {
+  background-color: #ffffff10;
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 2rem auto;
+  width: 90%;
+  max-width: 1100px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
 
-  .desplegable-viajeros {
-    position: absolute;
-    top: 100%;
-    right: 1rem;
-    margin-top: 10px;
-    background: white;
-    color: black;
-    border-radius: 16px;
-    box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
-    padding: 1.2rem;
-    width: 300px;
-    z-index: 10;
-    display: none;
-  }
+.grupo-input {
+  flex: 1 1 150px;
+  background-color: white;
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  position: relative;
+  min-width: 150px;
+}
 
-  .fila-viajero {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0.8rem 0;
-  }
+.grupo-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: white;
+}
 
-  .controles {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
+.grupo-checkbox input[type="checkbox"] {
+  transform: scale(1.2);
+}
 
-  .controles button {
-    width: 32px;
-    height: 32px;
-    border: none;
-    background-color: #e8ecf5;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-  }
+.etiqueta-pequeña {
+  font-size: 0.75rem;
+  color: #666;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
 
-  .controles span {
-    width: 20px;
-    text-align: center;
-  }
+.icono-intercambiar {
+  cursor: pointer;
+  background-color: #e0e7f5;
+  border-radius: 50%;
+  padding: 0.4rem;
+  font-size: 1.4rem;
+  border: 2px solid white;
+}
 
-  .boton-aplicar {
-    background-color: #0061ff;
-    color: white;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 1rem;
-    width: 100%;
-  }
-  /*.dropdown-sugerencias {
-    position: absolute;
-    z-index: 10;
-    background-color: white;
-    width: 100%;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    border-radius: 0.5rem;
-    max-height: 200px;
-    overflow-y: auto;
-    margin-top: 0.3rem;
-    color: black;
-  }
-  
-  .sugerencia {
-    padding: 0.75rem;
-    cursor: pointer;
-    display: flex;
-    gap: 0.6rem;
-    align-items: center;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .sugerencia:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .sugerencia-icono {
-    font-size: 1.2rem;
-  }
-  
-  .sugerencia-texto-principal {
-    font-weight: bold;
-  }
-  
-  .sugerencia-texto-secundario {
-    font-size: 0.85rem;
-    color: #555;
-  }
-  */
-  
+.boton-buscar {
+  background-color: #0061ff;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  border-radius: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s;
+}
+
+.boton-buscar:hover {
+  background-color: #3385ff;
+}
+
+input[type="text"],
+input[type="date"] {
+  border: none;
+  font-size: 0.9rem;
+  width: 100%;
+  background: transparent;
+}
+
+input:focus {
+  outline: none;
+}
+
+.desplegable-viajeros {
+  position: absolute;
+  right: 1rem;
+  margin-top: 32%;
+  background: white;
+  color: black;
+  border-radius: 16px;
+  box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+  padding: 1.5rem;
+  width: 300px;
+  z-index: 10;
+  display: none;
+}
+
+.fila-viajero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.8rem 0;
+}
+
+.controles {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.controles button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background-color: #e8ecf5;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.controles span {
+  width: 20px;
+  text-align: center;
+}
+
+.boton-aplicar {
+  background-color: #0061ff;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 1.2rem;
+  width: 100%;
+}

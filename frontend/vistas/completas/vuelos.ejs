@@ -1,31 +1,6 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Buscador de Vuelos</title>
-  <link rel="stylesheet" href="/estilos/vuelos.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-</head>
-<body>
-
-  <nav class="barra-navegacion">
-    <div class="logo-aetherium">
-      <img src="/imagenes/logo.png" alt="Logo">
-      <span>Aetherium</span>
-    </div>
-    <div class="navegacion-derecha">
-      <a href="/login">Iniciar sesión</a>
-    </div>
-  </nav>
-  
-  <div class="buscador">
-    <button>✈️ Vuelos</button>
-    <button>🏨 Hoteles</button>
-  </div>
+<%- include("../parciales/headerIndex.ejs")%>
 
   <h1>Millones de vuelos baratos. Una sencilla búsqueda.</h1>
-
   <div class="contenedor-formulario">
     <div class="grupo-input">
       <div class="etiqueta-pequeña">Desde</div>
@@ -54,6 +29,11 @@
     <div class="grupo-input" id="abrirDesplegable">
       <div class="etiqueta-pequeña">Viajeros y clase de cabina</div>
       <input type="text" id="infoViajeros" value="1 Adulto, Turista" readonly>
+    </div>
+    
+    <div class="grupo-input grupo-checkbox">
+      <input type="checkbox" id="buscarHotel">
+      <label for="buscarHotel">¿Buscar hotel también?</label>
     </div>
 
     <button class="boton-buscar">Buscar</button>
@@ -89,6 +69,5 @@
     </div>
   </div>
 
-  <script src="/scripts/vuelos.js" defer></script>
-</body>
-</html>
+<%- include("../parciales/footer.ejs")%>
+
