@@ -1,49 +1,53 @@
-  // app.mjs
-  import express from 'express';
-  import session from 'express-session';
-  import path from 'path';
-  import { fileURLToPath } from 'url';
-  import dotenv from 'dotenv';
-  // import router from './src/rutas/autocompletar.mjs';
+import express from 'express';
+import session from 'express-session';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
 
-  // 📌 Cargar variables de entorno desde la raíz del proyecto
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = path.dirname(__filename);
-  dotenv.config({ path: path.join(__dirname, '..', 'process.env') });
+// Rutas
+import registerRouter from './src/rutas/register.mjs';
+//import loginRouter from './src/rutas/login.mjs';
 
-  const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-  // 📁 Rutas de carpetas
-  const viewsPath = path.join(__dirname, '..', 'frontend', 'vistas', 'completas');
-  const staticPath = path.join(__dirname, '..', 'frontend');
+// Cargar variables de entorno
+dotenv.config({ path: path.join(__dirname, '..', 'process.env') });
 
-  // 🧠 Middleware
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
+const app = express();
 
-  // Configuración de vistas EJS
-  app.set('view engine', 'ejs');
-  app.set('views', viewsPath);
+// 📁 Rutas de carpetas
+const viewsPath = path.join(__dirname, '..', 'frontend', 'vistas', 'completas');
+const staticPath = path.join(__dirname, '..', 'frontend');
 
-  // Archivos estáticos
-  app.use(express.static(staticPath));
+// 🧠 Middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-  // Sesión (opcional)
-  app.use(session({
-    secret: 'mi_secreto',
-    resave: false,
-    saveUninitialized: true,
-  }));
+// Configuración de vistas EJS
+app.set('view engine', 'ejs');
+app.set('views', viewsPath);
 
-  // 📌 Rutas de API
-  // app.use(router);
+// Archivos estáticos (CSS, JS frontend, imágenes, etc.)
+app.use(express.static(staticPath));
 
-  // 🏠 Ruta principal
-  app.get('/', (req, res) => {
-    res.render('vuelos');
-  });
+// Sesión (opcional, si luego quieres manejar login de backend)
+app.use(session({
+  secret: 'mi_secreto',
+  resave: false,
+  saveUninitialized: true,
+}));
 
-  // Servidor en marcha
-  app.listen(3000, () => {
-    console.log('Servidor corriendo en http://localhost:3000');
-  });
+// 📌 Rutas de la app (login y registro)
+app.use('/', registerRouter);
+//app.use('/', loginRouter);
+
+// Redirigir raíz a login
+app.use('/', (req, res) => {
+  res.redirect('/register');
+});
+
+// 🚀 Levantar servidor
+app.listen(3000, () => {
+  console.log('Servidor corriendo en http://localhost:3000');
+});
