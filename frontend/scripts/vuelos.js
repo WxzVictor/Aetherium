@@ -34,15 +34,68 @@ if (btnCerrarSesion) {
   });
 }
 
-
 let cantidadAdultos = 1;
 let cantidadNiños = 0;
 let inputActivo = null;
+
+// Función para buscar vuelos
+async function buscarVuelos(e) {
+  e.preventDefault();
+  
+  const origen = document.getElementById("origen").value;
+  const destino = document.getElementById("destino").value;
+  const fechaIda = document.getElementById("fechaIda").value;
+  const adultos = document.getElementById("contadorAdultos").textContent;
+
+  // Validación básica
+  if (!origen || !destino || !fechaIda) {
+    alert("❌ Completa origen, destino y fecha de ida");
+    return;
+  }
+
+  try {
+    const codigoOrigen = origen.match(/\(([A-Z]{3})\)/)?.[1] || origen;
+    const codigoDestino = destino.match(/\(([A-Z]{3})\)/)?.[1] || destino;
+
+    // Mostrar loader
+    const botonBuscar = document.querySelector(".boton-buscar");
+    botonBuscar.textContent = "Buscando...";
+    botonBuscar.disabled = true;
+
+    // Enviar datos como POST para guardar en sesión
+    const response = await fetch("/api/buscar-vuelos", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        origen: codigoOrigen,
+        destino: codigoDestino,
+        fecha: fechaIda,
+        pasajeros: adultos
+      })
+    });
+
+    if (!response.ok) throw new Error("Error en la búsqueda");
+    
+    // Redirigir a resultados (los datos ya están en req.session)
+    window.location.href = "/resultados-vuelos";
+
+  } catch (error) {
+    console.error("Error:", error);
+    alert("🚨 Error al buscar vuelos");
+  } finally {
+    const botonBuscar = document.querySelector(".boton-buscar");
+    botonBuscar.textContent = "Buscar";
+    botonBuscar.disabled = false;
+  }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("botonIntercambiar").addEventListener("click", intercambiarValores);
   document.getElementById("abrirDesplegable").addEventListener("click", mostrarDesplegable);
   document.getElementById("botonAplicar").addEventListener("click", aplicarSeleccion);
+  document.querySelector(".boton-buscar").addEventListener("click", buscarVuelos);
 
   document.querySelectorAll("[data-cambio]").forEach(boton => {
     boton.addEventListener("click", () => {
@@ -85,6 +138,7 @@ function aplicarSeleccion() {
   document.getElementById("infoViajeros").value = texto;
   mostrarDesplegable();
 }
+
 /*
 function crearSugerencia({ ciudad, codigo, pais }) {
   const div = document.createElement("div");
