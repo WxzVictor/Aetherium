@@ -6,7 +6,9 @@ import dotenv from 'dotenv';
 
 // Rutas
 import registerRouter from './src/rutas/register.mjs';
-//import loginRouter from './src/rutas/login.mjs';
+import loginRouter from './src/rutas/login.mjs';
+import vuelosRouter from './src/rutas/vuelos.mjs';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -40,12 +42,15 @@ app.use(session({
 
 // 📌 Rutas de la app (login y registro)
 app.use('/', registerRouter);
-//app.use('/', loginRouter);
+app.use('/', loginRouter);
+app.use('/', vuelosRouter);
 
-// Redirigir raíz a login
+
+// Redirigir raíz a registro
 app.use('/', (req, res) => {
   res.redirect('/register');
 });
+
 
 // 🚀 Levantar servidor
 app.listen(3000, () => {

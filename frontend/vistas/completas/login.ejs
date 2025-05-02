@@ -1,13 +1,20 @@
+<!-- frontend/vistas/completas/login.ejs -->
 <!DOCTYPE html>
 <html>
-<head><title>Login</title></head>
+<head>
+  <title>Iniciar Sesión</title>
+</head>
 <body>
-  <h1>Iniciar Sesión</h1>
+  <h1>Login</h1>
   <form id="loginForm">
     <input type="email" id="email" placeholder="Correo" required />
     <input type="password" id="password" placeholder="Contraseña" required />
-    <button type="submit">Entrar</button>
+    <button type="submit">Iniciar sesión</button>
   </form>
+
+  <script>
+    window.firebaseConfig = <%- JSON.stringify(firebaseConfig) %>;
+  </script>
   <script type="module" src="/scripts/login.js"></script>
 </body>
 </html>

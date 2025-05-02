@@ -1,3 +1,40 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+// Inicializa Firebase
+const app = initializeApp(window.firebaseConfig);
+const auth = getAuth(app);
+
+// Verifica si el usuario está autenticado
+onAuthStateChanged(auth, (user) => {
+  const contenido = document.getElementById("contenido");
+  if (!user || !user.emailVerified) {
+    window.location.href = "/login";
+  }
+  else{
+    contenido.style.display = "block";
+  }
+});
+
+// Cerrar sesión
+const btnCerrarSesion = document.getElementById("cerrarSesionBtn");
+
+if (btnCerrarSesion) {
+  btnCerrarSesion.addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      window.location.href = "/login";
+    } catch (error) {
+      alert("Error al cerrar sesión: " + error.message);
+    }
+  });
+}
+
+
 let cantidadAdultos = 1;
 let cantidadNiños = 0;
 let inputActivo = null;
