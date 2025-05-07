@@ -63,7 +63,7 @@ async function buscarVuelos(e) {
     botonBuscar.disabled = true;
 
     // Enviar datos como POST para guardar en sesión
-    const response = await fetch("/api/buscar-vuelos", {
+    const response = await fetch("/vuelos", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -139,49 +139,49 @@ function aplicarSeleccion() {
   mostrarDesplegable();
 }
 
-/*
-function crearSugerencia({ ciudad, codigo, pais }) {
-  const div = document.createElement("div");
-  div.classList.add("sugerencia");
-  div.innerHTML = `
-    <span class="sugerencia-icono">✈️</span>
-    <div>
-      <div class="sugerencia-texto-principal">${ciudad} <strong>(${codigo})</strong></div>
-      <div class="sugerencia-texto-secundario">${pais}</div>
-    </div>
-  `;
-  div.addEventListener("click", () => {
-    inputActivo.value = `${ciudad} (${codigo})`;
-    cerrarDropdown();
-  });
-  return div;
-}
+async function manejarInput(input, dropdown) {
+  let aeropuertos = [];
 
-function manejarInput(input, dropdown) {
-  input.addEventListener("input", async () => {
+  // Cargamos el JSON de aeropuertos una sola vez
+  if (aeropuertos.length === 0) {
+    const res = await fetch("/scripts/data/aeropuertos.json");
+    aeropuertos = await res.json();
+  }
+
+  input.addEventListener("input", () => {
     inputActivo = input;
     dropdown.innerHTML = "";
-    const texto = input.value.trim();
+    const texto = input.value.trim().toLowerCase();
     if (texto.length < 2) return;
 
-    try {
-      const res = await fetch(`/api/vuelos?busqueda=${encodeURIComponent(texto)}`);
-      const datos = await res.json();
+    const coincidencias = aeropuertos.filter(a =>
+      a.ciudad.toLowerCase().includes(texto) ||
+      a.codigo.toLowerCase().includes(texto) ||
+      a.pais.toLowerCase().includes(texto)
+    );
 
-      datos.forEach(item => {
-        dropdown.appendChild(crearSugerencia(item));
-      });
-    } catch (err) {
-      console.error("Error al buscar aeropuertos:", err);
-    }
+    coincidencias.slice(0, 10).forEach(item => {
+      dropdown.appendChild(crearSugerencia(item));
+    });
   });
 
   input.addEventListener("blur", () => {
     setTimeout(() => cerrarDropdown(), 150);
   });
 }
+function crearSugerencia({ ciudad, codigo, pais }) {
+  const div = document.createElement("div");
+  div.classList.add("sugerencia");
+  div.textContent = `${ciudad}, ${pais} (${codigo})`;
+  div.addEventListener("click", () => {
+    inputActivo.value = `${ciudad}, ${pais} (${codigo})`;
+    cerrarDropdown();
+  });
+  return div;
+}
 
 function cerrarDropdown() {
-  document.querySelectorAll(".dropdown-sugerencias").forEach(drop => drop.innerHTML = "");
+  document.getElementById("sugerenciasOrigen").innerHTML = "";
+  document.getElementById("sugerenciasDestino").innerHTML = "";
 }
-*/
+

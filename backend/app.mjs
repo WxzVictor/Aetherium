@@ -30,8 +30,13 @@ app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.set('views', viewsPath);
 
+const scriptsPath = path.join(__dirname, '..', 'frontend', 'scripts');
+app.use('/scripts', express.static(scriptsPath));
+
+
 // Archivos estáticos (CSS, JS frontend, imágenes, etc.)
 app.use(express.static(staticPath));
+
 
 // Sesión (opcional, si luego quieres manejar login de backend)
 app.use(session({
