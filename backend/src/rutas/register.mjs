@@ -13,3 +13,5 @@ router.get('/register', (req, res) => {
 });
 
 export default router;
+
+//Guardar nombre de usuario en nuestra base de datos cuando haga el registro
