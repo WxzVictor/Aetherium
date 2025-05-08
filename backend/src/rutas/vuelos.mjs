@@ -1,5 +1,6 @@
 // backend/src/rutas/vuelos.mjs
 import { Router } from 'express';
+import { buscarVuelos } from '../controllers/vuelos.mjs';
 import { buscarVuelosPorRuta } from '../controllers/peticionesAxio.mjs';
 
 const router = Router();
@@ -15,50 +16,15 @@ router.get('/vuelos', (req, res) => {
   });
 });
 
-// Nueva ruta POST para búsqueda (Opción B)
-router.post('/api/buscar-vuelos', async (req, res) => {
-  const { origen, destino, fecha, pasajeros } = req.body;
-  
-  if (!origen || !destino) {
-    return res.status(400).json({ error: "Se requieren origen y destino" });
-  }
-
-  try {
-    const vuelos = await buscarVuelosPorRuta(origen, destino);
-    
-    // Filtrar y procesar resultados
-    const vuelosFiltrados = fecha 
-      ? vuelos.filter(v => v.flight_date === fecha)
-      : vuelos;
-
-    // Añadir disponibilidad simulada
-    vuelosFiltrados.forEach(v => {
-      v.asientos_disponibles = Math.floor(Math.random() * 10) + 1;
-      v.precio = Math.floor(Math.random() * 500) + 100; // Precio aleatorio entre 100-600
-    });
-
-    // Guardar en sesión del servidor
-    req.session.vuelos = vuelosFiltrados;
-    
-    res.status(200).json({ success: true });
-
-  } catch (error) {
-    console.error("Error en búsqueda:", error);
-    res.status(500).json({ 
-      error: "Error al buscar vuelos",
-      detalle: error.message
-    });
-  }
-});
+router.post('/api/buscar-vuelos', buscarVuelos);
 
 // Ruta GET tradicional (mantenida por compatibilidad)
 router.get('/api/vuelos', async (req, res) => {
   const { origen, destino, fecha } = req.query;
   
   try {
-    const vuelos = await buscarVuelosPorRuta(origen, destino);
-    const vuelosFiltrados = fecha ? vuelos.filter(v => v.flight_date === fecha) : vuelos;
-    res.json(vuelosFiltrados);
+    const vuelos = await buscarVuelosPorRuta(origen, destino, fecha);
+    res.json(vuelos);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

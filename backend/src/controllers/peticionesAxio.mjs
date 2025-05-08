@@ -39,7 +39,7 @@ export const buscarVuelo = async (numeroVuelo) => {
   try{
     const response = await axios.get("http://api.aviationstack.com/v1/flights", {
       params: {
-        access_key: API_KEY,
+        access_key: process.env.AVIATIONSTACK_API_KEY,
         flight_iata: numeroVuelo,
       },
     });
@@ -51,14 +51,15 @@ export const buscarVuelo = async (numeroVuelo) => {
   }
 };
 
-export const buscarVuelosPorRuta = async (origen, destino) => {
+export const buscarVuelosPorRuta = async (origen, destino, fecha) => {
   try {
     const response = await axios.get("http://api.aviationstack.com/v1/flights", {
       params: {
-        access_key: API_KEY,
+        access_key: process.env.AVIATIONSTACK_API_KEY,
         dep_iata: origen,
         arr_iata: destino,
-      },
+        flight_date: fecha
+      }
     });
 
     return response.data.data
