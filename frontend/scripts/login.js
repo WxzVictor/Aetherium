@@ -26,6 +26,8 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
       return;
     }
 
+    //Habra que añadir las cookies
+
     window.location.href = "/vuelos";
   } catch (error) {
     if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {

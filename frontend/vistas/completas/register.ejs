@@ -2,19 +2,37 @@
   <!DOCTYPE html>
   <html>
   <head>
-    <title>Registro</title>
-  </head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro</title>
+  <link rel="stylesheet" href="/estilos/login&register.css"" /> 
+ </head>
   <body>
-    <h1>Registro</h1>
-    <form id="registerForm">
-      <input type="email" id="email" placeholder="Correo" required />
-      <input type="password" id="password" placeholder="Contraseña" required />
-      <button type="submit">Registrarse</button>
-    </form>
+    <div class="background">
+    <div class="login-container">
+      <div class="logo">
+        <img src="https://via.placeholder.com/70" alt="Logo" />
+      </div>
+      <h2>REGISTRO</h2>
 
-    <a href="/login">Ir al login</a>
-    
-    <script>
+      <!-- Email -->
+      <div class="input-group">
+        <input type="email" id="email" placeholder=" " required />
+        <label for="email">Correo</label>
+        <span class="icon">📧</span>
+      </div>
+
+      <!-- Password -->
+      <div class="input-group">
+        <input type="password" id="password" placeholder=" " required />
+        <label for="password">Contraseña</label>
+        <span class="icon">🔒</span>
+      </div>
+
+      <button type="submit">Registrarse</button>
+      <a href="/login" class="forgot">¿Ya tienes cuenta? Inicia sesión</a>
+    </div>
+  </div>
       // Inyectamos la config desde el backend
       window.firebaseConfig = <%- JSON.stringify(firebaseConfig) %>;
     </script>

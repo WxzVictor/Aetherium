@@ -1,22 +1,55 @@
-<!-- frontend/vistas/completas/login.ejs -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Iniciar Sesión</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="stylesheet" href="/estilos/login&register.css" />
 </head>
 <body>
-  <h1>Login</h1>
-  <form id="loginForm">
-    <input type="email" id="email" placeholder="Correo" required />
-    <input type="password" id="password" placeholder="Contraseña" required />
-    <button type="submit">Iniciar sesión</button>
-  </form>
-  <a href="../../../backend/src/rutas/register.mjs">¿No estás registrado?</a>
-<a href="#" id="forgotPasswordLink">¿Olvidaste tu contraseña?</a>
+ <div class="background">
+    <div class="login-container">
+      <div class="logo">
+        <img src="https://via.placeholder.com/70" alt="Logo" />
+      </div>
+      <h2>LOG IN</h2>
+      
+      <!-- Username -->
+      <div class="input-group">
+        <input type="text" id="username" placeholder=" " required />
+        <label for="username">Username</label>
+        <span class="icon">👤</span>
+      </div>
 
+      <!-- Email -->
+      <div class="input-group">
+        <input type="email" id="email" placeholder=" " required />
+        <label for="email">Email</label>
+        <span class="icon">📧</span>
+      </div>
+
+      <!-- Password -->
+      <div class="input-group">
+        <input type="password" id="password" placeholder=" " required />
+        <label for="password">Password</label>
+        <span class="icon">🔒</span>
+      </div>
+
+      <div class="options">
+        <input type="checkbox" id="remember" />
+        <label for="remember"> Remember me</label>
+      </div>
+
+      <button type="submit">Login</button>
+      <a href="#" id="forgotPasswordLink" class="forgot">Forgot Password?</a>
+      <a href="../../../backend/src/rutas/register.mjs" class="forgot">¿No estás registrado?</a>
+    </div>
+  </div>
   <script>
     window.firebaseConfig = <%- JSON.stringify(firebaseConfig) %>;
   </script>
   <script type="module" src="/scripts/login.js"></script>
 </body>
 </html>
+
+<!--No funciona css,(creo que hay que cambiarlo en app.mjs)-->

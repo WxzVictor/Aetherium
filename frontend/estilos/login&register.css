@@ -1,0 +1,117 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body, html {
+  height: 100%;
+}
+
+.background {
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  background: linear-gradient(180deg, #6a11cb 0%, #2575fc 100%);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  width: 320px;
+}
+
+.logo img {
+  width: 70px;
+  margin-bottom: 10px;
+}
+
+h2 {
+  color: white;
+  margin-bottom: 30px;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px 10px 10px 35px;
+  border: none;
+  border-bottom: 2px solid white;
+  background: transparent;
+  color: white;
+  font-size: 16px;
+  outline: none;
+}
+
+.input-group label {
+  position: absolute;
+  left: 35px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  font-size: 14px;
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
+.input-group .icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  font-size: 18px;
+  transition: 0.3s ease;
+}
+
+/* Effects when focused or typed */
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+  opacity: 0;
+}
+
+.input-group input:focus ~ .icon,
+.input-group input:not(:placeholder-shown) ~ .icon {
+  transform: translateY(-150%);
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.options {
+  text-align: left;
+  color: white;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+button {
+  background: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background: #eeeeee;
+}
+
+.forgot {
+  display: block;
+  margin-top: 20px;
+  color: white;
+  font-size: 13px;
+  text-decoration: none;
+}

@@ -9,7 +9,7 @@ import {
 const app = initializeApp(window.firebaseConfig);
 const auth = getAuth(app);
 
-// Verifica si el usuario está autenticado
+// Verifica si el usuario está autenticado (añadir tambien por cookies)
 onAuthStateChanged(auth, (user) => {
   const contenido = document.getElementById("contenido");
   if (!user || !user.emailVerified) {
