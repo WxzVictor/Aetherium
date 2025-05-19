@@ -9,6 +9,8 @@ import registerRouter from './src/rutas/register.mjs';
 import loginRouter from './src/rutas/login.mjs';
 import vuelosRouter from './src/rutas/vuelos.mjs';
 
+//rutas api
+//import rutasLectura from "../api/rutas/read.mjs"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -50,6 +52,9 @@ app.use('/', registerRouter);
 app.use('/', loginRouter);
 app.use('/', vuelosRouter);
 
+
+
+//app.use('/api', rutasLectura);
 
 // Redirigir raíz a registro
 app.use('/', (req, res) => {
