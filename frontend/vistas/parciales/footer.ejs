@@ -7,11 +7,7 @@
 </footer>
 </div>
 <script>
-    window.firebaseConfig = <%- JSON.stringify({
-      apiKey: process.env.API_KEY,
-      authDomain: process.env.DOMAIN,
-      projectId: process.env.PROJECT_ID
-    }) %>;
+    window.firebaseConfig = JSON.parse('<%- JSON.stringify(firebaseConfig) %>');
   </script>
   <script type="module" src="/scripts/vuelos.js"></script>
   

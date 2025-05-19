@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registro</title>
-  <link rel="stylesheet" href="/estilos/login&register.css"" /> 
+  <link rel="stylesheet" href="/estilos/login&register.css" /> 
  </head>
   <body>
     <div class="background">
@@ -15,26 +15,36 @@
       </div>
       <h2>REGISTRO</h2>
 
-      <!-- Email -->
-      <div class="input-group">
-        <input type="email" id="email" placeholder=" " required />
-        <label for="email">Correo</label>
-        <span class="icon">📧</span>
-      </div>
+      <form id="registerForm">
+        <!-- Username -->
+        <div class="input-group">
+          <input type="text" id="username" placeholder=" " required />
+          <label for="username">Nombre de usuario</label>
+          <span class="icon">👤</span>
+        </div>
+        
+        <!-- Email -->
+        <div class="input-group">
+          <input type="email" id="email" placeholder=" " required />
+          <label for="email">Correo</label>
+          <span class="icon">📧</span>
+        </div>
 
-      <!-- Password -->
-      <div class="input-group">
-        <input type="password" id="password" placeholder=" " required />
-        <label for="password">Contraseña</label>
-        <span class="icon">🔒</span>
-      </div>
+        <!-- Password -->
+        <div class="input-group">
+          <input type="password" id="password" placeholder=" " required />
+          <label for="password">Contraseña</label>
+          <span class="icon">🔒</span>
+        </div>
 
-      <button type="submit">Registrarse</button>
+        <button type="submit">Registrarse</button>
+      </form>
       <a href="/login" class="forgot">¿Ya tienes cuenta? Inicia sesión</a>
     </div>
   </div>
+    <script>
       // Inyectamos la config desde el backend
-      window.firebaseConfig = <%- JSON.stringify(firebaseConfig) %>;
+      window.firebaseConfig = JSON.parse('<%- JSON.stringify(firebaseConfig) %>');
     </script>
     <script type="module" src="/scripts/register.js"></script>
   </body>

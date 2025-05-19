@@ -10,43 +10,38 @@
  <div class="background">
     <div class="login-container">
       <div class="logo">
-        <img src="https://via.placeholder.com/70" alt="Logo" />
+        <span>Aetherium</span>
       </div>
       <h2>LOG IN</h2>
       
-      <!-- Username -->
-      <div class="input-group">
-        <input type="text" id="username" placeholder=" " required />
-        <label for="username">Username</label>
-        <span class="icon">👤</span>
-      </div>
+      <form id="loginForm">
+        <!-- Email -->
+        <div class="input-group">
+          <input type="email" id="email" placeholder=" " required />
+          <label for="email">Email</label>
+          <span class="icon">📧</span>
+        </div>
 
-      <!-- Email -->
-      <div class="input-group">
-        <input type="email" id="email" placeholder=" " required />
-        <label for="email">Email</label>
-        <span class="icon">📧</span>
-      </div>
+        <!-- Password -->
+        <div class="input-group">
+          <input type="password" id="password" placeholder=" " required />
+          <label for="password">Password</label>
+          <span class="icon">🔒</span>
+        </div>
 
-      <!-- Password -->
-      <div class="input-group">
-        <input type="password" id="password" placeholder=" " required />
-        <label for="password">Password</label>
-        <span class="icon">🔒</span>
-      </div>
+        <div class="options">
+          <input type="checkbox" id="remember" />
+          <label for="remember"> Remember me </label>
+        </div>
 
-      <div class="options">
-        <input type="checkbox" id="remember" />
-        <label for="remember"> Remember me</label>
-      </div>
-
-      <button type="submit">Login</button>
+        <button type="submit">Login</button>
+      </form>
       <a href="#" id="forgotPasswordLink" class="forgot">Forgot Password?</a>
-      <a href="../../../backend/src/rutas/register.mjs" class="forgot">¿No estás registrado?</a>
+      <a href="/register" class="forgot">Aren't you register yet?</a>
     </div>
   </div>
   <script>
-    window.firebaseConfig = <%- JSON.stringify(firebaseConfig) %>;
+    window.firebaseConfig = JSON.parse('<%- JSON.stringify(firebaseConfig) %>');
   </script>
   <script type="module" src="/scripts/login.js"></script>
 </body>

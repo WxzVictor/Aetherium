@@ -12,12 +12,10 @@
     <header>
         <nav class="barra-navegacion">
             <div class="logo-aetherium">
-              <img src="/imagenes/logo.png" alt="Logo">
-              <span>Aetherium</span>
+              <img src="/assets/images/logo.jpg" alt="Logo">
+              <span translate="no">Aetherium</span>
             </div>
-            <div class="navegacion-derecha">
-              <a href="/login">Iniciar sesión</a>
-            </div>
+            <div class="navegacion-derecha"></div>
           </nav>
           
           <div class="buscador">
@@ -25,3 +23,9 @@
             <a href="/hoteles"><button>🏨 Hoteles</button></a>
           </div>
     </header>
+  </div>
+  <script>
+    window.firebaseConfig = JSON.parse('<%- JSON.stringify(firebaseConfig) %>');
+  </script>
+  <script type="module" src="/scripts/headerIndex.js"></script>
+</body>

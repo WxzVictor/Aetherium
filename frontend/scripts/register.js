@@ -5,7 +5,8 @@ import {
 import {
   getAuth,
   createUserWithEmailAndPassword,
-  sendEmailVerification
+  sendEmailVerification,
+  updateProfile
 } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
 // Inicializar Firebase con config inyectada
@@ -21,6 +22,7 @@ function validarPassword(password) {
 document.getElementById("registerForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
+  const username = document.getElementById("username").value.trim();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
 
@@ -35,6 +37,10 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
 
     await sendEmailVerification(user);
     alert("✅ Cuenta creada correctamente. Revisa tu correo para verificar la cuenta.");
+    
+    await updateProfile(user, {
+      displayName: username,
+    });
 
     // Redirigir al login
     window.location.href = "/login";
