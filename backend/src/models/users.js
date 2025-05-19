@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
-import sequelize from '../config/db.js';
+import sequelize from '../../db.js';
 
-const User = sequelize.define('User', {
+const Users = sequelize.define('Users', {
     userId: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     firstName: { type: DataTypes.STRING(50), allowNull: false },
     lastName: { type: DataTypes.STRING(50), allowNull: false },
@@ -12,6 +12,6 @@ const User = sequelize.define('User', {
     address: { type: DataTypes.STRING(255), allowNull: false },
     city: { type: DataTypes.STRING(50), allowNull: false },
     country: { type: DataTypes.STRING(50), allowNull: false },
-    signupDate: { type: DataTypes.DATE, allowNull: false }
+    signupDate: { type: DataTypes.DATE, allowNull: false, defaultValue: sequelize.literal('CURRENT_TIMESTAMP') }
 })
 export default User
