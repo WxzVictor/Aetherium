@@ -9,20 +9,18 @@ import {
 const app = initializeApp(window.firebaseConfig);
 const auth = getAuth(app);
 
-// Verifica si el usuario está autenticado (añadir tambien por cookies)
+// Verifica si el usuario está autenticado y su email verificado
 onAuthStateChanged(auth, (user) => {
   const contenido = document.getElementById("contenido");
   if (!user || !user.emailVerified) {
     window.location.href = "/login";
-  }
-  else{
+  } else {
     contenido.style.display = "block";
   }
 });
 
 // Cerrar sesión
 const btnCerrarSesion = document.getElementById("cerrarSesionBtn");
-
 if (btnCerrarSesion) {
   btnCerrarSesion.addEventListener("click", async () => {
     try {
@@ -34,62 +32,9 @@ if (btnCerrarSesion) {
   });
 }
 
+// Variables para viajeros
 let cantidadAdultos = 1;
 let cantidadNiños = 0;
-let inputActivo = null;
-
-// Función para buscar vuelos
-async function buscarVuelos(e) {
-  e.preventDefault();
-  
-  const origen = document.getElementById("origen").value;
-  const destino = document.getElementById("destino").value;
-  const fechaIda = document.getElementById("fechaIda").value;
-  const adultos = document.getElementById("contadorAdultos").textContent;
-
-  // Validación básica
-  if (!origen || !destino || !fechaIda) {
-    alert("❌ Completa origen, destino y fecha de ida");
-    return;
-  }
-
-  try {
-    const codigoOrigen = origen.match(/\(([A-Z]{3})\)/)?.[1] || origen;
-    const codigoDestino = destino.match(/\(([A-Z]{3})\)/)?.[1] || destino;
-
-    // Mostrar loader
-    const botonBuscar = document.querySelector(".boton-buscar");
-    botonBuscar.textContent = "Buscando...";
-    botonBuscar.disabled = true;
-
-    // Enviar datos como POST para guardar en sesión
-    const response = await fetch("/vuelos", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        origen: codigoOrigen,
-        destino: codigoDestino,
-        fecha: fechaIda,
-        pasajeros: adultos
-      })
-    });
-
-    if (!response.ok) throw new Error("Error en la búsqueda");
-    
-    // Redirigir a resultados (los datos ya están en req.session)
-    window.location.href = "/resultados-vuelos";
-
-  } catch (error) {
-    console.error("Error:", error);
-    alert("🚨 Error al buscar vuelos");
-  } finally {
-    const botonBuscar = document.querySelector(".boton-buscar");
-    botonBuscar.textContent = "Buscar";
-    botonBuscar.disabled = false;
-  }
-}
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("botonIntercambiar").addEventListener("click", intercambiarValores);
@@ -105,16 +50,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  manejarInput(document.getElementById("origen"), document.getElementById("sugerenciasOrigen"));
-  manejarInput(document.getElementById("destino"), document.getElementById("sugerenciasDestino"));
+  manejarAutocomplete("origen", "sugerenciasOrigen");
+  manejarAutocomplete("destino", "sugerenciasDestino");
 });
 
 function intercambiarValores() {
   const origen = document.getElementById("origen");
   const destino = document.getElementById("destino");
-  const temporal = origen.value;
-  origen.value = destino.value;
-  destino.value = temporal;
+  [origen.value, destino.value] = [destino.value, origen.value];
 }
 
 function mostrarDesplegable() {
@@ -139,49 +82,87 @@ function aplicarSeleccion() {
   mostrarDesplegable();
 }
 
-async function manejarInput(input, dropdown) {
-  let aeropuertos = [];
+// NUEVO AUTOCOMPLETADO CON TU API
+function manejarAutocomplete(inputId, dropdownId) {
+  const input = document.getElementById(inputId);
+  const dropdown = document.getElementById(dropdownId);
 
-  // Cargamos el JSON de aeropuertos una sola vez
-  if (aeropuertos.length === 0) {
-    const res = await fetch("/scripts/data/aeropuertos.json");
-    aeropuertos = await res.json();
-  }
+  input.addEventListener("input", async () => {
+    const query = input.value.trim();
 
-  input.addEventListener("input", () => {
-    inputActivo = input;
-    dropdown.innerHTML = "";
-    const texto = input.value.trim().toLowerCase();
-    if (texto.length < 2) return;
+    if (query.length < 2) {
+      dropdown.innerHTML = "";
+      return;
+    }
 
-    const coincidencias = aeropuertos.filter(a =>
-      a.ciudad.toLowerCase().includes(texto) ||
-      a.codigo.toLowerCase().includes(texto) ||
-      a.pais.toLowerCase().includes(texto)
-    );
+    try {
+      const res = await fetch(`/api/aeropuertos?q=${encodeURIComponent(query)}`);
+      const resultados = await res.json();
 
-    coincidencias.slice(0, 10).forEach(item => {
-      dropdown.appendChild(crearSugerencia(item));
-    });
+      dropdown.innerHTML = "";
+      resultados.slice(0, 10).forEach(({ ciudad, pais, codigo }) => {
+        const div = document.createElement("div");
+        div.classList.add("sugerencia");
+        div.textContent = `${ciudad}, ${pais} (${codigo})`;
+        div.addEventListener("click", () => {
+          input.value = `${ciudad}, ${pais} (${codigo})`;
+          dropdown.innerHTML = "";
+        });
+        dropdown.appendChild(div);
+      });
+    } catch (err) {
+      console.error("Error en autocomplete:", err);
+    }
   });
 
   input.addEventListener("blur", () => {
-    setTimeout(() => cerrarDropdown(), 150);
+    setTimeout(() => {
+      dropdown.innerHTML = "";
+    }, 150);
   });
-}
-function crearSugerencia({ ciudad, codigo, pais }) {
-  const div = document.createElement("div");
-  div.classList.add("sugerencia");
-  div.textContent = `${ciudad}, ${pais} (${codigo})`;
-  div.addEventListener("click", () => {
-    inputActivo.value = `${ciudad}, ${pais} (${codigo})`;
-    cerrarDropdown();
-  });
-  return div;
 }
 
-function cerrarDropdown() {
-  document.getElementById("sugerenciasOrigen").innerHTML = "";
-  document.getElementById("sugerenciasDestino").innerHTML = "";
+async function buscarVuelos(e) {
+  e.preventDefault();
+
+  const origen = document.getElementById("origen").value;
+  const destino = document.getElementById("destino").value;
+  const fechaIda = document.getElementById("fechaIda").value;
+  const fechaVuelta = document.getElementById("fechaVuelta").value || fechaIda; // fallback
+  const adultos = document.getElementById("contadorAdultos").textContent;
+
+  if (!origen || !destino || !fechaIda) {
+    alert("❌ Completa origen, destino y fecha de ida");
+    return;
+  }
+
+  try {
+    const codigoOrigen = origen.match(/\(([A-Z]{3})\)/)?.[1] || origen;
+    const codigoDestino = destino.match(/\(([A-Z]{3})\)/)?.[1] || destino;
+
+    const botonBuscar = document.querySelector(".boton-buscar");
+    botonBuscar.textContent = "Buscando...";
+    botonBuscar.disabled = true;
+
+    const url = `/vuelos/${codigoOrigen}/${codigoDestino}/${fechaIda}/${fechaVuelta}`;
+
+    const response = await fetch(url);
+
+    if (!response.ok) throw new Error("Error en la búsqueda");
+
+    const data = await response.json();
+
+    
+    //No se si funciona, redirigir a la pagina que hagamos para el resultado de la busqueda.
+    window.location.href = "/resultados-vuelos";
+
+  } catch (error) {
+    console.error("Error:", error);
+    alert("🚨 Error al buscar vuelos");
+  } finally {
+    const botonBuscar = document.querySelector(".boton-buscar");
+    botonBuscar.textContent = "Buscar";
+    botonBuscar.disabled = false;
+  }
 }
 

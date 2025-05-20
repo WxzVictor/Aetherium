@@ -4,198 +4,144 @@ import conn from "../controller/config_aiven.mjs";
 const router = express.Router();
 //Preguntar a jose si usuarios y reservas lo da tmb la api
 //Para ver todos los vuelos que hay
-router.get("/vuelos", (req, res) => {
-    let sql = "SELECT * FROM ";
+router.get("/vuelos", async (req, res) => {
+    try {
+        const vuelos = await Flights.findAll({
+            include: [
+                { model: Airports, as: "departureAirport", attributes: ["airportName", "city", "countryCode"] },
+                { model: Airports, as: "arrivalAirport", attributes: ["airportName", "city", "countryCode"] }
+            ]
+        });
 
-    conn.query(sql, (err, result) => {
-        if (err) {
-            return res.status(500).json({ error: "Error en la consulta a la base de datos" });
-        }
-
-        let vuelos = result.map(elemento => ({
-            //cambiar por lo que de la base de datos(preguntar al chat)
-            id: elemento.id,
-            equipo: elemento.equipo,
-            puntos: elemento.puntos,
-            estadisticas: {
-                PJ: elemento.PJ,
-                PG: elemento.PG,
-                PE: elemento.PE,
-                PP: elemento.PP,
-                GF: elemento.GF,
-                GC: elemento.GC,
-                DG: elemento.DG
-            }
-        }));
-
-        let respuesta = {
-            vuelos,
-            metadata: {
-                total_equipos: clasificacion.length,
-                fecha_actualizacion: new Date().toISOString()
-            }
-        };
-
-        // Enviar la respuesta JSON
-         res.json(respuesta);
-    });
-});
-
-// Ruta para buscar vuelos entre dos ciudades
-router.get("/vuelos/:departure_city/:arrival_city/:departure_date/:arrival_date", (req, res) => {
-    const { departure_city, arrival_city, departure_date, arrival_date } = req.params;
-
-    const sql = "SELECT * FROM vuelos WHERE departure_city = ? AND arrival_city = ? AND departure_date = ? AND arrival_date = ?";
-    const values = [departure_city, arrival_city, departure_date, arrival_date];
-
-    conn.query(sql, values, (err, result) => {
-        if (err) {
-            return res.status(500).json({ error: "Error en la consulta a la base de datos" });
-        }
-
-        // Mapear los vuelos al formato personalizado
-        let vuelos = result.map(vuelo => ({
-            id: vuelo.id,
-            aerolinea: vuelo.aerolinea,         // Ajusta estos campos según tu tabla
-            numero_vuelo: vuelo.numero_vuelo,
-            origen: vuelo.departure_city,
-            destino: vuelo.arrival_city,
-            fecha_salida: vuelo.fecha_salida,
-            fecha_llegada: vuelo.fecha_llegada,
-            duracion: vuelo.duracion,
-            precio: vuelo.precio,
-            estado: vuelo.estado
-        }));
-
-        // Estructura de la respuesta
-        let respuesta = {
-            vuelos,
+        const respuesta = {
+            vuelos: vuelos.map(v => ({
+                id: v.flightId,
+                numero_vuelo: v.flightNumber,
+                aerolinea: v.airlineName,
+                origen: v.departureAirport.city,
+                destino: v.arrivalAirport.city,
+                fecha_salida: v.departureTime,
+                fecha_llegada: v.arrivalTime,
+                duracion: v.durationMinutes,
+                precio: v.price
+            })),
             metadata: {
                 total_vuelos: vuelos.length,
-                origen: departure_city,
-                destino: arrival_city,
-                fechaSalida: departure_date ,
-                fechaLlegada: arrival_date ,
                 fecha_actualizacion: new Date().toISOString()
             }
         };
 
         res.json(respuesta);
-    });
+    } catch (err) {
+        res.status(500).json({ error: "Error al obtener vuelos", detalle: err.message });
+    }
 });
+
+
+// Ruta para buscar vuelos entre dos ciudades
+router.get("/vuelos/:origen/:destino/:fecha_salida/:fecha_llegada", async (req, res) => {
+    const { origen, destino, fecha_salida, fecha_llegada } = req.params;
+
+    try {
+        const vuelos = await Flights.findAll({
+            include: [
+                { model: Airports, as: "departureAirport", where: { city: origen }, attributes: [] },
+                { model: Airports, as: "arrivalAirport", where: { city: destino }, attributes: [] }
+            ],
+            where: {
+                departureTime: { [Op.gte]: new Date(fecha_salida) },
+                arrivalTime: { [Op.lte]: new Date(fecha_llegada) }
+            }
+        });
+
+        const respuesta = {
+            vuelos: vuelos.map(v => ({
+                id: v.flightId,
+                numero_vuelo: v.flightNumber,
+                aerolinea: v.airlineName,
+                origen,
+                destino,
+                fecha_salida: v.departureTime,
+                fecha_llegada: v.arrivalTime,
+                duracion: v.durationMinutes,
+                precio: v.price
+            })),
+            metadata: {
+                total_vuelos: vuelos.length,
+                fecha_actualizacion: new Date().toISOString()
+            }
+        };
+
+        res.json(respuesta);
+    } catch (err) {
+        res.status(500).json({ error: "Error al buscar vuelos", detalle: err.message });
+    }
+});
+
+
+//Aeropuertos
+router.get("/aeropuertos", async (req, res) => {
+    try {
+        const aeropuertos = await Airports.findAll();
+
+        res.json({
+            aeropuertos: aeropuertos.map(a => ({
+                codigo: a.airportCode,
+                nombre: a.airportName,
+                ciudad: a.city,
+                pais: a.countryCode
+            }))
+        });
+    } catch (err) {
+        res.status(500).json({ error: "Error al obtener aeropuertos", detalle: err.message });
+    }
+});
+
+//Asientos
+router.get("/asientos/:flightId", async (req, res) => {
+    const { flightId } = req.params;
+
+    try {
+        const asientos = await Seats.findAll({
+            where: {
+                flightId,
+                seatStatus: false // false = disponible
+            }
+        });
+
+        res.json({
+            asientos_disponibles: asientos.map(s => ({
+                id: s.seatId,
+                numero: s.seatNumber,
+                clase: s.seatClass,
+                tipo: s.seatType
+            })),
+            total_disponibles: asientos.length
+        });
+    } catch (err) {
+        res.status(500).json({ error: "Error al obtener asientos", detalle: err.message });
+    }
+});
+
 
 
 //Hotel
-router.get("/hotel", (req, res) => {
-    let sql = "SELECT * FROM hotel";
+router.get("/hoteles/:ciudad", async (req, res) => {
+    const { ciudad } = req.params;
 
-    conn.query(sql, (err, result) => {
-        if (err) {
-            return res.status(500).json({ error: "Error en la consulta a la base de datos" });
-        }
+    try {
+        const hoteles = await sequelize.query(
+            "SELECT * FROM hotels WHERE city = ?",
+            { replacements: [ciudad], type: sequelize.QueryTypes.SELECT }
+        );
 
-        let vuelos = result.map(elemento => ({
-            //cambiar por lo que de la base de datos(preguntar al chat)
-            id: elemento.id,
-            equipo: elemento.equipo,
-            puntos: elemento.puntos,
-            estadisticas: {
-                PJ: elemento.PJ,
-                PG: elemento.PG,
-                PE: elemento.PE,
-                PP: elemento.PP,
-                GF: elemento.GF,
-                GC: elemento.GC,
-                DG: elemento.DG
-            }
-        }));
-
-        let respuesta = {
-            vuelos,
-            metadata: {
-                total_equipos: clasificacion.length,
-                fecha_actualizacion: new Date().toISOString()
-            }
-        };
-
-        // Enviar la respuesta JSON
-         res.json(respuesta);
-    });
+        res.json({
+            hoteles,
+            total: hoteles.length,
+            ciudad,
+            fecha_actualizacion: new Date().toISOString()
+        });
+    } catch (err) {
+        res.status(500).json({ error: "Error al obtener hoteles", detalle: err.message });
+    }
 });
-
-//buscar hotel en ciudad y entre fechas
-router.get("/hotel/:destino", (req, res) => {
-    let sql = "SELECT * FROM hotel where city = ? ";
-
-    conn.query(sql, (err, result) => {
-        if (err) {
-            return res.status(500).json({ error: "Error en la consulta a la base de datos" });
-        }
-
-        let vuelos = result.map(elemento => ({
-            //cambiar por lo que de la base de datos(preguntar al chat)
-            id: elemento.id,
-            equipo: elemento.equipo,
-            puntos: elemento.puntos,
-            estadisticas: {
-                PJ: elemento.PJ,
-                PG: elemento.PG,
-                PE: elemento.PE,
-                PP: elemento.PP,
-                GF: elemento.GF,
-                GC: elemento.GC,
-                DG: elemento.DG
-            }
-        }));
-
-        let respuesta = {
-            vuelos,
-            metadata: {
-                total_equipos: clasificacion.length,
-                fecha_actualizacion: new Date().toISOString()
-            }
-        };
-
-        // Enviar la respuesta JSON
-         res.json(respuesta);
-    });
-});
-
-//Aeropuerto (que nos de el nombre de los aeropuertos para autcompletar la busqueda)
-router.get("/aeropuertos", (req, res) => {
-    let sql = "SELECT * FROM aeropuerto";
-
-    conn.query(sql, (err, result) => {
-        if (err) {
-            return res.status(500).json({ error: "Error en la consulta a la base de datos" });
-        }
-
-        let vuelos = result.map(elemento => ({
-            //cambiar por lo que de la base de datos(preguntar al chat)
-            id: elemento.id,
-            equipo: elemento.equipo,
-            puntos: elemento.puntos,
-            estadisticas: {
-                PJ: elemento.PJ,
-                PG: elemento.PG,
-                PE: elemento.PE,
-                PP: elemento.PP,
-                GF: elemento.GF,
-                GC: elemento.GC,
-                DG: elemento.DG
-            }
-        }));
-
-        let respuesta = {
-            vuelos,
-            metadata: {
-                total_equipos: clasificacion.length,
-                fecha_actualizacion: new Date().toISOString()
-            }
-        };
-
-        // Enviar la respuesta JSON
-         res.json(respuesta);
-    });
-});
-
