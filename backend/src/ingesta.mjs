@@ -15,36 +15,36 @@ const conn = await mysql.createConnection({
 })
 
 // Limpiar las tablas existentes
+const cleanReservas = "DROP TABLE IF EXISTS reservations;"
+await conn.query(cleanReservas)
+console.log("Tabla borrada con éxito")
+
+const cleanEstadisticas = "DROP TABLE IF EXISTS userStats;"
+await conn.query(cleanEstadisticas)
+console.log("Tabla borrada con éxito")
+
 const cleanUsuarios = "DROP TABLE IF EXISTS users;"
 await conn.query(cleanUsuarios)
-console.log("Tabla borrada con éxito")
-
-const cleanAeropuertos = "DROP TABLE IF EXISTS airports;"
-await conn.query(cleanAeropuertos)
-console.log("Tabla borrada con éxito")
-
-const cleanVuelos = "DROP TABLE IF EXISTS flights;"
-await conn.query(cleanVuelos)
 console.log("Tabla borrada con éxito")
 
 const cleanAsientos = "DROP TABLE IF EXISTS seats;"
 await conn.query(cleanAsientos)
 console.log("Tabla borrada con éxito")
 
-const cleanReservas = "DROP TABLE IF EXISTS reservations;"
-await conn.query(cleanReservas)
-console.log("Tabla borrada con éxito")
-
-const cleanHoteles = "DROP TABLE IF EXISTS hotels;"
-await conn.query(cleanHoteles)
-console.log("Tabla borrada con éxito")
-
 const cleanOfertas = "DROP TABLE IF EXISTS offers;"
 await conn.query(cleanOfertas)
 console.log("Tabla borrada con éxito")
 
-const cleanEstadisticas = "DROP TABLE IF EXISTS userStats;"
-await conn.query(cleanEstadisticas)
+const cleanVuelos = "DROP TABLE IF EXISTS flights;"
+await conn.query(cleanVuelos)
+console.log("Tabla borrada con éxito")
+
+const cleanAeropuertos = "DROP TABLE IF EXISTS airports;"
+await conn.query(cleanAeropuertos)
+console.log("Tabla borrada con éxito")
+
+const cleanHoteles = "DROP TABLE IF EXISTS hotels;"
+await conn.query(cleanHoteles)
 console.log("Tabla borrada con éxito")
 
 // Crear la tabla de usuarios
