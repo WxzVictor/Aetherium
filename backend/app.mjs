@@ -16,7 +16,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Cargar variables de entorno
-dotenv.config({ path: path.join(__dirname, '..', 'process.env') });
+dotenv.config({ path: path.join(__dirname, '..', 'config.env') });
 
 const app = express();
 

@@ -8,6 +8,7 @@ const Reservations = sequelize.define('Reservations', {
     seatId: { type: DataTypes.INTEGER, allowNull: false, references: { model: 'Seats', key: 'seatId' }, onDelete: 'CASCADE' },
     reservationDateTime: { type: DataTypes.DATE, allowNull: false, defaultValue: sequelize.literal('CURRENT_TIMESTAMP') },
 }, {
+    tableName: 'reservations',
     timestamps: false
 })
 export default Reservations

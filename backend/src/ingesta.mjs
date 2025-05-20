@@ -53,12 +53,7 @@ const createUsuarios = `Create table if not exists users (
   firstName varchar(50) not null,
   lastName varchar(50) not null,
   email varchar(50) not null UNIQUE,
-  hashedPassword varchar(255) not null,
   age int not null,
-  gender enum('male, female, other') not null,
-  address varchar(255) not null,
-  city varchar(50) not null,
-  country varchar(50) not null,
   signupDate datetime not null default current_timestamp
 );`
 await conn.query(createUsuarios)

@@ -13,6 +13,7 @@ const Flights = sequelize.define('Flights', {
     durationMinutes: { type: DataTypes.INTEGER, allowNull: false },
     price: { type: DataTypes.FLOAT, allowNull: false },
 },{
+    tableName: 'flights',
     timestamps: false
 });
 export default Flights

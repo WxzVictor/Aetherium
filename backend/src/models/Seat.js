@@ -9,6 +9,7 @@ const Seats = sequelize.define('Seats', {
     seatType: { type: DataTypes.ENUM('aisle', 'window', 'middle'), allowNull: false },
     seatStatus: { type: DataTypes.BOOLEAN, allowNull: false }
 }, {
+    tableName: 'seats',
     timestamps: false
 })
 export default Seats

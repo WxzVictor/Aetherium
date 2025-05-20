@@ -10,5 +10,8 @@ const Airports = sequelize.define('Airports', {
     longitude: { type: DataTypes.Float, allowNull: false },
     elvationFeet: { type: DataTypes.Integer, allowNull: false },
     regionCode: { type: DataTypes.String(10), allowNull: false }
+}, {
+    tableName: 'airports',
+    timestamps: false
 })
 export default Airports
