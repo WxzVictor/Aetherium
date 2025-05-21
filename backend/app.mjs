@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 import registerRouter from './src/rutas/register.mjs';
 import loginRouter from './src/rutas/login.mjs';
 import vuelosRouter from './src/rutas/vuelos.mjs';
+import resultadoVuelos from './src/rutas/resultadoVuelos.mjs'
 
 //rutas api
 //import rutasLectura from "../api/rutas/read.mjs"
@@ -51,6 +52,7 @@ app.use(session({
 app.use('/', registerRouter);
 app.use('/', loginRouter);
 app.use('/', vuelosRouter);
+app.use('/', resultadoVuelos);
 
 
 

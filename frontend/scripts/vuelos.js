@@ -154,7 +154,7 @@ async function buscarVuelos(e) {
 
     
     //No se si funciona, redirigir a la pagina que hagamos para el resultado de la busqueda.
-    window.location.href = "/resultados-vuelos";
+    window.location.href = "/resultadoVuelos";
 
   } catch (error) {
     console.error("Error:", error);
