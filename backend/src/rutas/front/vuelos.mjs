@@ -1,10 +1,6 @@
-// backend/src/rutas/vuelos.mjs
 import { Router } from 'express';
-
-
 const router = Router();
 
-// Ruta para renderizar la vista principal de búsqueda
 router.get('/vuelos', (req, res) => {
   res.render('vuelos', {
     firebaseConfig: {
@@ -15,4 +11,4 @@ router.get('/vuelos', (req, res) => {
   });
 });
 
-export default router; // ✅ Este es obligatorio para poder usar 'import vuelosRouter from...'
+export default router;

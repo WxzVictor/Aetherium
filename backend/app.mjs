@@ -5,10 +5,11 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 
 // Rutas
-import registerRouter from './src/rutas/register.mjs';
-import loginRouter from './src/rutas/login.mjs';
-import vuelosRouter from './src/rutas/vuelos.mjs';
-import resultadoVuelos from './src/rutas/resultadoVuelos.mjs'
+import registerRouter from './src/rutas/api/register.mjs';
+import loginRouter from './src/rutas/api/login.mjs';
+import vuelosApiRouter from './src/rutas/api/vuelos.mjs';
+import vuelosFrontRouter from './src/rutas/front/vuelos.mjs';
+import resultadoVuelos from './src/rutas/api/resultadoVuelos.mjs'
 
 //rutas api
 //import rutasLectura from "../api/rutas/read.mjs"
@@ -51,7 +52,8 @@ app.use(session({
 // 📌 Rutas de la app (login y registro)
 app.use('/', registerRouter);
 app.use('/', loginRouter);
-app.use('/', vuelosRouter);
+app.use('/', vuelosFrontRouter);
+app.use('/api', vuelosApiRouter);
 app.use('/', resultadoVuelos);
 
 

@@ -1,8 +1,8 @@
 import { DataTypes } from 'sequelize';
-import sequelize from '../../db.mjs';
+import sequelize from '../../db.js';
 
 const userStats = sequelize.define('userStats', {
-    userId: { Type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true, references: { model: 'users', key: 'userId' }, onDelete: 'CASCADE' },
+    userId: { type: DataTypes.INTEGER, allowNull: false },
     totalFlights: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
     totalHours: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
     firstFlight: { type: DataTypes.DATE },

@@ -27,5 +27,3 @@ User.hasMany(UserStat, { foreignKey: 'userId' });
 UserStat.belongsTo(User, { foreignKey: 'userId' });
 
 export { Flight, User, Airport, Hotel, Offer, Reservation, Seat, UserStat };
-
-
