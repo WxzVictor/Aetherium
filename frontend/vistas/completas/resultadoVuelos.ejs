@@ -1,0 +1,33 @@
+<%- include("../parciales/cabecera.ejs") %>
+
+<link rel="stylesheet" href="/css/vuelos.css">
+
+<h1>Resultados de vuelos</h1>
+
+<% if (vuelos.length === 0) { %>
+    <p>No se encontraron vuelos.</p>
+<% } else { %>
+    <% vuelos.forEach((v) => { %>
+        <div class="vuelo-card">
+            <div class="vuelo-operador">
+                Este vuelo es operado por <strong><%= v.aerolinea %></strong>
+            </div>
+
+            <div class="vuelo-contenido">
+                <div class="vuelo-info">
+                    <p><strong><%= new Date(v.fecha_salida).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></strong> - <%= v.origen %></p>
+                    <p><strong><%= new Date(v.fecha_llegada).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %></strong> - <%= v.destino %></p>
+                    <p>Duración: <%= Math.floor(v.duracion / 60) %>h <%= v.duracion % 60 %>min</p>
+                </div>
+                <div class="vuelo-precio">
+                    <div class="precio"><%= v.precio.toFixed(2) %> €</div>
+                    <form action="/vuelo/<%= v.id %>">
+                        <button type="submit">Ver vuelo</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <% }) %>
+<% } %>
+
+<%- include("../parciales/footer.ejs") %>
