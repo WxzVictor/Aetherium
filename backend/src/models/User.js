@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../../db.js';
 
-const Users = sequelize.define('Users', {
+const Users = sequelize.define('users', {
     userId: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     firstName: { type: DataTypes.STRING(50), allowNull: false },
     lastName: { type: DataTypes.STRING(50), allowNull: false },
