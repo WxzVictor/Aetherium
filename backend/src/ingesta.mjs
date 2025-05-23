@@ -1,10 +1,13 @@
 import z from "zebras"
 import mysql from "mysql2/promise"
+import { fileURLToPath } from "url";
 import path from "path"
-import { readFileSync } from "fs"
 import process from "process"
 
 // Comando para ejecutar la ingesta.mjs desde la terminal del backend: node --env-file=config.env src/ingesta.mjs
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Conexion a la base de datos
 const conn = await mysql.createConnection({
@@ -67,7 +70,7 @@ const createAeropuertos = `Create table if not exists airports (
   countryCode varchar(10) not null,
   latitude float not null,
   longitude float not null,
-  elvationFeet int not null,
+  elevationFeet int not null,
   regionCode varchar(10) not null
 );`
 await conn.query(createAeropuertos)
@@ -168,3 +171,148 @@ console.log("Tabla de estadisticas de usuario creada")
 
 console.log("Todas la tablas creadas con exito")
 
+const csvPath = path.join(__dirname, "..", "csv");
+
+// Usuarios
+const usuarios = z.readCSV(path.join(csvPath, "usuarios.csv"));
+for (const u of usuarios) {
+  await conn.query(
+    `INSERT INTO users (firstName, lastName, email, age, signupDate) VALUES (?, ?, ?, ?, ?)`,
+    [u.firstName, u.lastName, u.email, parseInt(u.age) || 0, u.signupDate]
+  );
+}
+console.log("Usuarios insertados");
+
+// Aeropuertos
+const aeropuertos = z.readCSV(path.join(csvPath, "aeropuertos.csv"));
+for (const a of aeropuertos) {
+  await conn.query(
+    `INSERT INTO airports (airportCode, airportName, city, countryCode, latitude, 
+    longitude, elvationFeet, regionCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+      a.airportCode,
+      a.airportName,
+      a.city,
+      a.countryCode,
+      parseFloat(a.latitude) || 0,
+      parseFloat(a.longitude) || 0,
+      parseInt(a.elevationFeet) || 0, 
+      a.regionCode
+    ]
+  );
+}
+console.log("Aeropuertos insertados");
+
+// Vuelos
+const vuelos = z.readCSV(path.join(csvPath, "vuelos.csv"));
+for (const v of vuelos) {
+  await conn.query(
+    `INSERT INTO flights (flightNumber, airlineName, flightCode, departureAirportCode, 
+    arrivalAirportCode, departureTime, arrivalTime, durationMinutes, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+      v.flightNumber,
+      v.airlineName,
+      v.flightCode,
+      v.departureAirportCode,
+      v.arrivalAirportCode,
+      v.departureTime,
+      v.arrivalTime,
+      parseInt(v.durationMinutes) || 0,
+      parseFloat(v.price) || 0
+    ]
+  );
+}
+console.log("Vuelos insertados");
+
+// Asientos
+const asientos = z.readCSV(path.join(csvPath, "asientos.csv"));
+for (const a of asientos) {
+  await conn.query(
+    `INSERT INTO seats (flightId, seatNumber, seatClass, seatType, seatStatus) 
+    VALUES (?, ?, ?, ?, ?)`,
+    [
+      parseInt(a.flightId) || 0,
+      a.seatNumber,
+      a.seatClass,
+      a.seatType,
+      a.seatStatus.toLowerCase() === "true" 
+    ]
+  );
+}
+console.log("Asientos insertados");
+
+// Hoteles
+const hoteles = z.readCSV(path.join(csvPath, "hoteles.csv"));
+for (const h of hoteles) {
+  await conn.query(
+    `INSERT INTO hotels (hotelName, address, rating, contactNumber, pricePerNight, city, 
+    country, email, chekInTime, checkOutTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+      h.hotelName,
+      h.address,
+      parseFloat(h.rating) || 0,
+      h.contactNumber,
+      parseFloat(h.pricePerNight) || 0,
+      h.city,
+      h.country,
+      h.email,
+      h.chekInTime,
+      h.checkOutTime
+    ]
+  );
+}
+console.log("Hoteles insertados");
+
+// Ofertas
+const ofertas = z.readCSV(path.join(csvPath, "ofertas.csv"));
+for (const o of ofertas) {
+  await conn.query(
+    `INSERT INTO offers (flightId, hotelId, discountPercentage, startDate, endDate) 
+    VALUES (?, ?, ?, ?, ?)`,
+    [
+      parseInt(o.flightId) || 0,
+      parseInt(o.hotelId) || 0,
+      parseInt(o.discountPercentage) || 0,
+      o.startDate,
+      o.endDate
+    ]
+  );
+}
+console.log("Ofertas insertadas");
+
+// Reservas
+const reservas = z.readCSV(path.join(csvPath, "reservas.csv"));
+for (const r of reservas) {
+  await conn.query(
+    `INSERT INTO reservations (userId, flightId, seatId, reservationDate) VALUES (?, ?, ?, ?)`,
+    [
+      parseInt(r.userId) || 0,
+      parseInt(r.flightId) || 0,
+      parseInt(r.seatId) || 0,
+      r.reservationDate
+    ]
+  );
+}
+console.log("Reservas insertadas");
+
+// Estadísticas
+const estadisticas = z.readCSV(path.join(csvPath, "estadisticas.csv"));
+for (const e of estadisticas) {
+  await conn.query(
+    `INSERT INTO userStats (userId, totalFlights, totalHours, firstFlight, lastFlight, 
+    timesInFirstClass, mostUsedAirline, totalSpent) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    [
+      parseInt(e.userId) || 0,
+      parseInt(e.totalFlights) || 0,
+      parseInt(e.totalHours) || 0,
+      e.firstFlight,
+      e.lastFlight,
+      parseInt(e.timesInFirstClass) || 0,
+      e.mostUsedAirline,
+      parseFloat(e.totalSpent) || 0
+    ]
+  );
+}
+console.log("Estadísticas insertadas");
+
+console.log("Todos los datos insertados");

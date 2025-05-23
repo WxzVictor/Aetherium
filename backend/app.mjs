@@ -9,6 +9,8 @@ import registerRouter from './src/rutas/api/register.mjs';
 import loginRouter from './src/rutas/api/login.mjs';
 import vuelosApiRouter from './src/rutas/api/vuelos.mjs';
 import vuelosFrontRouter from './src/rutas/front/vuelos.mjs';
+import aeropuertosApiRouter from './src/rutas/api/airports.mjs';
+import aeropuertosFrontRouter from './src/rutas/front/aeropuertos.mjs';
 import resultadoVuelos from './src/rutas/api/resultadoVuelos.mjs'
 
 //rutas api
@@ -54,6 +56,8 @@ app.use('/', registerRouter);
 app.use('/', loginRouter);
 app.use('/', vuelosFrontRouter);
 app.use('/api', vuelosApiRouter);
+app.use('/', aeropuertosFrontRouter);
+app.use('/api', aeropuertosApiRouter);
 app.use('/', resultadoVuelos);
 
 

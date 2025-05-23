@@ -1,11 +1,8 @@
-// backend/src/rutas/vuelos.mjs
 import { Router } from 'express';
-
 const router = Router();
 
-// Ruta para renderizar la vista principal de búsqueda
-router.get('/resultadosVuelo', (req, res) => {
-  res.render('resultadosVuelo', {
+router.get('/aeropuertos', (req, res) => {
+  res.render('aeropuertos', {
     firebaseConfig: {
       apiKey: process.env.API_KEY,
       authDomain: process.env.DOMAIN,
