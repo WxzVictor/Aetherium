@@ -11,7 +11,8 @@ import vuelosApiRouter from './src/rutas/api/vuelos.mjs';
 import vuelosFrontRouter from './src/rutas/front/vuelos.mjs';
 import aeropuertosApiRouter from './src/rutas/api/airports.mjs';
 import aeropuertosFrontRouter from './src/rutas/front/aeropuertos.mjs';
-import resultadoVuelos from './src/rutas/api/resultadoVuelos.mjs'
+import hotelesApiRouter from './src/rutas/api/hoteles.mjs';
+import hotelesFrontRouter from './src/rutas/front/hoteles.mjs';
 
 //rutas api
 //import rutasLectura from "../api/rutas/read.mjs"
