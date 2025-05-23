@@ -59,7 +59,8 @@ app.use('/', vuelosFrontRouter);
 app.use('/api', vuelosApiRouter);
 app.use('/', aeropuertosFrontRouter);
 app.use('/api', aeropuertosApiRouter);
-app.use('/', resultadoVuelos);
+app.use('/', hotelesFrontRouter);
+app.use('/api', hotelesApiRouter);
 
 
 
