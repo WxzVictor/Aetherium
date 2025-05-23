@@ -188,7 +188,7 @@ const aeropuertos = z.readCSV(path.join(csvPath, "aeropuertos.csv"));
 for (const a of aeropuertos) {
   await conn.query(
     `INSERT INTO airports (airportCode, airportName, city, countryCode, latitude, 
-    longitude, elvationFeet, regionCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    longitude, elevationFeet, regionCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       a.airportCode,
       a.airportName,
