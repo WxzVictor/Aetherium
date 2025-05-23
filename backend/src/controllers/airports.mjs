@@ -6,14 +6,10 @@ export const getAllAirports = async (req, res) => {
 
         res.json({
             ariports: airport.map(a => ({
-                airportCode: a.airportCode,
-                airportName: a.airportName,
+                code: a.airportCode,
+                name: a.airportName,
                 city: a.city,
-                countryCode: a.countryCode,
-                latitude: a.latitude,
-                longitude: a.longitude,
-                elevationFeet: a.elevationFeet,
-                regionCode: a.regionCode
+                country: a.countryCode,
             }))
         });        
     } catch (error) {
