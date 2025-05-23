@@ -100,7 +100,7 @@ console.log("Tabla de vuelos creada")
 const createAsientos = `Create table if not exists seats (
   seatId int auto_increment primary key,
   flightId int not null,
-  seatNumber enum('A1', 'A2', 'A3', 'B1', 'B2', 'B3', 'C1', 'C2', 'C3') not null,  
+  seatNumber varchar(5) not null,  
   seatClass enum('economy', 'business', 'first') not null,
   seatType enum('aisle', 'window', 'middle') not null,
   seatStatus bool not null,
@@ -132,9 +132,9 @@ const createHoteles = `Create table if not exists hotels (
   contactNumber varchar(50) not null,
   pricePerNight decimal(10,2) not null,
   city varchar(50) not null,
-  country varchar(50) not null,
+  country varchar(100) not null,
   email varchar(100) not null,
-  chekInTime datetime not null,
+  checkInTime datetime not null,
   checkOutTime datetime not null
 );`
 await conn.query(createHoteles)
@@ -246,7 +246,7 @@ const hoteles = z.readCSV(path.join(csvPath, "hoteles.csv"));
 for (const h of hoteles) {
   await conn.query(
     `INSERT INTO hotels (hotelName, address, rating, contactNumber, pricePerNight, city, 
-    country, email, chekInTime, checkOutTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    country, email, checkInTime, checkOutTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       h.hotelName,
       h.address,
@@ -256,7 +256,7 @@ for (const h of hoteles) {
       h.city,
       h.country,
       h.email,
-      h.chekInTime,
+      h.checkInTime,
       h.checkOutTime
     ]
   );
