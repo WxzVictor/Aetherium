@@ -1,9 +1,9 @@
 import { DataTypes } from 'sequelize';
-import sequelize from '../../db.mjs';
+import sequelize from '../../db.js';
 
 const Hotels = sequelize.define('hotels', {
     hotelId: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    hotelName: { type: DataType.STRING(255), allowNull: false },
+    hotelName: { type: DataTypes.STRING(255), allowNull: false },
     address: { type: DataTypes.STRING(255), allowNull: false },
     rating: { type: DataTypes.INTEGER, allowNull: false },
     contactNumber: { type: DataTypes.STRING(50), allowNull: false },

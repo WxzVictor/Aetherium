@@ -1,5 +1,5 @@
 import { DataTypes } from 'sequelize';
-import sequelize from '../../db.mjs';
+import sequelize from '../../db.js';
 
 const Seats = sequelize.define('Seats', {
     seatId: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },

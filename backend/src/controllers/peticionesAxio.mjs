@@ -10,6 +10,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configura dotenv para leer "process.env"
-dotenv.config({ path: path.join(__dirname, '..', '..', 'process.env') });
+dotenv.config({ path: path.join(__dirname, '..', '..', 'config.env') });
 
 
