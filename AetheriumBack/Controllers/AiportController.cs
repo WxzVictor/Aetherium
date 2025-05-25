@@ -1,4 +1,5 @@
 ﻿using AetheriumBack.Database;
+using AetheriumBack.Dto;
 using AetheriumBack.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,16 +19,16 @@ public class AiportController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllAiports()
     {
-        IEnumerable<Airport> airports = await _context.Airports.ToListAsync();
+        IEnumerable<AirportDto> airports = await _context.Airports
+            .Select(a => new AirportDto
+            {
+                Code = a.AirportCode,
+                Name = a.AirportName,
+                City = a.City,
+                CountryCode = a.CountryCode
+            })
+            .ToListAsync();
 
-        var result = airports.Select(a => new
-        {
-            code = a.AirportCode,
-            name = a.AirportName,
-            city = a.City,
-            country = a.RegionCode
-        });
-
-        return Ok(new { airports = result });
+        return Ok(airports);
     }
 }

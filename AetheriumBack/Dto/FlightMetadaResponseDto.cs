@@ -5,5 +5,5 @@ public class FlightMetadaResponseDto
 {
     public IEnumerable<FlightResponseDto> Flights { get; set; }
     public int TotalFlights { get; set; }
-    public string LastUpdate { get; set; }
+    public DateTimeOffset LastUpdate { get; set; }
 }

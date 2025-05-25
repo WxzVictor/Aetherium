@@ -10,12 +10,7 @@ public class FlightConfiguration : IEntityTypeConfiguration<Flight>
     {
         builder.ToTable(nameof(Flight), "Aetherium");
 
-        builder.HasKey(c => c.FlightId);
-
-        builder.Property(c => c.FlightNumber)
-            .HasColumnName(nameof(Flight.FlightNumber))
-            .HasMaxLength(20)
-            .IsRequired();
+        builder.HasKey(c => c.FlightNumber);
 
         builder.Property(c => c.AirlineName)
             .HasColumnName(nameof(Flight.AirlineName))
