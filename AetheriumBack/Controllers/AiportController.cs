@@ -1,6 +1,7 @@
 ﻿using AetheriumBack.Database;
 using AetheriumBack.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AetheriumBack.Controllers;
 

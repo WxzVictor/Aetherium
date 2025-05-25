@@ -2,7 +2,7 @@
 
 public class Hotel
 {
-    public Guid HotelId { get; set; }
+    public int HotelId { get; set; }
     public string HotelName { get; set; }
     public string Address { get; set; }
     public int Rating { get; set; }

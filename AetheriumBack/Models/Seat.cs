@@ -2,8 +2,8 @@
 
 public class Seat
 {
-    public Guid SeatId { get; set; }
-    public Guid FlightId { get; set; }
+    public int SeatId { get; set; }
+    public int FlightId { get; set; }
     public string SeatNumber { get; set; }
 
     public Enum SeatClass = { 'Economy', 'Business', 'First' };

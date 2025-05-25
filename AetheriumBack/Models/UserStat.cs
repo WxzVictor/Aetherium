@@ -2,7 +2,7 @@
 
 public class UserStat
 {
-    public Guid UserId { get; set; }
+    public int UserId { get; set; }
     public int TotalFlights { get; set; }
     public int TotalHours { get; set; } 
     public DateTimeOffset FirstFlight { get; set; }

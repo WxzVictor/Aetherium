@@ -53,5 +53,16 @@ public class FlightConfiguration : IEntityTypeConfiguration<Flight>
             .HasColumnName(nameof(Flight.Price))
             .IsRequired();
 
+        builder.HasOne(f => f.DepartureAirport)
+            .WithMany()
+            .HasForeignKey(f => f.DepartureAirportCode)
+            .HasPrincipalKey(a => a.AirportCode)
+            .OnDelete(DeleteBehavior.Restrict);
+        
+        builder.HasOne(f => f.ArrivalAirport)
+            .WithMany()
+            .HasForeignKey(f => f.ArrivalAirportCode)
+            .HasPrincipalKey(a => a.AirportCode)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

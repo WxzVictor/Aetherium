@@ -43,13 +43,5 @@ public class AirportConfiguration : IEntityTypeConfiguration<Airport>
             .HasColumnName(nameof(Airport.RegionCode))
             .HasMaxLength(10)
             .IsRequired();
-
-        builder.HasMany(c => c.Flights)
-            .WithOne(c => c.Airport)
-            .HasForeignKey(c => c.DepartureAirportCode);
-
-        builder.HasMany(c => c.Flights)
-            .WithOne(c => c.Airport)
-            .HasForeignKey(c => c.ArrivalAirportCode);
     }
 }

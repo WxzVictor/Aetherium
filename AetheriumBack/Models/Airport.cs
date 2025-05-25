@@ -1,5 +1,4 @@
 ﻿namespace AetheriumBack.Models;
-
 public class Airport
 {
     public string AirportCode { get; set; }

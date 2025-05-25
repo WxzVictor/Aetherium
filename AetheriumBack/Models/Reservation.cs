@@ -1,9 +1,9 @@
 ﻿namespace AetheriumBack.Models;
 public class Reservation
 {
-    public Guid RerservationId { get; set; }
-    public Guid UserId { get; set; }
-    public Guid FlightId { get; set; }
-    public Guid SeatId { get; set; }
+    public int RerservationId { get; set; }
+    public int UserId { get; set; }
+    public int FlightId { get; set; }
+    public int SeatId { get; set; }
     public DateTimeOffset ReservationDateTime { get; set; }
 }
