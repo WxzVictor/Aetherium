@@ -7,7 +7,7 @@ public class AetheriumContextFactory : IDesignTimeDbContextFactory<AetheriumCont
 {
     public AetheriumContext CreateDbContext(string[] args)
     {
-        string basePath = Path.Combine(Directory.GetCurrentDirectory(), "..", "HotelApi");
+        string basePath = Path.Combine(Directory.GetCurrentDirectory(), "..", "AetheriumBack");
 
         IConfiguration builder = new ConfigurationBuilder()
             .SetBasePath(basePath)
