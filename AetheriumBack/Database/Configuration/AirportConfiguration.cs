@@ -12,6 +12,11 @@ public class AirportConfiguration : IEntityTypeConfiguration<Airport>
 
         builder.HasKey(c => c.AirportCode);
 
+        builder.Property(c => c.AirportCode)
+            .HasColumnName(nameof(Airport.AirportCode))
+            .HasMaxLength(10)
+            .IsRequired();
+
         builder.Property(c => c.AirportName)
             .HasColumnName(nameof(Airport.AirportName))
             .HasMaxLength(255)

@@ -1,8 +1,4 @@
-﻿using AetheriumBack.Database;
-using AetheriumBack.Dto;
-using AetheriumBack.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace AetheriumBack.Controllers;
 
@@ -10,36 +6,36 @@ namespace AetheriumBack.Controllers;
 [Route("api/[controller]")]
 public class HotelController : ControllerBase
 {
-    private readonly AetheriumContext _context;
-    public HotelController(AetheriumContext context)
-    {
-        _context = context;
-    }
+    //private readonly AetheriumContext _context;
+    //public HotelController(AetheriumContext context)
+    //{
+    //    _context = context;
+    //}
 
-    [HttpGet]
-    public async Task<IActionResult> GetAllHotels()
-    {
-        IEnumerable<Hotel> hotels = await _context.Hotel.ToListAsync();
-        
-        var response = new HotelRespondeDto
-        {
-            Total = hotels.Count(),
-            Hotels = hotels
-        };
-        return Ok(response);
-    }
+    //[HttpGet]
+    //public async Task<IActionResult> GetAllHotels()
+    //{
+    //    IEnumerable<Hotel> hotels = await _context.Hotel.ToListAsync();
 
-    public async Task<IActionResult> GetHotelByCity(string ciudad)
-    {
-        if (string.IsNullOrEmpty(ciudad))
-            return BadRequest("El campo de ciudad no puede estar vacio");
+    //    var response = new HotelRespondeDto
+    //    {
+    //        Total = hotels.Count(),
+    //        Hotels = hotels
+    //    };
+    //    return Ok(response);
+    //}
 
-        IEnumerable<Hotel> hotels = await _context.Hotel
-            .Where(h => h.City.ToLower() == ciudad.ToLower()).ToListAsync();
+    //public async Task<IActionResult> GetHotelByCity(string ciudad)
+    //{
+    //    if (string.IsNullOrEmpty(ciudad))
+    //        return BadRequest("El campo de ciudad no puede estar vacio");
 
-        if (!hotels.Any())
-            return NotFound($"No hay hoteles para la ciudad: {ciudad}");
+    //    IEnumerable<Hotel> hotels = await _context.Hotel
+    //        .Where(h => h.City.ToLower() == ciudad.ToLower()).ToListAsync();
 
-        return Ok(hotels);
-    }
+    //    if (!hotels.Any())
+    //        return NotFound($"No hay hoteles para la ciudad: {ciudad}");
+
+    //    return Ok(hotels);
+    //}
 }

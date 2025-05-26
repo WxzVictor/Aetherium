@@ -1,4 +1,5 @@
 using AetheriumBack.Database;
+using AetheriumBack.Utils;
 using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -27,5 +28,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+LoadCsv.SeedDataAsync(app.Services);
 
 app.Run();

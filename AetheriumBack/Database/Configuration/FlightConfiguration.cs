@@ -6,11 +6,12 @@ namespace AetheriumBack.Database.Configuration;
 
 public class FlightConfiguration : IEntityTypeConfiguration<Flight>
 {
+
     public void Configure(EntityTypeBuilder<Flight> builder)
     {
         builder.ToTable(nameof(Flight), "Aetherium");
 
-        builder.HasKey(c => c.FlightNumber);
+        builder.HasKey(c => c.FlightId);
 
         builder.Property(c => c.AirlineName)
             .HasColumnName(nameof(Flight.AirlineName))
@@ -48,16 +49,14 @@ public class FlightConfiguration : IEntityTypeConfiguration<Flight>
             .HasColumnName(nameof(Flight.Price))
             .IsRequired();
 
-        builder.HasOne(f => f.DepartureAirport)
-            .WithMany()
-            .HasForeignKey(f => f.DepartureAirportCode)
-            .HasPrincipalKey(a => a.AirportCode)
-            .OnDelete(DeleteBehavior.Restrict);
-        
         builder.HasOne(f => f.ArrivalAirport)
-            .WithMany()
+            .WithMany(c => c.ArrivingFlights)
             .HasForeignKey(f => f.ArrivalAirportCode)
-            .HasPrincipalKey(a => a.AirportCode)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.HasOne(f => f.DepartureAirport)
+            .WithMany(c => c.DepartingFlights)
+            .HasForeignKey(f => f.DepartureAirportCode)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }
