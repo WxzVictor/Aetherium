@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { auth } from '../../services/firebaseConfig';
+import { auth } from '../services/firebaseConfig';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
-import '../../styles/vuelos.css';
-import logo from '../../assets/images/logo.png';
+import '../styles/vuelos.css';
+import logo from '../assets/images/logo.png';
 
 const Flights = () => {
   const [user, setUser] = useState(null);
@@ -19,6 +19,8 @@ const Flights = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            console.log("Auth State Changed:", currentUser);
+
       if (!currentUser || !currentUser.emailVerified) {
         navigate('/login');
       } else {
@@ -27,6 +29,7 @@ const Flights = () => {
     });
     return () => unsubscribe();
   }, [navigate]);
+  console.log("Estado user:", user);
 
   const handleSwap = () => {
     setFrom((prev) => {

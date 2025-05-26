@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../services/firebaseConfig';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
-import '../../styles/login&register.css';
+import '../../styles/login-register.css';
 import logo from '../../assets/images/logo2-removebg-preview.png';
 
 const Login = () => {
