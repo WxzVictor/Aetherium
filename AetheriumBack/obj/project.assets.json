@@ -4404,23 +4404,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\daniel.gutierrez\\.nuget\\packages\\": {},
+    "C:\\Users\\marco\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\daniel.gutierrez\\source\\repos\\WxzVictor\\Aetherium\\AetheriumBack\\AetheriumBack.csproj",
+      "projectUniqueName": "C:\\Users\\marco\\source\\repos\\Aetherium\\AetheriumBack\\AetheriumBack.csproj",
       "projectName": "AetheriumBack",
-      "projectPath": "C:\\Users\\daniel.gutierrez\\source\\repos\\WxzVictor\\Aetherium\\AetheriumBack\\AetheriumBack.csproj",
-      "packagesPath": "C:\\Users\\daniel.gutierrez\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\daniel.gutierrez\\source\\repos\\WxzVictor\\Aetherium\\AetheriumBack\\obj\\",
+      "projectPath": "C:\\Users\\marco\\source\\repos\\Aetherium\\AetheriumBack\\AetheriumBack.csproj",
+      "packagesPath": "C:\\Users\\marco\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\marco\\source\\repos\\Aetherium\\AetheriumBack\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\daniel.gutierrez\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\marco\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -4447,7 +4447,7 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.300"
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -4491,7 +4491,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
