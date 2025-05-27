@@ -1,4 +1,4 @@
-airportCode,airportName,city,countryCode,latitude,longitude,elevationFeet,regionCode
+AirportCode,AirportName,City,CountryCode,Latitude,Longitude,ElevationFeet,RegionCode
 TXN,Jenkins International Airport,East Matthew,DJ,87.073842,26.314391,1703,EU-C
 HBL,Hahn International Airport,Lake Jamieshire,TL,-43.737620,-33.262453,1591,EU-S
 VRK,Hammond International Airport,Andrewsborough,CZ,20.404747,-10.085355,4067,EU-S

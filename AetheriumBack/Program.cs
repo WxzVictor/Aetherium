@@ -8,6 +8,7 @@ builder.Services.AddDbContext<AetheriumContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
+builder.Services.AddTransient<LoadCsv>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -29,6 +30,11 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-LoadCsv.SeedDataAsync(app.Services);
+if (app.Environment.IsDevelopment())  // <--- Importar solo en desarrollo
+{
+    using var scope = app.Services.CreateScope();
+    var importService = scope.ServiceProvider.GetRequiredService<LoadCsv>();
+    importService.ImportAirports("Data/aeropuertos.csv");
+}
 
 app.Run();
