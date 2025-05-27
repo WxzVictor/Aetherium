@@ -1,27 +1,40 @@
 ﻿using AetheriumBack.Database;
-using AetheriumBack.Models;
-using CsvHelper;
-using System.Globalization;
 
 namespace AetheriumBack.Utils;
 
-public class LoadCsv
+public static class LoadCsv
 {
-    private readonly AetheriumContext _context;
-
-    public LoadCsv(AetheriumContext context)
+    public static async void SeedDataAsync(IServiceProvider services)
     {
-        _context = context;
+        using IServiceScope scope = services.CreateScope();
+        AetheriumContext context = scope.ServiceProvider.GetRequiredService<AetheriumContext>();
+
+        if (!context.Airports.Any())
+        {
+            string path = Directory.GetCurrentDirectory() + "\\Data";
+            IEnumerable<string> files = Directory.GetFiles(Directory.GetCurrentDirectory() + "\\Data");
+
+            if (files.Any())
+            {
+                foreach (string file in files)
+                {
+                    using StreamReader reader = new(file);
+                    while (!reader.EndOfStream)
+                    {
+                        string? line = reader.ReadLine();
+                        string[] values = line.Split(',');
+
+                        //Airport aux = new();
+                    }
+                }
+            }
+            //foreach (string? line in lines)
+            //{
+            //    string[] parts = line.Split(',');
+            //    context.Airports.Add(new Airport { Name = parts[0], Code = parts[1] });
+            //}
+            await context.SaveChangesAsync();
+        }
     }
 
-    public void ImportAirports(string FilePath)
-    {
-        using var reader = new StreamReader(FilePath);
-        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-
-        var records = csv.GetRecords<Airport>().ToList();
-
-        _context.Airports.AddRange(records);
-        _context.SaveChanges();
-    }
 }

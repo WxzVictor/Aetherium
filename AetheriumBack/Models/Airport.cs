@@ -16,4 +16,17 @@ public class Airport
     private Airport() { }
 #pragma warning restore CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required" o declararlo como un valor que acepta valores NULL.
 
+    public Airport(string airportCode, string airportName, string city, string countryCode, float latitude, float longitude, int elevationFeet, string regionCode)
+    {
+        AirportCode = airportCode;
+        AirportName = airportName;
+        City = city;
+        CountryCode = countryCode;
+        Latitude = latitude;
+        Longitude = longitude;
+        ElevationFeet = elevationFeet;
+        RegionCode = regionCode;
+        DepartingFlights = [];
+        ArrivingFlights = [];
+    }
 }
