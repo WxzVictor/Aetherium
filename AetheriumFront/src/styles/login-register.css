@@ -4,19 +4,29 @@
   box-sizing: border-box;
   font-family: "Segoe UI", sans-serif;
 }
-
-body, html {
+/* Establece altura completa para que funcione height: 100% */
+html, body, #root {
   height: 100%;
+  margin: 0;
+  padding: 0;
 }
+
+/* Esto es opcional, pero estandariza tu fuente y fondo base */
+body {
+  font-family: sans-serif;
+  background-color: #f0f0f0;
+  height: 100vh;
+}
+
 
 .background {
   background: rgb(216, 216, 216);
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   overflow: hidden;
+  height: 100vh;
 }
 
 

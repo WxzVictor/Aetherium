@@ -3,7 +3,6 @@ import { auth } from '../services/firebaseConfig';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import '../styles/vuelos.css';
-import logo from '../assets/images/logo.png';
 
 const Flights = () => {
   const [user, setUser] = useState(null);
@@ -19,8 +18,6 @@ const Flights = () => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            console.log("Auth State Changed:", currentUser);
-
       if (!currentUser || !currentUser.emailVerified) {
         navigate('/login');
       } else {
@@ -29,7 +26,6 @@ const Flights = () => {
     });
     return () => unsubscribe();
   }, [navigate]);
-  console.log("Estado user:", user);
 
   const handleSwap = () => {
     setFrom((prev) => {
@@ -37,22 +33,6 @@ const Flights = () => {
       setTo(prev);
       return temp;
     });
-  };
-
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (!from || !to || !departureDate) {
-      alert("❌ Por favor completa origen, destino y fecha de ida");
-      return;
-    }
-    try {
-      const fromCode = from.match(/\(([A-Z]{3})\)/)?.[1] || from;
-      const toCode = to.match(/\(([A-Z]{3})\)/)?.[1] || to;
-      navigate(`/resultadoVuelos/${fromCode}/${toCode}/${departureDate}/${returnDate || departureDate}`);
-    } catch (error) {
-      alert("🚨 Error al buscar vuelos");
-      console.error("Error en la búsqueda de vuelos:", error);
-    }
   };
 
   const handleAutocomplete = async (query, setResults) => {
@@ -69,101 +49,133 @@ const Flights = () => {
     }
   };
 
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (!from || !to || !departureDate) {
+      alert("❌ Completa origen, destino y fecha de ida");
+      return;
+    }
+    try {
+      const fromCode = from.match(/\(([A-Z]{3})\)/)?.[1] || from;
+      const toCode = to.match(/\(([A-Z]{3})\)/)?.[1] || to;
+      navigate(`/resultadoVuelos/${fromCode}/${toCode}/${departureDate}/${returnDate || departureDate}`);
+    } catch (error) {
+      console.error("🚨 Error al buscar vuelos:", error);
+      alert("🚨 Error al buscar vuelos");
+    }
+  };
+
   return (
     <div>
       <h1>Millones de vuelos baratos. Una sencilla búsqueda.</h1>
-      <form className="search-form" onSubmit={handleSearch}>
-        <div className="input-group">
-          <div className="small-label">Desde</div>
+      <div className="contenedor-formulario">
+        <div className="grupo-input">
+          <div className="etiqueta-pequeña">Desde</div>
           <input
             type="text"
+            id="origen"
+            placeholder="País, ciudad o aeropuerto"
+            autoComplete="off"
             value={from}
             onChange={(e) => {
               setFrom(e.target.value);
               handleAutocomplete(e.target.value, setSuggestionsFrom);
             }}
-            placeholder="País, ciudad o aeropuerto"
-            autoComplete="off"
           />
-          <div className="dropdown-suggestions">
+          <div className="dropdown-sugerencias" id="sugerenciasOrigen">
             {suggestionsFrom.map((s, i) => (
-              <div key={i} className="suggestion" onClick={() => setFrom(`${s.city}, ${s.country} (${s.code})`)}>
-                {s.city}, {s.country} ({s.code})
+              <div key={i} className="sugerencia" onClick={() => setFrom(`${s.ciudad}, ${s.pais} (${s.codigo})`)}>
+                {s.ciudad}, {s.pais} ({s.codigo})
               </div>
             ))}
           </div>
         </div>
 
-        <div className="swap-icon" onClick={handleSwap}>↔️</div>
+        <div className="icono-intercambiar" id="botonIntercambiar" onClick={handleSwap}>↔️</div>
 
-        <div className="input-group">
-          <div className="small-label">A</div>
+        <div className="grupo-input">
+          <div className="etiqueta-pequeña">A</div>
           <input
             type="text"
+            id="destino"
+            placeholder="País, ciudad o aeropuerto"
+            autoComplete="off"
             value={to}
             onChange={(e) => {
               setTo(e.target.value);
               handleAutocomplete(e.target.value, setSuggestionsTo);
             }}
-            placeholder="País, ciudad o aeropuerto"
-            autoComplete="off"
           />
-          <div className="dropdown-suggestions">
+          <div className="dropdown-sugerencias" id="sugerenciasDestino">
             {suggestionsTo.map((s, i) => (
-              <div key={i} className="suggestion" onClick={() => setTo(`${s.city}, ${s.country} (${s.code})`)}>
-                {s.city}, {s.country} ({s.code})
+              <div key={i} className="sugerencia" onClick={() => setTo(`${s.ciudad}, ${s.pais} (${s.codigo})`)}>
+                {s.ciudad}, {s.pais} ({s.codigo})
               </div>
             ))}
           </div>
         </div>
 
-        <div className="input-group">
-          <div className="small-label">Ida</div>
-          <input type="date" value={departureDate} onChange={(e) => setDepartureDate(e.target.value)} />
+        <div className="grupo-input">
+          <div className="etiqueta-pequeña">Ida</div>
+          <input type="date" id="fechaIda" value={departureDate} onChange={(e) => setDepartureDate(e.target.value)} />
         </div>
 
-        <div className="input-group">
-          <div className="small-label">Vuelta</div>
-          <input type="date" value={returnDate} onChange={(e) => setReturnDate(e.target.value)} />
+        <div className="grupo-input">
+          <div className="etiqueta-pequeña">Vuelta</div>
+          <input type="date" id="fechaVuelta" value={returnDate} onChange={(e) => setReturnDate(e.target.value)} />
         </div>
 
-        <div className="input-group" onClick={() => setShowDropdown(!showDropdown)}>
-          <div className="small-label">Viajeros y clase de cabina</div>
-          <input type="text" value={`${passengers.adults + passengers.children} Viajero${passengers.adults + passengers.children > 1 ? 's' : ''}, Turista`} readOnly />
+        <div className="grupo-input" id="abrirDesplegable" onClick={() => setShowDropdown(!showDropdown)}>
+          <div className="etiqueta-pequeña">Viajeros y clase de cabina</div>
+          <input
+            type="text"
+            id="infoViajeros"
+            value={`${passengers.adults + passengers.children} ${passengers.adults + passengers.children === 1 ? 'Adulto' : 'Viajeros'}, Turista`}
+            readOnly
+          />
         </div>
 
         {showDropdown && (
-          <div className="dropdown-passengers">
+          <div className="desplegable-viajeros" id="desplegableViajeros">
             <h4>Clase de cabina</h4>
             <p><strong>Solo podemos mostrar precios en clase turista para esta búsqueda.</strong></p>
-            <p style={{ fontSize: '0.85rem', color: '#444' }}>Indica las fechas y el destino del viaje para ver las opciones de clase business, turista prémium y primera clase.</p>
-            <div className="row-passenger">
-              <div><strong>Adultos</strong><br/><small>18 años o más</small></div>
-              <div className="controls">
+            <p style={{ fontSize: '0.85rem', color: '#444' }}>
+              Indica las fechas y el destino del viaje para ver las opciones de clase business, turista prémium y primera clase.
+            </p>
+
+            <div className="fila-viajero">
+              <div>
+                <strong>Adultos</strong><br /><small>18 años o más</small>
+              </div>
+              <div className="controles">
                 <button type="button" onClick={() => setPassengers(p => ({ ...p, adults: Math.max(1, p.adults - 1) }))}>−</button>
-                <span>{passengers.adults}</span>
+                <span id="contadorAdultos">{passengers.adults}</span>
                 <button type="button" onClick={() => setPassengers(p => ({ ...p, adults: p.adults + 1 }))}>+</button>
               </div>
             </div>
-            <div className="row-passenger">
-              <div><strong>Niños</strong><br/><small>Menores de 18 años</small></div>
-              <div className="controls">
+
+            <div className="fila-viajero">
+              <div>
+                <strong>Niños</strong><br /><small>De 0 a 17 años</small>
+              </div>
+              <div className="controles">
                 <button type="button" onClick={() => setPassengers(p => ({ ...p, children: Math.max(0, p.children - 1) }))}>−</button>
-                <span>{passengers.children}</span>
+                <span id="contadorNiños">{passengers.children}</span>
                 <button type="button" onClick={() => setPassengers(p => ({ ...p, children: p.children + 1 }))}>+</button>
               </div>
             </div>
-            <button type="button" onClick={() => setShowDropdown(false)}>Aplicar</button>
+
+            <button className="boton-aplicar" id="botonAplicar" type="button" onClick={() => setShowDropdown(false)}>Aplicar</button>
           </div>
         )}
 
-        <div className="input-group checkbox-group">
-          <input type="checkbox" id="searchHotel" />
-          <label htmlFor="searchHotel">¿Buscar hotel también?</label>
+        <div className="grupo-input grupo-checkbox">
+          <input type="checkbox" id="buscarHotel" />
+          <label htmlFor="buscarHotel">¿Buscar hotel también?</label>
         </div>
 
-        <button className="search-button" type="submit">Buscar</button>
-      </form>
+        <button className="boton-buscar" type="submit" onClick={handleSearch}>Buscar</button>
+      </div>
     </div>
   );
 };
