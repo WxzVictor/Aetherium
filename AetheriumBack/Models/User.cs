@@ -8,9 +8,17 @@ public class User
     public string Email { get; set; }
     public int Age { get; set; }
     public DateTimeOffset SignUpDate { get; set; }
+    public Reservation Reservation { get; set; }
 
-#pragma warning disable CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required" o declararlo como un valor que acepta valores NULL.
     private User() { }
-#pragma warning restore CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required" o declararlo como un valor que acepta valores NULL.
-    
+
+    public User(string[] attributes)
+    {
+        FirstName = attributes[0];
+        LastName = attributes[1];
+        Email = attributes[2];
+        Age = int.Parse(attributes[3]);
+        SignUpDate = DateTimeOffset.Parse(attributes[4]);
+    }
+
 }

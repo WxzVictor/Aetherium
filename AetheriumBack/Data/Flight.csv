@@ -1,4 +1,4 @@
-flightNumber,airlineName,flightCode,departureAirportCode,arrivalAirportCode,departureTime,arrivalTime,durationMinutes,price
+flightId,airlineName,flightCode,departureAirportCode,arrivalAirportCode,departureTime,arrivalTime,durationMinutes,price
 1,British Airways,BR980,QQW,VNM,2025-05-23 20:09:20,2025-05-23 23:39:20,210,396.51
 2,Iberia,IB724,MRR,VJQ,2025-05-27 06:41:12,2025-05-27 08:06:12,85,381.66
 3,British Airways,BR776,XDE,DDP,2025-05-30 01:20:06,2025-05-30 02:40:06,80,104.97

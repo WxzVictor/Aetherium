@@ -4,6 +4,7 @@ using AetheriumBack.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AetheriumBack.Database.Migrations
 {
     [DbContext(typeof(AetheriumContext))]
-    partial class AetheriumContextModelSnapshot : ModelSnapshot
+    [Migration("20250528112654_fixModel")]
+    partial class fixModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,8 +166,8 @@ namespace AetheriumBack.Database.Migrations
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
                         .HasColumnName("Country");
 
                     b.Property<string>("Email")
@@ -183,8 +186,8 @@ namespace AetheriumBack.Database.Migrations
                         .HasColumnType("decimal(18,2)")
                         .HasColumnName("PricePerNight");
 
-                    b.Property<decimal>("Rating")
-                        .HasColumnType("decimal(18,2)")
+                    b.Property<int>("Rating")
+                        .HasColumnType("int")
                         .HasColumnName("Rating");
 
                     b.HasKey("HotelId");
@@ -406,7 +409,7 @@ namespace AetheriumBack.Database.Migrations
                     b.HasOne("AetheriumBack.Models.Flight", "Flight")
                         .WithOne("Offer")
                         .HasForeignKey("AetheriumBack.Models.Offer", "FlightId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AetheriumBack.Models.Hotel", "Hotel")

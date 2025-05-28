@@ -5,17 +5,30 @@ public class Hotel
     public int HotelId { get; set; }
     public string HotelName { get; set; }
     public string Address { get; set; }
-    public int Rating { get; set; }
+    public decimal Rating { get; set; }
     public string ContactNumber { get; set; }
     public decimal PricePerNight { get; set; }
     public string City { get; set; }
     public string Country { get; set; }
-    public string Emain { get; set; }
+    public string Email { get; set; }
     public DateTimeOffset CheckInTime { get; set; }
     public DateTimeOffset CheckOutTime { get; set; }
+    public Offer Offer { get; set; }
 
-#pragma warning disable CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required" o declararlo como un valor que acepta valores NULL.
     private Hotel() { }
-#pragma warning restore CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required" o declararlo como un valor que acepta valores NULL.
+
+    public Hotel(string[] attributes)
+    {
+        HotelName = attributes[0];
+        Address = attributes[1];
+        City = attributes[2];
+        Country = attributes[3];
+        Rating = decimal.Parse(attributes[4]);
+        ContactNumber = attributes[5];
+        PricePerNight = decimal.Parse(attributes[6]);
+        Email = attributes[7];
+        CheckInTime = DateTimeOffset.Parse(attributes[8]);
+        CheckOutTime = DateTimeOffset.Parse(attributes[9]);
+    }
 
 }

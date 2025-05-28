@@ -12,20 +12,17 @@ public class Airport
     public ICollection<Flight> DepartingFlights { get; set; }
     public ICollection<Flight> ArrivingFlights { get; set; }
 
-#pragma warning disable CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required" o declararlo como un valor que acepta valores NULL.
     private Airport() { }
-#pragma warning restore CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required" o declararlo como un valor que acepta valores NULL.
-
-    public Airport(string airportCode, string airportName, string city, string countryCode, float latitude, float longitude, int elevationFeet, string regionCode)
+    public Airport(string[] attributes)
     {
-        AirportCode = airportCode;
-        AirportName = airportName;
-        City = city;
-        CountryCode = countryCode;
-        Latitude = latitude;
-        Longitude = longitude;
-        ElevationFeet = elevationFeet;
-        RegionCode = regionCode;
+        AirportCode = attributes[0];
+        AirportName = attributes[1];
+        City = attributes[2];
+        CountryCode = attributes[3];
+        Latitude = float.Parse(attributes[4]);
+        Longitude = float.Parse(attributes[5]);
+        ElevationFeet = int.Parse(attributes[6]);
+        RegionCode = attributes[7];
         DepartingFlights = [];
         ArrivingFlights = [];
     }

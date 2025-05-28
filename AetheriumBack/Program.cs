@@ -27,6 +27,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-LoadCsv.SeedDataAsync(app.Services);
+await app.Services.SeedDataAsync();
 
 app.Run();

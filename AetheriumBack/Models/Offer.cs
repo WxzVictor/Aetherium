@@ -8,6 +8,17 @@ public class Offer
     public int DiscountPercentage { get; set; }
     public DateTimeOffset StartDate { get; set; }
     public DateTimeOffset EndDate { get; set; }
+    public Flight Flight { get; set; }
+    public Hotel Hotel { get; set; }
 
     private Offer() { }
+
+    public Offer(string[] attibutes)
+    {
+        FlightId = int.Parse(attibutes[0]);
+        HotelId = int.Parse(attibutes[1]);
+        DiscountPercentage = int.Parse(attibutes[2]);
+        StartDate = DateTimeOffset.Parse(attibutes[3]);
+        EndDate = DateTimeOffset.Parse(attibutes[4]);
+    }
 }
