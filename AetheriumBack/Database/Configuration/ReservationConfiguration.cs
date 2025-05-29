@@ -17,8 +17,8 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
             .IsRequired();
 
         builder.HasOne(r => r.User)
-            .WithOne(u => u.Reservation)
-            .HasForeignKey<Reservation>(r => r.UserId)
+            .WithMany(u => u.Reservation)
+            .HasForeignKey(r => r.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(r => r.Flight)
@@ -26,9 +26,9 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
             .HasForeignKey(r => r.FlightId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasMany(r => r.Seat)
+        builder.HasOne(r => r.Seat)
             .WithOne(u => u.Reservation)
-            .HasForeignKey(r => r.SeatId)
+            .HasForeignKey<Reservation>(r => r.SeatId)
             .OnDelete(DeleteBehavior.NoAction);
     }
 }

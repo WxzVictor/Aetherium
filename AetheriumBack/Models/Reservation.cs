@@ -7,7 +7,7 @@ public class Reservation
     public int SeatId { get; set; }
     public User User { get; set; }
     public Flight Flight { get; set; }
-    public ICollection<Seat> Seat { get; set; }
+    public Seat Seat { get; set; }
     public DateTimeOffset ReservationDateTime { get; set; }
 
     private Reservation() { }

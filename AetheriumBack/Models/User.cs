@@ -8,7 +8,7 @@ public class User
     public string Email { get; set; }
     public int Age { get; set; }
     public DateTimeOffset SignUpDate { get; set; }
-    public Reservation Reservation { get; set; }
+    public ICollection<Reservation> Reservation { get; set; }
 
     private User() { }
 
