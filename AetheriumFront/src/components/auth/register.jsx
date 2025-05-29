@@ -46,7 +46,7 @@ const Register = () => {
         <div className="logo">
           <img src={logo} alt="Aetherium Logo" />
         </div>
-        <h2>REGISTRO</h2>
+        <h2>REGISTER</h2>
         <form onSubmit={handleRegister}>
           <div className="input-group">
             <input
@@ -56,7 +56,7 @@ const Register = () => {
               onChange={(e) => setUsername(e.target.value)}
               required
             />
-            <label>Nombre de usuario</label>
+            <label>Username</label>
             <span className="icon">👤</span>
           </div>
           <div className="input-group">
@@ -67,7 +67,7 @@ const Register = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <label>Correo</label>
+            <label>Email</label>
             <span className="icon">📧</span>
           </div>
           <div className="input-group">
@@ -78,12 +78,12 @@ const Register = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <label>Contraseña</label>
+            <label>Password</label>
             <span className="icon">🔒</span>
           </div>
-          <button type="submit">Registrarse</button>
+          <button type="submit">Create account</button>
         </form>
-        <a href="/login" className="forgot">¿Ya tienes cuenta? Inicia sesión</a>
+        <a href="/login" className="forgot">Already have an account? Sign in</a>
       </div>
     </div>
   );

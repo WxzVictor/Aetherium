@@ -32,15 +32,17 @@ const Header = () => {
     <header>
       <nav className="barra-navegacion">
         <div className="logo-aetherium">
-          <img src={logo} alt="Logo" />
-          <span translate="no">Aetherium</span>
+          <a href="/vuelos">
+          <img src={logo} alt="Logo" /></a>
+          <span translate="no"><a href="/vuelos" >Aetherium</a></span>
         </div>
+        
         <div className="navegacion-derecha">
           {!user ? (
             <a href="/login">Iniciar sesión</a>
           ) : (
             <>
-              <span>👤 {user.displayName || "Usuario"}</span>
+              <span><a href="/perfilUsuario">👤 {user.displayName || "Usuario"}</a></span>&nbsp;
               <button onClick={handleLogout}>Cerrar sesión</button>
             </>
           )}
