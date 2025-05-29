@@ -13,7 +13,7 @@ public class Hotel
     public string Email { get; set; }
     public DateTimeOffset CheckInTime { get; set; }
     public DateTimeOffset CheckOutTime { get; set; }
-    public Offer Offer { get; set; }
+    public ICollection<Offer> Offer { get; set; }
 
     private Hotel() { }
 

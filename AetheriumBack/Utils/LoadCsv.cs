@@ -18,16 +18,12 @@ public static class LoadCsv
 
             if (files.Any())
             {
-                //foreach (string file in files)
-                //{
-                ParseTypes(files.ElementAt(0), context);
-                ParseTypes(files.ElementAt(1), context);
-                ParseTypes(files.ElementAt(2), context);
-                ParseTypes(files.ElementAt(3), context);
-                //ParseTypes(files.ElementAt(4), context);
-                //}
+                foreach (string file in files)
+                {
+                    ParseTypes(file, context);
+                    await context.SaveChangesAsync();
+                }
             }
-            await context.SaveChangesAsync();
         }
         catch (Exception ex)
         {

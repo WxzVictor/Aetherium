@@ -14,8 +14,8 @@ public class Flight
     public Airport DepartureAirport { get; set; }
     public Airport ArrivalAirport { get; set; }
     public Offer Offer { get; set; }
-    public Reservation Reservation { get; set; }
-    public Seat Seat { get; set; }
+    public ICollection<Reservation> Reservation { get; set; }
+    public ICollection<Seat> Seat { get; set; }
 
 #pragma warning disable CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required" o declararlo como un valor que acepta valores NULL.
     private Flight() { }
@@ -23,7 +23,7 @@ public class Flight
 
     public Flight(string[] attributes)
     {
-        FlightId = int.Parse(attributes[0]);
+        //FlightId = int.Parse(attributes[0]);
         AirlineName = attributes[1];
         FlightCode = attributes[2];
         DepartureAirportCode = attributes[3];
