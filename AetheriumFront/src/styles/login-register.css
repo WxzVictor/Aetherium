@@ -4,20 +4,18 @@
   box-sizing: border-box;
   font-family: "Segoe UI", sans-serif;
 }
-/* Establece altura completa para que funcione height: 100% */
+
 html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
 }
 
-/* Esto es opcional, pero estandariza tu fuente y fondo base */
 body {
   font-family: sans-serif;
   background-color: #f0f0f0;
   height: 100vh;
 }
-
 
 .background {
   background: rgb(216, 216, 216);
@@ -28,7 +26,6 @@ body {
   overflow: hidden;
   height: 100vh;
 }
-
 
 .login-container {
   border: 2px solid #d4af37;
@@ -47,7 +44,7 @@ body {
 }
 
 h2 {
-  color: #d4af37;
+  color: #1d2d4a;
   margin-bottom: 30px;
 }
 
@@ -109,19 +106,19 @@ h2 {
 }
 
 button {
-  background: #d4af37;
+  background: none;
   border: none;
-  padding: 12px 25px;
+  padding: 0.5rem 1rem;
   border-radius: 25px;
-  font-size: 16px;
+  font-size: 1.1rem;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: 0.3s;
   color: #1d2d4a;
   font-weight: bold;
 }
 
 button:hover {
-  background: #f1d67a;
+  color: #3f598a;
 }
 
 .forgot {

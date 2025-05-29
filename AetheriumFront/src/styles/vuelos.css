@@ -1,42 +1,65 @@
-body {
+* {
   margin: 0;
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(to bottom, #001c3d, #003366);
-  color: white;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  background: linear-gradient(to bottom, #f0f0f0, #dcdcdc); /* Más claro como el login */
+  color: #1d2d4a; /* Azul oscuro similar al login */
   min-height: 100vh;
 }
 
 .barra-navegacion {
-  margin-top: 2%;
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 2rem;
+  background-color: #d4af37;
+  color: #1d2d4a;
+  border-bottom: 3px solid #1d2d4a;
 }
 
 .logo-aetherium {
-  margin-left: 10%;
+  margin-left: 1.5%;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: bold;
 }
 
+.logo-aetherium a {
+  text-decoration: none;
+  color: #1d2d4a;
+  transition: 0.3s;
+}
+
+.logo-aetherium a:hover {
+  text-decoration: none;
+  color: #3f598a;
+}
+
 .logo-aetherium img {
-  height: 36px;
-  width: 36px;
+  height: 40px;
+  width: 40px;
   object-fit: contain;
 }
 
 .navegacion-derecha a {
   text-decoration: none;
   font-weight: 500;
-  color: white;
+  font-size: 1.1rem;
+  color: #1d2d4a;
   transition: color 0.3s;
 }
 
 .navegacion-derecha a:hover {
-  color: #80bfff;
+  color: #3f598a;
+}
+
+#botonIntercambiar {
+  cursor: pointer;
 }
 
 .buscador {
@@ -47,11 +70,11 @@ body {
 }
 
 .buscador button {
-  background-color: #0047ab;
-  color: white;
+  background-color: #d4af37;
+  color: #1d2d4a;
   border: none;
   padding: 0.7rem 2rem;
-  border-radius: 30px;
+  border-radius: 25px;
   font-weight: bold;
   cursor: pointer;
   font-size: 1rem;
@@ -59,7 +82,7 @@ body {
 }
 
 .buscador button:hover {
-  background-color: #0061ff;
+  background-color: #f1d67a;
 }
 
 h1 {
@@ -67,10 +90,11 @@ h1 {
   font-size: 2.2rem;
   margin-top: 1rem;
   margin-bottom: 2rem;
+  color: #1d2d4a;
 }
 
 .contenedor-formulario {
-  background-color: #ffffff10;
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 16px;
   padding: 2rem;
   margin: 2rem auto;
@@ -81,63 +105,19 @@ h1 {
   align-items: center;
   gap: 1rem;
   position: relative;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
+  border: 2px solid #d4af37;
 }
 
 .grupo-input {
   flex: 1 1 150px;
-  background-color: white;
+  background-color: #fff;
   border-radius: 12px;
   padding: 0.5rem 1rem;
-  border: 1px solid #ccc;
+  border: 2px solid #d4af37;
   position: relative;
   min-width: 150px;
-}
-
-.grupo-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: none;
-  border: none;
-  color: white;
-}
-
-.grupo-checkbox input[type="checkbox"] {
-  transform: scale(1.2);
-}
-
-.etiqueta-pequeña {
-  font-size: 0.75rem;
-  color: #666;
-  font-weight: bold;
-  margin-bottom: 0.3rem;
-}
-
-.icono-intercambiar {
-  cursor: pointer;
-  background-color: #e0e7f5;
-  border-radius: 50%;
-  padding: 0.4rem;
-  font-size: 1.4rem;
-  border: 2px solid white;
-}
-
-.boton-buscar {
-  background-color: #0061ff;
-  color: white;
-  border: none;
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  border-radius: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 1rem;
-  transition: background-color 0.3s;
-}
-
-.boton-buscar:hover {
-  background-color: #3385ff;
+  color: #1d2d4a;
 }
 
 input[type="text"],
@@ -146,58 +126,51 @@ input[type="date"] {
   font-size: 0.9rem;
   width: 100%;
   background: transparent;
+  color: #1d2d4a;
 }
 
 input:focus {
   outline: none;
+  border-bottom: 2px solid #d4af37;
+}
+
+.boton-buscar {
+  background-color: #d4af37;
+  color: #1d2d4a;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s;
+}
+
+.boton-buscar:hover {
+  background-color: #f1d67a;
 }
 
 .desplegable-viajeros {
-  position: absolute;
-  right: 1rem;
-  margin-top: 32%;
-  background: white;
-  color: black;
+  padding: 2%;
+  background: #fff;
+  color: #1d2d4a;
   border-radius: 16px;
   box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
-  padding: 1.5rem;
-  width: 300px;
-  z-index: 10;
-  display: none;
+  border: 2px solid #d4af37;
 }
 
-.fila-viajero {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0.8rem 0;
-}
-
-.controles {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.controles button {
-  width: 32px;
-  height: 32px;
-  border: none;
-  background-color: #e8ecf5;
-  font-size: 1.2rem;
-  font-weight: bold;
-  border-radius: 8px;
+#abrirDesplegable {
   cursor: pointer;
 }
 
-.controles span {
-  width: 20px;
-  text-align: center;
+#contadorAdultos, #contadorNiños {
+  padding: 1%;
 }
 
 .boton-aplicar {
-  background-color: #0061ff;
-  color: white;
+  background-color: #d4af37;
+  color: #1d2d4a;
   border: none;
   padding: 0.6rem 1.2rem;
   border-radius: 10px;
@@ -205,4 +178,72 @@ input:focus {
   cursor: pointer;
   margin-top: 1.2rem;
   width: 100%;
+}
+
+.boton-aplicar:hover {
+  background-color: #f1d67a;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.15), transparent 70%);
+  top: 10%;
+  right: 10%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(40px);
+}
+
+body::after {
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.1), transparent 80%);
+  bottom: 5%;
+  left: 5%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(50px);
+}
+
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.layout-container main {
+  flex: 1;
+}
+
+.barra-footer {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 1rem 2rem;
+  background-color: #d4af37;
+  border-top: 3px solid #1d2d4a;
+  margin-bottom: 0;
+}
+
+.barra-footer a {
+  text-decoration: none;
+  color: #1d2d4a;
+  font-weight: bold;
+  transition: color 0.3s;
+  padding: 0.5rem 1rem;
+}
+
+.barra-footer a:hover {
+  text-decoration: none;
+  color: #3f598a;
+  font-weight: bold;
+}
+
+.copyrightAetherium {
+  color: #1d2d4a;
+  padding: 0.5rem 1rem;
 }
