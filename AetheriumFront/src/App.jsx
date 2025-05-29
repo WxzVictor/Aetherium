@@ -5,6 +5,7 @@ import { auth } from './services/firebaseConfig';
 import Flights from './pages/flights';
 import Login from './components/auth/login';
 import Register from './components/auth/register';
+import ContactForm from './pages/aboutUs';
 
 const ProtectedRoute = ({ children }) => {
   const [user, setUser] = useState(undefined);
@@ -44,6 +45,7 @@ function App() {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/about-us" element={<ContactForm />} />
         {/* Puedes añadir aquí otras rutas como resultadoVuelos, etc. */}
       </Routes>
     </Router>
