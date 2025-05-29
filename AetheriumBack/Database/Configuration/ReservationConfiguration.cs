@@ -22,13 +22,13 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(r => r.Flight)
-            .WithOne(u => u.Reservation)
-            .HasForeignKey<Reservation>(r => r.FlightId)
+            .WithMany(u => u.Reservation)
+            .HasForeignKey(r => r.FlightId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(r => r.Seat)
+        builder.HasMany(r => r.Seat)
             .WithOne(u => u.Reservation)
-            .HasForeignKey<Reservation>(r => r.SeatId)
+            .HasForeignKey(r => r.SeatId)
             .OnDelete(DeleteBehavior.NoAction);
     }
 }

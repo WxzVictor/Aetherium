@@ -27,11 +27,11 @@ public class OfferConfiguration : IEntityTypeConfiguration<Offer>
         builder.HasOne(c => c.Flight)
             .WithOne(f => f.Offer)
             .HasForeignKey<Offer>(c => c.FlightId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(c => c.Hotel)
-            .WithOne(f => f.Offer)
-            .HasForeignKey<Offer>(c => c.HotelId)
+            .WithMany(f => f.Offer)
+            .HasForeignKey(c => c.HotelId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

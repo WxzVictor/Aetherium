@@ -4,6 +4,7 @@ using AetheriumBack.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AetheriumBack.Database.Migrations
 {
     [DbContext(typeof(AetheriumContext))]
-    partial class AetheriumContextModelSnapshot : ModelSnapshot
+    [Migration("20250529103659_fixFlightSeatMigration")]
+    partial class fixFlightSeatMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -251,7 +254,8 @@ namespace AetheriumBack.Database.Migrations
 
                     b.HasKey("RerservationId");
 
-                    b.HasIndex("FlightId");
+                    b.HasIndex("FlightId")
+                        .IsUnique();
 
                     b.HasIndex("SeatId")
                         .IsUnique();
@@ -420,8 +424,8 @@ namespace AetheriumBack.Database.Migrations
             modelBuilder.Entity("AetheriumBack.Models.Reservation", b =>
                 {
                     b.HasOne("AetheriumBack.Models.Flight", "Flight")
-                        .WithMany("Reservation")
-                        .HasForeignKey("FlightId")
+                        .WithOne("Reservation")
+                        .HasForeignKey("AetheriumBack.Models.Reservation", "FlightId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -467,7 +471,8 @@ namespace AetheriumBack.Database.Migrations
                     b.Navigation("Offer")
                         .IsRequired();
 
-                    b.Navigation("Reservation");
+                    b.Navigation("Reservation")
+                        .IsRequired();
 
                     b.Navigation("Seat");
                 });

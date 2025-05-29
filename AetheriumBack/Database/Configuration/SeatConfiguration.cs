@@ -29,8 +29,8 @@ public class SeatConfiguration : IEntityTypeConfiguration<Seat>
             .IsRequired();
 
         builder.HasOne(c => c.Flight)
-            .WithOne(f => f.Seat)
-            .HasForeignKey<Seat>(c => c.FlightId)
+            .WithMany(f => f.Seat)
+            .HasForeignKey(c => c.FlightId)
             .OnDelete(DeleteBehavior.Cascade);
 
     }
