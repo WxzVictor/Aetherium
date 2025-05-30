@@ -1,6 +1,0 @@
-@AetheriumBack_HostAddress = http://localhost:5120
-
-GET {{AetheriumBack_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AetheriumBack")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2842a9efa3866f9abbc660753f401dc88d82730e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a134a28af2430852d73e745a08a281e2313dc48c")]
 [assembly: System.Reflection.AssemblyProductAttribute("AetheriumBack")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AetheriumBack")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
