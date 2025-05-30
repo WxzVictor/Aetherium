@@ -27,6 +27,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-await app.Services.SeedDataAsync();
+AetheriumContext context = app.Services.CreateScope().ServiceProvider.GetRequiredService<AetheriumContext>();
+if (!context.Reservation.Any())
+{
+    await app.Services.SeedDataAsync();
+}
 
 app.Run();

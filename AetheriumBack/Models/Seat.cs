@@ -21,7 +21,7 @@ public class Seat
     public SeatType SeatType { get; set; }
     public Boolean SeatStatus { get; set; }
     public Flight Flight { get; set; }
-    public Reservation Reservation { get; set; }
+    public Reservation? Reservation { get; set; }
 
     private Seat() { }
 

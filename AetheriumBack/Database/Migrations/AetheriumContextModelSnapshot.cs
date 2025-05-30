@@ -243,7 +243,7 @@ namespace AetheriumBack.Database.Migrations
                         .HasColumnType("datetimeoffset")
                         .HasColumnName("ReservationDateTime");
 
-                    b.Property<int>("SeatId")
+                    b.Property<int?>("SeatId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -254,10 +254,10 @@ namespace AetheriumBack.Database.Migrations
                     b.HasIndex("FlightId");
 
                     b.HasIndex("SeatId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[SeatId] IS NOT NULL");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reservation", "Aetherium");
                 });
@@ -428,12 +428,11 @@ namespace AetheriumBack.Database.Migrations
                     b.HasOne("AetheriumBack.Models.Seat", "Seat")
                         .WithOne("Reservation")
                         .HasForeignKey("AetheriumBack.Models.Reservation", "SeatId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("AetheriumBack.Models.User", "User")
-                        .WithOne("Reservation")
-                        .HasForeignKey("AetheriumBack.Models.Reservation", "UserId")
+                        .WithMany("Reservation")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -479,14 +478,12 @@ namespace AetheriumBack.Database.Migrations
 
             modelBuilder.Entity("AetheriumBack.Models.Seat", b =>
                 {
-                    b.Navigation("Reservation")
-                        .IsRequired();
+                    b.Navigation("Reservation");
                 });
 
             modelBuilder.Entity("AetheriumBack.Models.User", b =>
                 {
-                    b.Navigation("Reservation")
-                        .IsRequired();
+                    b.Navigation("Reservation");
                 });
 #pragma warning restore 612, 618
         }

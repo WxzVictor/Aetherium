@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AetheriumBack.Database.Migrations
 {
     [DbContext(typeof(AetheriumContext))]
-    [Migration("20250528122212_fixFlightRelation")]
-    partial class fixFlightRelation
+    [Migration("20250530095026_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -226,8 +226,7 @@ namespace AetheriumBack.Database.Migrations
                     b.HasIndex("FlightId")
                         .IsUnique();
 
-                    b.HasIndex("HotelId")
-                        .IsUnique();
+                    b.HasIndex("HotelId");
 
                     b.ToTable("Offer", "Aetherium");
                 });
@@ -247,7 +246,7 @@ namespace AetheriumBack.Database.Migrations
                         .HasColumnType("datetimeoffset")
                         .HasColumnName("ReservationDateTime");
 
-                    b.Property<int>("SeatId")
+                    b.Property<int?>("SeatId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -255,14 +254,13 @@ namespace AetheriumBack.Database.Migrations
 
                     b.HasKey("RerservationId");
 
-                    b.HasIndex("FlightId")
-                        .IsUnique();
+                    b.HasIndex("FlightId");
 
                     b.HasIndex("SeatId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[SeatId] IS NOT NULL");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reservation", "Aetherium");
                 });
@@ -297,8 +295,7 @@ namespace AetheriumBack.Database.Migrations
 
                     b.HasKey("SeatId");
 
-                    b.HasIndex("FlightId")
-                        .IsUnique();
+                    b.HasIndex("FlightId");
 
                     b.ToTable("Seat", "Aetherium");
                 });
@@ -409,12 +406,12 @@ namespace AetheriumBack.Database.Migrations
                     b.HasOne("AetheriumBack.Models.Flight", "Flight")
                         .WithOne("Offer")
                         .HasForeignKey("AetheriumBack.Models.Offer", "FlightId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AetheriumBack.Models.Hotel", "Hotel")
-                        .WithOne("Offer")
-                        .HasForeignKey("AetheriumBack.Models.Offer", "HotelId")
+                        .WithMany("Offer")
+                        .HasForeignKey("HotelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -426,20 +423,19 @@ namespace AetheriumBack.Database.Migrations
             modelBuilder.Entity("AetheriumBack.Models.Reservation", b =>
                 {
                     b.HasOne("AetheriumBack.Models.Flight", "Flight")
-                        .WithOne("Reservation")
-                        .HasForeignKey("AetheriumBack.Models.Reservation", "FlightId")
+                        .WithMany("Reservation")
+                        .HasForeignKey("FlightId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AetheriumBack.Models.Seat", "Seat")
                         .WithOne("Reservation")
                         .HasForeignKey("AetheriumBack.Models.Reservation", "SeatId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("AetheriumBack.Models.User", "User")
-                        .WithOne("Reservation")
-                        .HasForeignKey("AetheriumBack.Models.Reservation", "UserId")
+                        .WithMany("Reservation")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -453,8 +449,8 @@ namespace AetheriumBack.Database.Migrations
             modelBuilder.Entity("AetheriumBack.Models.Seat", b =>
                 {
                     b.HasOne("AetheriumBack.Models.Flight", "Flight")
-                        .WithOne("Seat")
-                        .HasForeignKey("AetheriumBack.Models.Seat", "FlightId")
+                        .WithMany("Seat")
+                        .HasForeignKey("FlightId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -473,29 +469,24 @@ namespace AetheriumBack.Database.Migrations
                     b.Navigation("Offer")
                         .IsRequired();
 
-                    b.Navigation("Reservation")
-                        .IsRequired();
+                    b.Navigation("Reservation");
 
-                    b.Navigation("Seat")
-                        .IsRequired();
+                    b.Navigation("Seat");
                 });
 
             modelBuilder.Entity("AetheriumBack.Models.Hotel", b =>
                 {
-                    b.Navigation("Offer")
-                        .IsRequired();
+                    b.Navigation("Offer");
                 });
 
             modelBuilder.Entity("AetheriumBack.Models.Seat", b =>
                 {
-                    b.Navigation("Reservation")
-                        .IsRequired();
+                    b.Navigation("Reservation");
                 });
 
             modelBuilder.Entity("AetheriumBack.Models.User", b =>
                 {
-                    b.Navigation("Reservation")
-                        .IsRequired();
+                    b.Navigation("Reservation");
                 });
 #pragma warning restore 612, 618
         }

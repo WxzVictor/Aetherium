@@ -14,7 +14,8 @@ public static class LoadCsv
             AetheriumContext context = scope.ServiceProvider.GetRequiredService<AetheriumContext>();
 
             string path = Directory.GetCurrentDirectory() + "\\Data";
-            IEnumerable<string> files = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory() + "\\Data"));
+            IEnumerable<string> files = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory() + "\\Data"))
+                .OrderBy(f => Path.GetFileName(f).Contains("Reservation") ? 1 : 0);
 
             if (files.Any())
             {
@@ -40,7 +41,7 @@ public static class LoadCsv
         reader.ReadLine();
 
         IEntityType aux = context.Model.GetEntityTypes()
-            .First(t => t.ClrType.Name.Equals(csvName));
+            .First(t => t.ClrType.Name.Contains(csvName));
 
         Type entityType = aux.ClrType;
 
