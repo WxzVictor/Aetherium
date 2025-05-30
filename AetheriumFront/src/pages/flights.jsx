@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { auth } from '../services/firebaseConfig';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { onAuthStateChanged, getIdToken } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import '../styles/vuelos.css';
 import Layout from '../components/common/layout';
@@ -18,11 +18,23 @@ const Flights = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (!currentUser || !currentUser.emailVerified) {
-        navigate('/login');
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser && currentUser.emailVerified) {
+        // Verificar el token de acceso
+        try {
+          const token = await getIdToken(currentUser);
+          if (!token) {
+            // Si no hay token válido, redirigir al login
+            navigate('/login');
+          } else {
+            setUser(currentUser);
+          }
+        } catch (error) {
+          console.error("Error al obtener el token:", error);
+          navigate('/login');
+        }
       } else {
-        setUser(currentUser);
+        navigate('/login');
       }
     });
     return () => unsubscribe();
@@ -69,7 +81,7 @@ const Flights = () => {
   return (
     <Layout>
       <div>
-        <h1>Millones de vuelos baratos. Una sencilla búsqueda.</h1>
+        <h1>No hace falta alas para volar, ¡solo una buena oferta!</h1>
         <div className="contenedor-formulario">
           <div className="grupo-input">
             <div className="etiqueta-pequeña">Desde</div>

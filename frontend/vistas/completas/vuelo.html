@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Vuelos</title>
+    <link rel="stylesheet" href="/estilos/vuelos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="contenido" style="display: none;">
+    <header>
+        <nav class="barra-navegacion">
+            <div class="logo-aetherium">
+              <img src="/assets/images/logo.png" alt="Logo">
+              <span translate="no">Aetherium</span>
+            </div>
+            <div class="navegacion-derecha"></div>
+          </nav>
+          
+          <div class="buscador">
+            <a href="/vuelos"><button>✈️ Vuelos</button></a>
+            <a href="/hoteles"><button>🏨 Hoteles</button></a>
+          </div>
+    </header>
+  </div>
+    <h1>Millones de vuelos baratos. Una sencilla búsqueda.</h1>
+  <div class="contenedor-formulario">
+    <div class="grupo-input">
+      <div class="etiqueta-pequeña">Desde</div>
+      <input type="text" id="origen" placeholder="País, ciudad o aeropuerto" autocomplete="off">
+      <div class="dropdown-sugerencias" id="sugerenciasOrigen"></div>
+    </div>
+
+    <div class="icono-intercambiar" id="botonIntercambiar">↔️</div>
+
+    <div class="grupo-input">
+      <div class="etiqueta-pequeña">A</div>
+      <input type="text" id="destino" placeholder="País, ciudad o aeropuerto" autocomplete="off">
+      <div class="dropdown-sugerencias" id="sugerenciasDestino"></div>
+    </div>
+
+    <div class="grupo-input">
+      <div class="etiqueta-pequeña">Ida</div>
+      <input type="date" id="fechaIda">
+    </div>
+
+    <div class="grupo-input">
+      <div class="etiqueta-pequeña">Vuelta</div>
+      <input type="date" id="fechaVuelta">
+    </div>
+
+    <div class="grupo-input" id="abrirDesplegable">
+      <div class="etiqueta-pequeña">Viajeros y clase de cabina</div>
+      <input type="text" id="infoViajeros" value="1 Adulto, Turista" readonly>
+    </div>
+    
+    <div class="grupo-input grupo-checkbox">
+      <input type="checkbox" id="buscarHotel">
+      <label for="buscarHotel">¿Buscar hotel también?</label>
+    </div>
+
+    <button class="boton-buscar">Buscar</button>
+
+    <div class="desplegable-viajeros" id="desplegableViajeros">
+      <h4>Clase de cabina</h4>
+      <p><strong>Solo podemos mostrar precios en clase turista para esta búsqueda.</strong></p>
+      <p style="font-size: 0.85rem; color: #444;">Indica las fechas y el destino del viaje para ver las opciones de clase business, turista prémium y primera clase.</p>
+
+      <div class="fila-viajero">
+        <div>
+          <strong>Adultos</strong><br><small>18 años o más</small>
+        </div>
+        <div class="controles">
+          <button data-tipo="adulto" data-cambio="-1">−</button>
+          <span id="contadorAdultos">1</span>
+          <button data-tipo="adulto" data-cambio="1">+</button>
+        </div>
+      </div>
+
+      <div class="fila-viajero">
+        <div>
+          <strong>Niños</strong><br><small>De 0 a 17 años</small>
+        </div>
+        <div class="controles">
+          <button data-tipo="niño" data-cambio="-1">−</button>
+          <span id="contadorNiños">0</span>
+          <button data-tipo="niño" data-cambio="1">+</button>
+        </div>
+      </div>
+
+      <button class="boton-aplicar" id="botonAplicar">Aplicar</button>
+    </div>
+  </div>
+
+    
+</body>
+</html>

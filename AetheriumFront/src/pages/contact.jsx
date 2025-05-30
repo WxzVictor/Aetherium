@@ -1,32 +1,50 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import emailjs from 'emailjs-com';
+import { auth } from '../services/firebaseConfig';  // Asegúrate de importar el objeto auth de Firebase
+import { useNavigate } from 'react-router-dom'; // Necesitamos navegar a la página de login si no está autenticado
+import { onAuthStateChanged } from 'firebase/auth';
 
 const ContactForm = () => {
   const form = useRef();
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null); // Guardar el usuario autenticado
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser); // Si está autenticado, guarda el usuario
+      } else {
+        setUser(null); // Si no está autenticado, el usuario es null
+        navigate('/login'); // Redirige al login
+      }
+    });
+
+    // Limpiar el efecto cuando el componente se desmonte
+    return () => unsubscribe();
+  }, [navigate]);
 
   const sendEmail = (e) => {
     e.preventDefault();
     setLoading(true);
 
     emailjs.sendForm(
-  import.meta.env.VITE_EMAILJS_SERVICE_ID,
-  import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-  form.current,
-  import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-)
+      import.meta.env.VITE_EMAILJS_SERVICE_ID,
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+      form.current,
+      import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+    )
     .then(() => {
       setSent(true);
       setLoading(false);
       form.current.reset();
     })
     .catch((error) => {
-  console.error('EmailJS error:', error);
-  setLoading(false);
-  alert(`Error al enviar el mensaje: ${error.text || error}`);
-});
-
+      console.error('EmailJS error:', error);
+      setLoading(false);
+      alert(`Error al enviar el mensaje: ${error.text || error}`);
+    });
   };
 
   return (
