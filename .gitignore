@@ -122,7 +122,9 @@ dist
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 .vs
-
+obj/
+bin/
+AetheriumBack\obj
 # yarn v2
 .yarn/cache
 .yarn/unplugged
