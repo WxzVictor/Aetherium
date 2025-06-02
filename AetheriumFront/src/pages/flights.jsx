@@ -3,6 +3,7 @@ import { auth } from '../services/firebaseConfig';
 import { onAuthStateChanged, getIdToken } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import '../styles/vuelos.css';
+import '../styles/cloud.css';
 import Layout from '../components/common/layout';
 
 const Flights = () => {

@@ -43,7 +43,7 @@ const Header = () => {
           ) : (
             <>
               <span><a href="/perfilUsuario">👤 {user.displayName || "Usuario"}</a></span>&nbsp;
-              <button onClick={handleLogout}>Cerrar sesión</button>
+              <button onClick={handleLogout} className="bt_logout">Cerrar sesión</button>
             </>
           )}
         </div>

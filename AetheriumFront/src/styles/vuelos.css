@@ -6,8 +6,8 @@
 }
 
 body {
-  background: linear-gradient(to bottom, #f0f0f0, #dcdcdc); /* Más claro como el login */
-  color: #1d2d4a; /* Azul oscuro similar al login */
+  background: linear-gradient(to bottom, #f0f0f0, #dcdcdc);
+  color: #1d2d4a;
   min-height: 100vh;
 }
 

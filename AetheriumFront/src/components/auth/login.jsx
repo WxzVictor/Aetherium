@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../../services/firebaseConfig';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import '../../styles/login-register.css';
+import '../../styles/cloud.css';
 import logo from '../../assets/images/logo2-removebg-preview.png';
 
 const Login = () => {
@@ -86,7 +87,7 @@ const Login = () => {
               <input type="checkbox" id="remember" />
               <label htmlFor="remember"> Remember me </label>
             </div>
-            <button type="submit">Login</button>
+            <button type="submit" className='bt_subreg'>Login</button>
           </form>
           <a href="#" onClick={handleForgotPassword} className="forgot">Forgot Password?</a>
           <a href="/register" className="forgot">Aren't you register yet?</a>
