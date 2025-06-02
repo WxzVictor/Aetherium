@@ -74,9 +74,3 @@ body {
 .contact-form-container button:hover {
   background-color: #f1d67a;
 }
-
-.contact-form-container p {
-  color: green;
-  margin-top: 1rem;
-  font-weight: bold;
-}

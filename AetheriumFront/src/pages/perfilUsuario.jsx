@@ -4,7 +4,7 @@ import { auth } from '../services/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/common/layout';
 import '../styles/cloud.css';
-import '../styles/contact.css';
+import '../styles/perfilUsuario.css';
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -91,71 +91,72 @@ const UserProfile = () => {
           ))}
         </div>
 
-        <div className="contenedor-formulario">
-          <div className="contact-form-container">
-            <h1>👤 Perfil del Usuario</h1>
+        <div>
+          <h1>👤 Perfil del Usuario</h1>
+          <div className="contenedor-formulario">
+            <div className="perfilUsuario-form-container">
+              {user && (
+                <div style={{ marginBottom: '20px' }}>
+                  <p><strong>Nombre:</strong> {user.displayName || 'Usuario'}</p>
+                  <p><strong>Email:</strong> {user.email}</p>
+                </div>
+              )}
 
-            {user && (
-              <div style={{ marginBottom: '20px' }}>
-                <p><strong>Nombre:</strong> {user.displayName || 'Usuario'}</p>
-                <p><strong>Email:</strong> {user.email}</p>
+              <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+                <button onClick={() => setShowReservations(!showReservations)}>
+                  {showReservations ? 'Ocultar reservas 📆' : 'Ver próximas reservas 📆'}
+                </button>
+                <button onClick={() => setShowStats(!showStats)}>
+                  {showStats ? 'Ocultar estadísticas 📊' : 'Ver mis estadísticas 📊'}
+                </button>
               </div>
-            )}
 
-            <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
-              <button onClick={() => setShowReservations(!showReservations)}>
-                {showReservations ? 'Ocultar reservas ✈️' : 'Ver próximas reservas ✈️'}
-              </button>
-              <button onClick={() => setShowStats(!showStats)}>
-                {showStats ? 'Ocultar estadísticas 📊' : 'Ver mis estadísticas 📊'}
-              </button>
-            </div>
-
-            {/* Reservas */}
-            {showReservations && (
-              <div>
-                <h2>📅 Próximas Reservas</h2>
-                {flightStats.length > 0 ? (
-                  <table style={{ width: '100%', marginTop: '10px', borderCollapse: 'collapse' }}>
-                    <thead>
-                      <tr style={{ backgroundColor: '#f0f0f0' }}>
-                        <th style={{ padding: '8px', border: '1px solid #ccc' }}>Origen</th>
-                        <th style={{ padding: '8px', border: '1px solid #ccc' }}>Destino</th>
-                        <th style={{ padding: '8px', border: '1px solid #ccc' }}>Fecha</th>
-                        <th style={{ padding: '8px', border: '1px solid #ccc' }}>Hora salida</th>
-                        <th style={{ padding: '8px', border: '1px solid #ccc' }}>Hora llegada</th>
-                        <th style={{ padding: '8px', border: '1px solid #ccc' }}>Compañía</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {flightStats.map((reserva, i) => (
-                        <tr key={i}>
-                          <td style={{ padding: '8px', border: '1px solid #ccc' }}>{reserva.origen}</td>
-                          <td style={{ padding: '8px', border: '1px solid #ccc' }}>{reserva.destino}</td>
-                          <td style={{ padding: '8px', border: '1px solid #ccc' }}>{reserva.fecha}</td>
-                          <td style={{ padding: '8px', border: '1px solid #ccc' }}>{reserva.horaSalida}</td>
-                          <td style={{ padding: '8px', border: '1px solid #ccc' }}>{reserva.horaLlegada}</td>
-                          <td style={{ padding: '8px', border: '1px solid #ccc' }}>{reserva.compania}</td>
+              {/* Reservas */}
+              {showReservations && (
+                <div>
+                  <h2>📅 Próximas Reservas</h2>
+                  {flightStats.length > 0 ? (
+                    <table style={{ width: '100%', marginTop: '10px', borderCollapse: 'collapse' }}>
+                      <thead>
+                        <tr style={{ backgroundColor: '#f0f0f0' }}>
+                          <th style={{ padding: '8px', border: '1px solid #ccc' }}>Origen</th>
+                          <th style={{ padding: '8px', border: '1px solid #ccc' }}>Destino</th>
+                          <th style={{ padding: '8px', border: '1px solid #ccc' }}>Fecha</th>
+                          <th style={{ padding: '8px', border: '1px solid #ccc' }}>Hora salida</th>
+                          <th style={{ padding: '8px', border: '1px solid #ccc' }}>Hora llegada</th>
+                          <th style={{ padding: '8px', border: '1px solid #ccc' }}>Compañía</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                ) : (
-                  <p>No tienes reservas aún.</p>
-                )}
-              </div>
-            )}
+                      </thead>
+                      <tbody>
+                        {flightStats.map((reserva, i) => (
+                          <tr key={i}>
+                            <td style={{ padding: '8px', border: '1px solid #ccc' }}>{reserva.origen}</td>
+                            <td style={{ padding: '8px', border: '1px solid #ccc' }}>{reserva.destino}</td>
+                            <td style={{ padding: '8px', border: '1px solid #ccc' }}>{reserva.fecha}</td>
+                            <td style={{ padding: '8px', border: '1px solid #ccc' }}>{reserva.horaSalida}</td>
+                            <td style={{ padding: '8px', border: '1px solid #ccc' }}>{reserva.horaLlegada}</td>
+                            <td style={{ padding: '8px', border: '1px solid #ccc' }}>{reserva.compania}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <p>No tienes reservas aún.</p>
+                  )}
+                </div>
+              )}
 
-            {/* Estadísticas */}
-            {showStats && (
-              <div style={{ marginTop: '30px' }}>
-                <h2>📊 Estadísticas de Vuelo</h2>
-                <p><strong>Total de vuelos:</strong> {flightStats.length}</p>
-                <p><strong>Horas totales voladas:</strong> {calcularHorasTotales()}h</p>
-                <p><strong>Compañía más usada:</strong> {companiaMasUsada()}</p>
-                <p><strong>Destino favorito:</strong> {destinoFavorito()}</p>
-              </div>
-            )}
+              {/* Estadísticas */}
+              {showStats && (
+                <div style={{ marginTop: '30px' }}>
+                  <h2>📊 Estadísticas de Vuelo</h2>
+                  <p><strong>Total de vuelos:</strong> {flightStats.length}</p>
+                  <p><strong>Horas totales voladas:</strong> {calcularHorasTotales()}h</p>
+                  <p><strong>Compañía más usada:</strong> {companiaMasUsada()}</p>
+                  <p><strong>Destino favorito:</strong> {destinoFavorito()}</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

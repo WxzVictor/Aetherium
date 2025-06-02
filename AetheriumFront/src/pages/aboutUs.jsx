@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import Layout from '../components/common/layout';
 import '../styles/cloud.css';
-import '../styles/contact.css';
+import '../styles/aboutUs.css';
 
 const AboutUs = () => {
   const [user, setUser] = useState(null);
@@ -35,33 +35,35 @@ const AboutUs = () => {
           <div className="cloud x7"></div>
         </div>
 
-        <div className="contenedor-formulario">
-          <div className="contact-form-container">
-            <h1>Sobre Nosotros</h1>
-            <p>
-              ✈️ En <strong>TuCompañía</strong>, creemos que viajar debería ser sencillo, accesible y emocionante.
-              Desde nuestros inicios en 2025, nos hemos comprometido a crear experiencias de viaje sin estrés.
-            </p>
-            <br />
-            <h2>Nuestra misión</h2>
-            <p>
-              Ofrecer a los viajeros todas las opciones de vuelo, hospedaje y experiencias en un solo lugar.
-              Nuestro objetivo es eliminar la confusión de las reservas online y permitir que tú tomes el control.
-            </p>
-            <br />
-            <h2>Lo que nos hace diferentes</h2>
-            <ul>
-              <li>✔️ Comparación de cientos de aerolíneas en segundos</li>
-              <li>✔️ Plataforma intuitiva y sin publicidad invasiva</li>
-              <li>✔️ Soporte humano y disponible 24/7</li>
-              <li>✔️ Comprometidos con la sostenibilidad del turismo</li>
-            </ul>
-            <br />
-            <h2>Equipo</h2>
-            <p>
-              Nuestro equipo está formado por apasionados del viaje, la tecnología y la atención al cliente.
-              Trabajamos desde múltiples países para traerte la mejor experiencia posible.
-            </p>
+        <div>
+          <h1>Sobre Nosotros</h1>
+          <div className="contenedor-formulario">
+            <div className="aboutUs-form-container">
+              <p>
+                ✈️ En <strong>TuCompañía</strong>, creemos que viajar debería ser sencillo, accesible y emocionante.
+                Desde nuestros inicios en 2025, nos hemos comprometido a crear experiencias de viaje sin estrés.
+              </p>
+              <br />
+              <h2>Nuestra misión</h2>
+              <p>
+                Ofrecer a los viajeros todas las opciones de vuelo, hospedaje y experiencias en un solo lugar.
+                Nuestro objetivo es eliminar la confusión de las reservas online y permitir que tú tomes el control.
+              </p>
+              <br />
+              <h2>Lo que nos hace diferentes</h2>
+              <ul>
+                <li>✔️ Comparación de cientos de aerolíneas en segundos</li>
+                <li>✔️ Plataforma intuitiva y sin publicidad invasiva</li>
+                <li>✔️ Soporte humano y disponible 24/7</li>
+                <li>✔️ Comprometidos con la sostenibilidad del turismo</li>
+              </ul>
+              <br />
+              <h2>Equipo</h2>
+              <p>
+                Nuestro equipo está formado por apasionados del viaje, la tecnología y la atención al cliente.
+                Trabajamos desde múltiples países para traerte la mejor experiencia posible.
+              </p>
+            </div>
           </div>
         </div>
       </div>
