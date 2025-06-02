@@ -80,117 +80,129 @@ const Flights = () => {
 
   return (
     <Layout>
-      <div>
-        <h1>No hace falta alas para volar, ¡solo una buena oferta!</h1>
-        <div className="contenedor-formulario">
-          <div className="grupo-input">
-            <div className="etiqueta-pequeña">Desde</div>
-            <input
-              type="text"
-              id="origen"
-              placeholder="País, ciudad o aeropuerto"
-              autoComplete="off"
-              value={from}
-              onChange={(e) => {
-                setFrom(e.target.value);
-                handleAutocomplete(e.target.value, setSuggestionsFrom);
-              }}
-            />
-            <div className="dropdown-sugerencias" id="sugerenciasOrigen">
-              {suggestionsFrom.map((s, i) => (
-                <div key={i} className="sugerencia" onClick={() => setFrom(`${s.ciudad}, ${s.pais} (${s.codigo})`)}>
-                  {s.ciudad}, {s.pais} ({s.codigo})
-                </div>
-              ))}
-            </div>
-          </div>
+      <div className="login-page">
+        <div id="clouds">
+          <div className="cloud x1"></div>
+          <div className="cloud x2"></div>
+          <div className="cloud x3"></div>
+          <div className="cloud x4"></div>
+          <div className="cloud x5"></div>
+          <div className="cloud x6"></div>
+          <div className="cloud x7"></div>
+        </div>
 
-          <div className="icono-intercambiar" id="botonIntercambiar" onClick={handleSwap}>↔️</div>
-
-          <div className="grupo-input">
-            <div className="etiqueta-pequeña">A</div>
-            <input
-              type="text"
-              id="destino"
-              placeholder="País, ciudad o aeropuerto"
-              autoComplete="off"
-              value={to}
-              onChange={(e) => {
-                setTo(e.target.value);
-                handleAutocomplete(e.target.value, setSuggestionsTo);
-              }}
-            />
-            <div className="dropdown-sugerencias" id="sugerenciasDestino">
-              {suggestionsTo.map((s, i) => (
-                <div key={i} className="sugerencia" onClick={() => setTo(`${s.ciudad}, ${s.pais} (${s.codigo})`)}>
-                  {s.ciudad}, {s.pais} ({s.codigo})
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="grupo-input">
-            <div className="etiqueta-pequeña">Ida</div>
-            <input type="date" id="fechaIda" value={departureDate} onChange={(e) => setDepartureDate(e.target.value)} />
-          </div>
-
-          <div className="grupo-input">
-            <div className="etiqueta-pequeña">Vuelta</div>
-            <input type="date" id="fechaVuelta" value={returnDate} onChange={(e) => setReturnDate(e.target.value)} />
-          </div>
-
-          <div className="grupo-input" id="abrirDesplegable" onClick={() => setShowDropdown(!showDropdown)}>
-            <div className="etiqueta-pequeña">Viajeros y clase de cabina</div>
-            <input
-              type="text"
-              id="infoViajeros"
-              value={`${passengers.adults + passengers.children} ${passengers.adults + passengers.children === 1 ? 'Adulto' : 'Viajeros'}, Turista`}
-              readOnly
-            />
-          </div>
-
-          {showDropdown && (
-            <div className="desplegable-viajeros" id="desplegableViajeros">
-              <h4>Clase de cabina</h4>
-              <p><strong>Solo podemos mostrar precios en clase turista para esta búsqueda.</strong></p>
-              <p style={{ fontSize: '0.85rem', color: '#444' }}>
-                Indica las fechas y el destino del viaje para ver las opciones de clase business, turista prémium y primera clase.
-              </p>
-
-              <br />
-
-              <div className="fila-viajero">
-                <div>
-                  <strong>Adultos</strong><br /><small>18 años o más</small>
-                </div>
-                <div className="controles">
-                  <button type="button" onClick={() => setPassengers(p => ({ ...p, adults: Math.max(1, p.adults - 1) }))}>−</button>
-                  <span id="contadorAdultos">{passengers.adults}</span>
-                  <button type="button" onClick={() => setPassengers(p => ({ ...p, adults: p.adults + 1 }))}>+</button>
-                </div>
+        <div>
+          <h1>No hace falta alas para volar, ¡solo una buena oferta!</h1>
+          <div className="contenedor-formulario">
+            <div className="grupo-input">
+              <div className="etiqueta-pequeña">Desde</div>
+              <input
+                type="text"
+                id="origen"
+                placeholder="País, ciudad o aeropuerto"
+                autoComplete="off"
+                value={from}
+                onChange={(e) => {
+                  setFrom(e.target.value);
+                  handleAutocomplete(e.target.value, setSuggestionsFrom);
+                }}
+              />
+              <div className="dropdown-sugerencias" id="sugerenciasOrigen">
+                {suggestionsFrom.map((s, i) => (
+                  <div key={i} className="sugerencia" onClick={() => setFrom(`${s.ciudad}, ${s.pais} (${s.codigo})`)}>
+                    {s.ciudad}, {s.pais} ({s.codigo})
+                  </div>
+                ))}
               </div>
-
-              <div className="fila-viajero">
-                <div>
-                  <strong>Niños</strong><br /><small>De 0 a 17 años</small>
-                </div>
-                <div className="controles">
-                  <button type="button" onClick={() => setPassengers(p => ({ ...p, children: Math.max(0, p.children - 1) }))}>−</button>
-                  <span id="contadorNiños">{passengers.children}</span>
-                  <button type="button" onClick={() => setPassengers(p => ({ ...p, children: p.children + 1 }))}>+</button>
-                </div>
-              </div>
-
-              <button className="boton-aplicar" id="botonAplicar" type="button" onClick={() => setShowDropdown(false)}>Aplicar</button>
             </div>
-          )}
 
-          <div className="grupo-input grupo-checkbox">
-            <input type="checkbox" id="buscarHotel" />
-            <label htmlFor="buscarHotel">¿Buscar hotel también?</label>
+            <div className="icono-intercambiar" id="botonIntercambiar" onClick={handleSwap}>↔️</div>
+
+            <div className="grupo-input">
+              <div className="etiqueta-pequeña">A</div>
+              <input
+                type="text"
+                id="destino"
+                placeholder="País, ciudad o aeropuerto"
+                autoComplete="off"
+                value={to}
+                onChange={(e) => {
+                  setTo(e.target.value);
+                  handleAutocomplete(e.target.value, setSuggestionsTo);
+                }}
+              />
+              <div className="dropdown-sugerencias" id="sugerenciasDestino">
+                {suggestionsTo.map((s, i) => (
+                  <div key={i} className="sugerencia" onClick={() => setTo(`${s.ciudad}, ${s.pais} (${s.codigo})`)}>
+                    {s.ciudad}, {s.pais} ({s.codigo})
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="grupo-input">
+              <div className="etiqueta-pequeña">Ida</div>
+              <input type="date" id="fechaIda" value={departureDate} onChange={(e) => setDepartureDate(e.target.value)} />
+            </div>
+
+            <div className="grupo-input">
+              <div className="etiqueta-pequeña">Vuelta</div>
+              <input type="date" id="fechaVuelta" value={returnDate} onChange={(e) => setReturnDate(e.target.value)} />
+            </div>
+
+            <div className="grupo-input" id="abrirDesplegable" onClick={() => setShowDropdown(!showDropdown)}>
+              <div className="etiqueta-pequeña">Viajeros y clase de cabina</div>
+              <input
+                type="text"
+                id="infoViajeros"
+                value={`${passengers.adults + passengers.children} ${passengers.adults + passengers.children === 1 ? 'Adulto' : 'Viajeros'}, Turista`}
+                readOnly
+              />
+            </div>
+
+            {showDropdown && (
+              <div className="desplegable-viajeros" id="desplegableViajeros">
+                <h4>Clase de cabina</h4>
+                <p><strong>Solo podemos mostrar precios en clase turista para esta búsqueda.</strong></p>
+                <p style={{ fontSize: '0.85rem', color: '#444' }}>
+                  Indica las fechas y el destino del viaje para ver las opciones de clase business, turista prémium y primera clase.
+                </p>
+
+                <br />
+
+                <div className="fila-viajero">
+                  <div>
+                    <strong>Adultos</strong><br /><small>18 años o más</small>
+                  </div>
+                  <div className="controles">
+                    <button type="button" onClick={() => setPassengers(p => ({ ...p, adults: Math.max(1, p.adults - 1) }))}>−</button>
+                    <span id="contadorAdultos">{passengers.adults}</span>
+                    <button type="button" onClick={() => setPassengers(p => ({ ...p, adults: p.adults + 1 }))}>+</button>
+                  </div>
+                </div>
+
+                <div className="fila-viajero">
+                  <div>
+                    <strong>Niños</strong><br /><small>De 0 a 17 años</small>
+                  </div>
+                  <div className="controles">
+                    <button type="button" onClick={() => setPassengers(p => ({ ...p, children: Math.max(0, p.children - 1) }))}>−</button>
+                    <span id="contadorNiños">{passengers.children}</span>
+                    <button type="button" onClick={() => setPassengers(p => ({ ...p, children: p.children + 1 }))}>+</button>
+                  </div>
+                </div>
+
+                <button className="boton-aplicar" id="botonAplicar" type="button" onClick={() => setShowDropdown(false)}>Aplicar</button>
+              </div>
+            )}
+
+            <div className="grupo-input grupo-checkbox">
+              <input type="checkbox" id="buscarHotel" />
+              <label htmlFor="buscarHotel">¿Buscar hotel también?</label>
+            </div>
+
+            <button className="boton-buscar" type="submit" onClick={handleSearch}>Buscar</button>
           </div>
-
-          <button className="boton-buscar" type="submit" onClick={handleSearch}>Buscar</button>
         </div>
       </div>
     </Layout>

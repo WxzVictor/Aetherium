@@ -15,15 +15,16 @@ body {
   font-family: sans-serif;
   background-color: #f0f0f0;
   height: 100vh;
+  overflow: hidden;
 }
 
 .background {
-  background: rgb(216, 216, 216);
+  position: relative;
+  z-index: 1; /* Por encima de las nubes */
+  background: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
-  overflow: hidden;
   height: 100vh;
 }
 
@@ -153,4 +154,113 @@ button:hover {
   pointer-events: none;
   z-index: 0;
   filter: blur(50px);
+}
+
+#clouds {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background:rgb(216, 216, 216);
+  overflow: hidden;
+  z-index: 0;
+}
+
+.cloud {
+  width: 200px;
+  height: 60px;
+  background: #fff;
+  border-radius: 200px;
+  position: absolute;
+}
+
+.cloud:before, .cloud:after {
+  content: '';
+  position: absolute;
+  background: #fff;
+  border-radius: 100px;
+}
+
+.cloud:before {
+  width: 100px;
+  height: 80px;
+  top: -15px;
+  left: 10px;
+  transform: rotate(30deg);
+}
+
+.cloud:after {
+  width: 120px;
+  height: 120px;
+  top: -55px;
+  right: 15px;
+}
+
+.x1 {
+  top: 100px; left: 0;
+  animation: moveclouds 18s linear infinite;
+}
+
+.x2 {
+  top: 150px; left: 200px;
+  transform: scale(0.6);
+  opacity: 0.6;
+  animation: moveclouds 24s linear infinite;
+}
+
+.x3 {
+  top: 250px; left: -250px;
+  transform: scale(0.8);
+  opacity: 0.8;
+  animation: moveclouds 30s linear infinite;
+}
+
+.x4 {
+  top: 400px; left: 470px;
+  transform: scale(0.75);
+  opacity: 0.75;
+  animation: moveclouds 15s linear infinite;
+}
+
+.x5 {
+  top: 550px; left: 200px;
+  transform: scale(0.8);
+  opacity: 0.8;
+  animation: moveclouds 35s linear infinite;
+}
+
+.x6 {
+  top: 700px; left: -150px;
+  transform: scale(1);
+  opacity: 0.8;
+  animation: moveclouds 40s linear infinite;
+}
+
+.x7 {
+  top: 550px; left: -1000px;
+  transform: scale(0.8);
+  opacity: 0.8;
+  animation: moveclouds 30s linear infinite;
+}
+
+@keyframes moveclouds {
+  0% {
+    margin-left: 100%;
+    opacity: 0; /* Invisible al inicio */
+  }
+  10% {
+    opacity: 1; /* Comienza a aparecer */
+  }
+  90% {
+    opacity: 1; /* Visible hasta casi el final */
+  }
+  100% {
+    margin-left: -80%;
+    opacity: 0; /* Desaparece al salir */
+  }
+}
+
+.login-page {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
 }

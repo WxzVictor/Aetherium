@@ -42,43 +42,55 @@ const Login = () => {
   };
 
   return (
-    <div className="background">
-      <div className="login-container">
-        <div className="logo">
-          <img src={logo} alt="Aetherium Logo" />
+    <div className="login-page">
+      <div id="clouds">
+        <div className="cloud x1"></div>
+        <div className="cloud x2"></div>
+        <div className="cloud x3"></div>
+        <div className="cloud x4"></div>
+        <div className="cloud x5"></div>
+        <div className="cloud x6"></div>
+        <div className="cloud x7"></div>
+      </div>
+
+      <div className="background">
+        <div className="login-container">
+          <div className="logo">
+            <img src={logo} alt="Aetherium Logo" />
+          </div>
+          <h2>LOG IN</h2>
+          <form onSubmit={handleLogin}>
+            <div className="input-group">
+              <input
+                type="email"
+                placeholder=" "
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <label>Email</label>
+              <span className="icon">📧</span>
+            </div>
+            <div className="input-group">
+              <input
+                type="password"
+                placeholder=" "
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <label>Password</label>
+              <span className="icon">🔒</span>
+            </div>
+            <div className="options">
+              <input type="checkbox" id="remember" />
+              <label htmlFor="remember"> Remember me </label>
+            </div>
+            <button type="submit">Login</button>
+          </form>
+          <a href="#" onClick={handleForgotPassword} className="forgot">Forgot Password?</a>
+          <a href="/register" className="forgot">Aren't you register yet?</a>
         </div>
-        <h2>LOG IN</h2>
-        <form onSubmit={handleLogin}>
-          <div className="input-group">
-            <input
-              type="email"
-              placeholder=" "
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <label>Email</label>
-            <span className="icon">📧</span>
-          </div>
-          <div className="input-group">
-            <input
-              type="password"
-              placeholder=" "
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <label>Password</label>
-            <span className="icon">🔒</span>
-          </div>
-          <div className="options">
-            <input type="checkbox" id="remember" />
-            <label htmlFor="remember"> Remember me </label>
-          </div>
-          <button type="submit">Login</button>
-        </form>
-        <a href="#" onClick={handleForgotPassword} className="forgot">Forgot Password?</a>
-        <a href="/register" className="forgot">Aren't you register yet?</a>
       </div>
     </div>
   );

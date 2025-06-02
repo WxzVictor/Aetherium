@@ -63,6 +63,7 @@ body {
 }
 
 .buscador {
+  background-color: rgb(216, 216, 216);
   display: flex;
   gap: 1rem;
   justify-content: center;
