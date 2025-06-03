@@ -1,0 +1,250 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  background: linear-gradient(to bottom, #f0f0f0, #dcdcdc);
+  color: #1d2d4a;
+  min-height: 100vh;
+}
+
+.barra-navegacion {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 2rem;
+  background-color: #d4af37;
+  color: #1d2d4a;
+  border-bottom: 3px solid #1d2d4a;
+}
+
+.logo-aetherium {
+  margin-left: 1.5%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.logo-aetherium a {
+  text-decoration: none;
+  color: #1d2d4a;
+  transition: 0.3s;
+}
+
+.logo-aetherium a:hover {
+  text-decoration: none;
+  color: #3f598a;
+}
+
+.logo-aetherium img {
+  height: 40px;
+  width: 40px;
+  object-fit: contain;
+}
+
+.navegacion-derecha a {
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: #1d2d4a;
+  transition: color 0.3s;
+}
+
+.navegacion-derecha a:hover {
+  color: #3f598a;
+}
+
+#botonIntercambiar {
+  cursor: pointer;
+}
+
+.buscador {
+  background-color: rgb(216, 216, 216);
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.buscador button {
+  background-color: #d4af37;
+  color: #1d2d4a;
+  border: none;
+  padding: 0.7rem 2rem;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.buscador button:hover {
+  background-color: #f1d67a;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  color: #1d2d4a;
+}
+
+.contenedor-formulario {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 2rem auto;
+  width: 90%;
+  max-width: 1100px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
+  border: 2px solid #d4af37;
+}
+
+.grupo-input {
+  flex: 1 1 150px;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
+  border: 2px solid #d4af37;
+  position: relative;
+  min-width: 150px;
+  color: #1d2d4a;
+}
+
+input[type="text"],
+input[type="date"] {
+  border: none;
+  font-size: 0.9rem;
+  width: 100%;
+  background: transparent;
+  color: #1d2d4a;
+}
+
+input:focus {
+  outline: none;
+  border-bottom: 2px solid #d4af37;
+}
+
+.boton-buscar {
+  background-color: #d4af37;
+  color: #1d2d4a;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s;
+}
+
+.boton-buscar:hover {
+  background-color: #f1d67a;
+}
+
+.desplegable-viajeros {
+  padding: 2%;
+  background: #fff;
+  color: #1d2d4a;
+  border-radius: 16px;
+  box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+  border: 2px solid #d4af37;
+}
+
+#abrirDesplegable {
+  cursor: pointer;
+}
+
+#contadorAdultos, #contadorNiños {
+  padding: 1%;
+}
+
+.boton-aplicar {
+  background-color: #d4af37;
+  color: #1d2d4a;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 1.2rem;
+  width: 100%;
+}
+
+.boton-aplicar:hover {
+  background-color: #f1d67a;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.15), transparent 70%);
+  top: 10%;
+  right: 10%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(40px);
+}
+
+body::after {
+  content: "";
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.1), transparent 80%);
+  bottom: 5%;
+  left: 5%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(50px);
+}
+
+.layout-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.layout-container main {
+  flex: 1;
+}
+
+.barra-footer {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 1rem 2rem;
+  background-color: #d4af37;
+  border-top: 3px solid #1d2d4a;
+  margin-bottom: 0;
+}
+
+.barra-footer a {
+  text-decoration: none;
+  color: #1d2d4a;
+  font-weight: bold;
+  transition: color 0.3s;
+  padding: 0.5rem 1rem;
+}
+
+.barra-footer a:hover {
+  text-decoration: none;
+  color: #3f598a;
+  font-weight: bold;
+}
+
+.copyrightAetherium {
+  color: #1d2d4a;
+  padding: 0.5rem 1rem;
+}
