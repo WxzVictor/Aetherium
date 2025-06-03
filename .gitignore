@@ -124,7 +124,7 @@ dist
 .vs
 obj/
 bin/
-AetheriumBack\obj
+AetheriumBack/obj
 # yarn v2
 .yarn/cache
 .yarn/unplugged
