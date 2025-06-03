@@ -6,9 +6,9 @@ const Footer = () => {
     <footer>
       <nav className="barra-footer">
         <p className="copyrightAetherium" >© Aetherium 2025</p>
-        <Link to="/sobre-nosotros">Sobre Nosotros</Link>
-        <Link to="/contacto">Contacto</Link>
-        <Link to="/preguntas-frecuentes">Preguntas Frecuentes</Link>
+        <Link to="/aboutUs">Sobre Nosotros</Link>
+        <Link to="/contact">Contacto</Link>
+        <Link to="/FAQ-Page">Preguntas Frecuentes</Link>
       </nav>
     </footer>
   );

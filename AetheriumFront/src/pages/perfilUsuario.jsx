@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, getIdToken } from 'firebase/auth';
 import { auth } from '../services/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/common/layout';
@@ -13,11 +13,18 @@ const UserProfile = () => {
   const [flightStats, setFlightStats] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        // Simulación de datos de vuelos
+useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser && currentUser.emailVerified) {
+        // Verificar el token de acceso
+        try {
+          const token = await getIdToken(currentUser);
+          if (!token) {
+            // Si no hay token válido, redirigir al login
+            navigate('/login');
+          } else {
+            setUser(currentUser);
+            // Simulación de datos de vuelos
         setFlightStats([
           {
             origen: 'Madrid',
@@ -44,8 +51,13 @@ const UserProfile = () => {
             compania: 'Vueling',
           },
         ]);
+
+          }
+        } catch (error) {
+          console.error("Error al obtener el token:", error);
+          navigate('/login');
+        }
       } else {
-        setUser(null);
         navigate('/login');
       }
     });
