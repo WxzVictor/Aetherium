@@ -3,7 +3,7 @@
 namespace AetheriumBack.Dto;
 public class FlightResponseDto
 {
-    public int FlightNumber { get; set; }
+    public int FlightId { get; set; }
     public string AirlineName { get; set; }
     public string FlightCode { get; set; }
     public AirportResponseDto DepartureAirport { get; set; }
