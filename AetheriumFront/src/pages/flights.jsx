@@ -16,6 +16,12 @@ const Flights = () => {
   const [cabinClass, setCabinClass] = useState('turista');
   const navigate = useNavigate();
 
+  const classLabels = {
+    turista: 'Turista',
+    business: 'Business',
+    first: 'First',
+  };
+
   const handleSwap = () => {
     setFrom((prev) => {
       const temp = to;
@@ -131,7 +137,9 @@ const Flights = () => {
               <input
                 type="text"
                 id="infoViajeros"
-                value={`${passengers.adults + passengers.children} ${passengers.adults + passengers.children === 1 ? 'Adulto' : 'Viajeros'}, ${cabinClass === 'turista' ? 'Turista' : 'Business'}`}
+                value={`${passengers.adults + passengers.children} ${
+                  passengers.adults + passengers.children === 1 ? 'Adulto' : 'Viajeros'
+                }, ${classLabels[cabinClass]}`}
                 readOnly
               />
             </div>
@@ -157,6 +165,15 @@ const Flights = () => {
                       checked={cabinClass === 'business'}
                       onChange={() => setCabinClass('business')}
                     /> Business
+                  </label>
+                  <label style={{ marginLeft: '1rem' }}>
+                    <input
+                      type="radio"
+                      name="cabinClass"
+                      value="first"
+                      checked={cabinClass === 'first'}
+                      onChange={() => setCabinClass('first')}
+                    /> First
                   </label>
                 </div>
 
