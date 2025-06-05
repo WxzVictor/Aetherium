@@ -13,6 +13,7 @@ const Flights = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [suggestionsFrom, setSuggestionsFrom] = useState([]);
   const [suggestionsTo, setSuggestionsTo] = useState([]);
+  const [cabinClass, setCabinClass] = useState('turista');
   const navigate = useNavigate();
 
   const handleSwap = () => {
@@ -46,7 +47,7 @@ const Flights = () => {
     try {
       const fromCode = from.match(/\(([A-Z]{3})\)/)?.[1] || from;
       const toCode = to.match(/\(([A-Z]{3})\)/)?.[1] || to;
-      navigate(`/resultadoVuelos/${fromCode}/${toCode}/${departureDate}/${returnDate || departureDate}`);
+      navigate(`/resultadoVuelos/${fromCode}/${toCode}/${departureDate}/${returnDate || departureDate}?clase=${cabinClass}`);
     } catch (error) {
       console.error("🚨 Error al buscar vuelos:", error);
       alert("🚨 Error al buscar vuelos");
@@ -130,7 +131,7 @@ const Flights = () => {
               <input
                 type="text"
                 id="infoViajeros"
-                value={`${passengers.adults + passengers.children} ${passengers.adults + passengers.children === 1 ? 'Adulto' : 'Viajeros'}, Turista`}
+                value={`${passengers.adults + passengers.children} ${passengers.adults + passengers.children === 1 ? 'Adulto' : 'Viajeros'}, ${cabinClass === 'turista' ? 'Turista' : 'Business'}`}
                 readOnly
               />
             </div>
@@ -138,10 +139,26 @@ const Flights = () => {
             {showDropdown && (
               <div className="desplegable-viajeros" id="desplegableViajeros">
                 <h4>Clase de cabina</h4>
-                <p><strong>Solo podemos mostrar precios en clase turista para esta búsqueda.</strong></p>
-                <p style={{ fontSize: '0.85rem', color: '#444' }}>
-                  Indica las fechas y el destino del viaje para ver las opciones de clase business, turista prémium y primera clase.
-                </p>
+                <div className="fila-viajero">
+                  <label>
+                    <input
+                      type="radio"
+                      name="cabinClass"
+                      value="turista"
+                      checked={cabinClass === 'turista'}
+                      onChange={() => setCabinClass('turista')}
+                    /> Turista
+                  </label>
+                  <label style={{ marginLeft: '1rem' }}>
+                    <input
+                      type="radio"
+                      name="cabinClass"
+                      value="business"
+                      checked={cabinClass === 'business'}
+                      onChange={() => setCabinClass('business')}
+                    /> Business
+                  </label>
+                </div>
 
                 <br />
 
