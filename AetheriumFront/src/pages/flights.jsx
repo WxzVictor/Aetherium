@@ -74,7 +74,7 @@ const Flights = () => {
         </div>
 
         <div>
-          <h1>No hace falta alas para volar, ¡solo una buena oferta!</h1>
+          <h1>No hacen falta alas para volar, ¡solo una buena oferta!</h1>
           <div className="contenedor-formulario">
             <div className="grupo-input">
               <div className="etiqueta-pequeña">Desde</div>
