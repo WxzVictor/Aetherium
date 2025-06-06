@@ -51,7 +51,7 @@ const Header = () => {
 
       {user && (
         <div className="buscador">
-          <a href="/vuelos"><button>✈️ Vuelos</button></a>
+          <a href="/flights"><button>✈️ Vuelos</button></a>
           <a href="/hoteles"><button>🏨 Hoteles</button></a>
         </div>
       )}
