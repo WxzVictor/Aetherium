@@ -23,7 +23,7 @@ public class Flight
 
     public Flight(string[] attributes)
     {
-        //FlightId = int.Parse(attributes[0]);
+        // FlightId = int.Parse(attributes[0]);
         AirlineName = attributes[1];
         FlightCode = attributes[2];
         DepartureAirportCode = attributes[3];

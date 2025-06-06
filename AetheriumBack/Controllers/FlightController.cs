@@ -58,6 +58,43 @@ public class FlightController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetFlightById(int id)
+    {
+        FlightResponseDto? flight = await _context.Flight
+            .Include(f => f.DepartureAirport)
+            .Include(f => f.ArrivalAirport)
+            .Where(f => f.FlightId == id)
+            .Select(f => new FlightResponseDto
+            {
+                FlightId = f.FlightId,
+                AirlineName = f.AirlineName,
+                FlightCode = f.FlightCode,
+                DepartureAirport = new AirportResponseDto
+                {
+                    Name = f.DepartureAirport.AirportName,
+                    City = f.DepartureAirport.City,
+                    Code = f.DepartureAirport.AirportCode
+                },
+                ArrivalAirport = new AirportResponseDto
+                {
+                    Name = f.ArrivalAirport.AirportName,
+                    City = f.ArrivalAirport.City,
+                    Code = f.ArrivalAirport.AirportCode
+                },
+                DepartureTime = f.DepartureTime,
+                ArrivalTime = f.ArrivalTime,
+                DurationMinutes = f.DurationMinutes,
+                Price = f.Price
+            })
+            .FirstOrDefaultAsync();
+
+        if (flight is null)
+            return NotFound($"Flight with ID {id} not found.");
+
+        return Ok(flight);
+    }
+
     [HttpGet("paged")]
     public async Task<IActionResult> GetAllFlightsPaged(int page = 1, int pageSize = 10)
     {

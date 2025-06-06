@@ -1,151 +1,114 @@
-AirportCode,AirportName,City,CountryCode,Latitude,Longitude,ElevationFeet,RegionCode
-TXN,Jenkins International Airport,East Matthew,DJ,87.073842,26.314391,1703,EU-C
-HBL,Hahn International Airport,Lake Jamieshire,TL,-43.737620,-33.262453,1591,EU-S
-VRK,Hammond International Airport,Andrewsborough,CZ,20.404747,-10.085355,4067,EU-S
-DPV,Anderson International Airport,Stewarthaven,LK,78.600450,-161.047584,3518,EU-N
-RGY,Jones International Airport,North Samanthaton,LS,-65.855044,-11.801630,3769,EU-W
-WMV,Hernandez International Airport,West Mary,ML,77.297480,-10.617211,1771,EU-W
-LCE,Morgan International Airport,West Kevin,TJ,-47.100686,-98.386549,76,EU-W
-KAH,Patel International Airport,Mooreside,YE,36.048613,-29.013317,1423,EU-E
-SPH,Beck International Airport,South Colton,BB,-53.600490,24.520515,634,EU-E
-EYE,Jackson International Airport,New Haileystad,OM,67.005536,127.041979,1889,EU-C
-LCB,Waller International Airport,Nicoleland,MN,-71.507484,-84.847430,4088,EU-N
-INT,Byrd International Airport,North Victoria,SV,-37.082830,160.495755,1772,EU-N
-UST,Mcguire International Airport,West Carriefort,AM,76.929860,136.927105,1512,EU-W
-AKX,York International Airport,New Juan,SK,-83.706708,82.856859,2518,EU-N
-UKD,Banks International Airport,Josechester,LU,-79.140245,-33.521996,4238,EU-E
-VWQ,Ellis International Airport,West Andreaberg,VU,-87.133679,127.977396,2800,EU-N
-BTY,Gonzalez International Airport,Jameston,MD,-17.446275,21.402806,2766,EU-S
-VXZ,Hunt International Airport,Russellmouth,CO,2.942849,-39.561048,2413,EU-C
-JMF,Campbell International Airport,South Samanthaland,TL,-4.472727,93.155237,4199,EU-C
-HBZ,Anderson International Airport,East Charlesstad,BI,-48.659296,127.041200,1942,EU-C
-ZPX,Miller International Airport,North Jennifermouth,VN,-71.106768,-96.117255,3531,EU-C
-LOD,Welch International Airport,Kristiville,VA,-57.256672,-149.845886,1690,EU-C
-TIM,Hardin International Airport,East Christopherland,AD,26.224330,-54.868412,1091,EU-N
-NDT,Miller International Airport,Colleenborough,PY,-37.037752,85.912366,1284,EU-N
-MTL,Harrison International Airport,South Jacksontown,BR,-42.795382,-73.849613,2395,EU-E
-QJI,Johnston International Airport,Lake David,PS,-69.658025,-78.961691,344,EU-C
-LUW,Braun International Airport,South Cynthia,UA,-10.349968,142.956824,1625,EU-N
-AGO,Mitchell International Airport,Kingstad,LK,-25.368610,104.837318,2088,EU-N
-APR,King International Airport,North Bryan,SA,2.401726,-147.570864,1466,EU-W
-NWB,Miller International Airport,Smithland,LB,67.877259,14.067981,2933,EU-W
-SRM,Gregory International Airport,New Josemouth,PG,6.130099,77.938991,4065,EU-E
-XFT,Hines International Airport,Amyborough,GT,67.633118,-88.435086,2397,EU-S
-CSW,Ortiz International Airport,Nguyenfurt,PL,34.659433,62.760362,3490,EU-W
-JJV,Christensen International Airport,Herringberg,LB,12.396677,159.406054,3593,EU-C
-JZX,Smith International Airport,East Brittany,ER,-31.751173,-129.079830,4752,EU-C
-BZE,Hernandez International Airport,Jamesfort,MX,-47.502280,-17.047800,1292,EU-N
-JRO,Lee International Airport,Reynoldsburgh,RU,88.721430,-147.916372,3902,EU-W
-WGE,Benton International Airport,Franklinberg,GW,49.254301,85.338562,2982,EU-S
-ZNA,Henry International Airport,Crystalmouth,ZM,-6.620748,152.044023,2678,EU-S
-BNH,George International Airport,Matthewstad,FM,-55.604420,18.410061,913,EU-W
-KEE,Smith International Airport,Robertborough,LR,-27.336872,-12.207955,4519,EU-W
-OEY,Ramirez International Airport,Barbaramouth,MC,-37.822114,-111.746076,679,EU-W
-UYO,Armstrong International Airport,Lake Brittany,GW,-23.132979,82.308641,1797,EU-W
-KEB,Edwards International Airport,South Karenmouth,BR,52.065589,83.571662,1379,EU-E
-DMU,Adams International Airport,Priceborough,IS,-51.591352,15.304219,890,EU-E
-XDE,Wright International Airport,West Michaelfort,TJ,-50.776158,-33.564399,1767,EU-C
-UFU,Jacobs International Airport,Port Lisa,ET,70.413589,144.850610,2820,EU-N
-HSU,Brown International Airport,New Lauren,JM,-23.367216,21.868246,923,EU-E
-BSA,Evans International Airport,East Kenneth,AT,84.921929,165.738572,840,EU-S
-WAF,Richardson International Airport,South Connie,TH,-47.861428,138.818143,4934,EU-C
-CWU,Rodriguez International Airport,Stephenborough,MA,72.817504,63.381562,1888,EU-E
-SKL,Anderson International Airport,North Brianmouth,TG,38.070963,18.009802,1614,EU-E
-JUU,Brooks International Airport,Lake Ryanmouth,MY,-42.218910,-4.652343,4600,EU-N
-NWC,Schneider International Airport,Arielshire,BB,47.360670,-150.010832,2174,EU-W
-UTT,Anderson International Airport,North Donaldville,SK,-46.142551,-53.828035,2194,EU-E
-FWX,Compton International Airport,Christophermouth,GB,-71.323194,84.385141,1395,EU-S
-ZID,Warren International Airport,Nealside,BT,-34.365525,60.785609,1939,EU-E
-KHW,Pruitt International Airport,Jeremyton,KH,59.702314,-166.994193,3428,EU-E
-DPS,Perez International Airport,North Jefferybury,DE,-53.043655,88.748920,982,EU-N
-UUY,Avila International Airport,Smithport,SA,-83.688242,179.511349,2213,EU-N
-TSA,Pierce International Airport,East Brittanyborough,GT,66.427860,83.853289,1712,EU-S
-AWS,Miller International Airport,Williamburgh,MY,-32.882750,-98.258261,921,EU-N
-IAO,Garner International Airport,Josephstad,SE,14.265644,-94.174034,347,EU-N
-MWM,Scott International Airport,West Rachael,MX,-58.011174,169.214471,2686,EU-W
-SCB,Griffin International Airport,Harrisville,BB,14.005870,-122.699972,3267,EU-S
-VNM,Wolf International Airport,Marissaborough,UA,-8.564573,13.777287,4502,EU-S
-DDP,Sims International Airport,Jaytown,KR,-86.682048,-63.808491,4094,EU-C
-LVN,Porter International Airport,Cortezmouth,MX,71.547941,-91.278171,4146,EU-W
-FEJ,Carlson International Airport,North Christina,AD,-81.624832,152.471669,692,EU-W
-DAR,Conrad International Airport,Seanshire,DJ,-63.899304,-151.257089,2941,EU-C
-XNP,Lee International Airport,Harmonstad,BO,-14.843796,44.136640,872,EU-E
-PBT,Townsend International Airport,West Donaldmouth,GA,-57.700499,161.830962,1513,EU-S
-VRY,Johnson International Airport,Thompsonville,BT,-26.970598,64.407571,4446,EU-N
-LSJ,Nelson International Airport,Lake Annaland,ES,-48.850226,-64.317430,1575,EU-E
-EZR,Bennett International Airport,South Ryanmouth,NG,-43.017652,-172.876225,1482,EU-S
-KCQ,Brown International Airport,Jenniferfort,FR,-18.251379,-166.893438,1607,EU-N
-QRM,Young International Airport,Patrickton,TM,26.861898,120.080984,2960,EU-N
-SFY,Hall International Airport,West Michaelstad,PH,36.829092,112.374930,3445,EU-C
-KXQ,Winters International Airport,West Jill,LY,19.253674,-86.604470,382,EU-E
-LZX,Mcdonald International Airport,Katrinaberg,GQ,42.744198,111.128235,1624,EU-S
-AXB,Miller International Airport,Nicolemouth,MK,83.265461,70.479900,4659,EU-E
-CWI,Hensley International Airport,North Matthew,YE,-51.063304,141.474303,759,EU-W
-VIO,Collier International Airport,Port Lauren,CU,-34.752552,32.788883,2845,EU-S
-FAH,Mooney International Airport,New Daletown,IE,57.759911,176.824239,728,EU-C
-KVO,Sutton International Airport,Tracymouth,ES,10.212894,114.447228,3777,EU-E
-ZHQ,Weiss International Airport,New Michael,NE,-61.431320,-58.766594,1491,EU-E
-OPD,Moore International Airport,Lake Aaron,SD,-61.062424,85.860042,4540,EU-W
-JES,Clements International Airport,Port Richard,GE,55.483128,162.657116,2950,EU-N
-GMB,Smith International Airport,Davidburgh,KZ,-70.850846,-144.017920,2841,EU-N
-QCH,Henderson International Airport,Dorothytown,MC,70.406523,-18.823042,1177,EU-S
-VYX,Clark International Airport,Harveyfort,ZW,75.034970,138.544942,4630,EU-S
-CRF,Rowland International Airport,Florestown,IE,37.130358,26.027040,3630,EU-E
-WIX,Garcia International Airport,Stacyfort,AR,11.996695,-159.238359,3170,EU-W
-FWF,Wells International Airport,North Johnville,PH,11.965508,1.130959,1542,EU-E
-PME,Johnson International Airport,Angelamouth,GM,74.743471,40.443005,2751,EU-S
-GAR,Anderson International Airport,New Seanhaven,EG,34.333928,-32.499469,2378,EU-W
-SKY,Solis International Airport,West Brendahaven,RW,-43.314062,62.518514,4828,EU-E
-SKC,Roberts International Airport,Ronaldberg,BO,-36.548306,78.850265,169,EU-C
-FPA,Hughes International Airport,Port Nicholas,KI,-40.962802,-60.050880,4425,EU-S
-VRL,Bruce International Airport,Lake Sean,ME,-58.837451,-125.487350,4218,EU-C
-KII,Yang International Airport,South Tylerchester,AO,50.975649,17.723275,691,EU-C
-OIG,Barnes International Airport,West Samuelchester,BJ,-72.504628,-133.161794,3106,EU-W
-QQW,Wells International Airport,East David,DK,-66.813209,126.242240,3996,EU-C
-LQM,Griffin International Airport,Angelafort,BJ,86.164178,-80.404977,3626,EU-S
-LAH,Castro International Airport,East Dylan,CR,14.880352,-173.990472,4711,EU-S
-XDG,French International Airport,New Elizabethshire,SM,-87.622335,-17.143354,4715,EU-C
-ZIU,Mccall International Airport,Solisborough,HR,37.442296,76.772171,4688,EU-E
-ENG,Thompson International Airport,East Elizabethhaven,CY,-71.747995,76.457005,4347,EU-W
-GEK,Martin International Airport,Francostad,GR,-19.544160,38.179756,4715,EU-W
-DWB,Williams International Airport,Kimberlytown,FI,10.309562,29.796391,4704,EU-N
-CMO,Goodman International Airport,South Christina,SE,19.127557,166.840596,4653,EU-S
-WOK,Allen International Airport,Tylerland,NR,71.013434,-163.403167,2285,EU-S
-AEJ,Miller International Airport,Port Darlene,MN,-15.538841,31.133799,1014,EU-E
-RDP,Roman International Airport,Kevinside,UY,-2.198047,-14.567598,1970,EU-W
-EGF,Hughes International Airport,South Matthew,MD,41.446275,3.829981,4953,EU-W
-IHN,Welch International Airport,Crystalview,JO,69.567112,95.692831,345,EU-E
-OUU,Solomon International Airport,West Teresa,FI,-0.074530,97.922908,2418,EU-W
-RAR,Baker International Airport,Santiagoborough,VA,-52.612934,-21.614867,3017,EU-N
-MRR,Ward International Airport,Jamesmouth,TT,49.616685,-86.898201,976,EU-S
-HUU,Walter International Airport,East Carly,ZW,0.562624,-81.710838,2727,EU-C
-PZF,Brooks International Airport,Washingtonview,TN,33.233140,108.519053,3297,EU-E
-VJQ,Obrien International Airport,Davidfurt,SY,15.516868,-178.246004,3761,EU-E
-EMZ,Villa International Airport,Gibsonside,TV,-15.618774,94.404606,2779,EU-E
-KAM,Baker International Airport,Fullerfort,UG,-60.987718,75.748206,1710,EU-E
-BYU,Wilson International Airport,North Michael,BF,-78.984856,-142.268724,3929,EU-W
-RGJ,Nichols International Airport,Port Cody,CH,23.619034,-69.999046,1119,EU-C
-CQK,Brown International Airport,West Tiffanyview,JM,25.374270,-50.785764,4908,EU-C
-OON,Munoz International Airport,Sarahstad,GW,-49.277564,-167.676631,3341,EU-S
-JLU,Farmer International Airport,Port Tammy,MV,-35.469698,110.829025,3609,EU-C
-NBK,Davis International Airport,Lisaville,BY,-23.913083,38.185520,3595,EU-C
-NKL,Lowery International Airport,Danielbury,SV,-7.189208,53.642614,3072,EU-C
-LMY,Griffin International Airport,North Melanie,NE,29.221064,57.580174,2250,EU-E
-JVY,Jefferson International Airport,Johnsonview,GA,41.941349,54.424839,620,EU-W
-YHV,Morris International Airport,Romerofurt,PA,72.820583,-69.689360,3205,EU-E
-XJT,Jones International Airport,Jacksonfurt,GE,-31.500300,-11.308833,599,EU-W
-WZR,Wright International Airport,Rachelfurt,US,36.087629,-166.966933,3368,EU-N
-RKP,Brewer International Airport,South Jennifertown,MW,63.452878,5.319330,740,EU-N
-XYB,Henry International Airport,Blankenshipland,NZ,-21.568896,6.954585,2123,EU-S
-ORX,Buck International Airport,Timothyburgh,GN,67.167506,166.286543,1743,EU-C
-HMH,Patrick International Airport,South Michaelbury,BW,-47.384886,-130.405593,3347,EU-N
-NSJ,Williams International Airport,New Sarahmouth,CZ,-11.307392,-103.960808,2427,EU-E
-BRL,Perez International Airport,Garrettland,HT,-65.231197,153.367120,690,EU-W
-DKP,Logan International Airport,West Amy,NO,-44.922650,-53.166811,2834,EU-N
-BZM,Morrison International Airport,North Kendraview,EE,53.332004,-113.354307,3645,EU-S
-XDJ,Hodges International Airport,East Amanda,ER,-24.059758,-175.304263,593,EU-W
-UKX,Nelson International Airport,New Williamton,MX,-53.774874,-90.341877,1728,EU-W
-DEJ,Bradford International Airport,Port Chelsea,MN,64.045579,-30.064274,1228,EU-S
-DPD,Thompson International Airport,Lake Johnton,BJ,11.314279,-107.036960,2757,EU-C
-ASD,Rice International Airport,Byrdfurt,SY,55.349465,36.841335,3444,EU-W
-HDP,Harding International Airport,Kristinshire,VC,18.769676,-45.014647,4614,EU-C
+airportCode,airportName,city,countryCode,latitude,longitude,elvationFeet,regionCode
+LHR,London Heathrow Airport,London,GB,51.4706,-0.461941,83,ENG
+AMS,Amsterdam Airport Schiphol,Amsterdam,NL,52.308601,4.76389,-11,NH
+FRA,Frankfurt Airport,Frankfurt am Main,DE,50.030241,8.561096,364,HE
+LGW,London Gatwick Airport,London,GB,51.148771,-0.192089,202,ENG
+MUC,Munich Airport,Munich,DE,48.353802,11.7861,1487,BY
+BCN,Josep Tarradellas Barcelona-El Prat Airport,Barcelona,ES,41.2971,2.07846,12,CT
+FCO,Rome–Fiumicino Leonardo da Vinci International Airport,Rome,IT,41.804532,12.251998,13,62
+MAD,Adolfo Suárez Madrid–Barajas Airport,Madrid,ES,40.471926,-3.56264,1998,MD
+DUB,Dublin Airport,Dublin,IE,53.428713,-6.262121,242,D
+ZRH,Zürich Airport,Zurich,CH,47.458056,8.548056,1417,ZH
+CPH,Copenhagen Kastrup Airport,Copenhagen,DK,55.61790085,12.65600014,17,84
+BRU,Brussels Airport,Zaventem,BE,50.901402,4.48444,175,VBR
+VIE,Vienna International Airport,Vienna,AT,48.110298,16.5697,600,9
+STN,London Stansted Airport,London,GB,51.884998,0.235,348,ENG
+LIS,Lisbon Humberto Delgado Airport,Lisbon,PT,38.7813,-9.13592,374,11
+ARN,Stockholm-Arlanda Airport,Stockholm,SE,59.64849,17.928829,137,AB
+PRG,Václav Havel Airport Prague,Prague,CZ,50.100874,14.259911,1247,PR
+MXP,Milan Malpensa International Airport,Ferno (VA),IT,45.6306,8.72811,768,25
+ATH,Athens Eleftherios Venizelos International Airport,Spata-Artemida,GR,37.936401,23.9445,308,I
+BUD,Budapest Liszt Ferenc International Airport,Budapest,HU,47.43018,19.262393,495,BU
+KEF,Keflavik International Airport,Reykjavík,IS,63.985001,-22.6056,171,2
+HEL,Helsinki Vantaa Airport,Helsinki (Vantaa),FI,60.318363,24.963341,179,18
+GVA,Geneva Cointrin International Airport,Geneva,CH,46.238098,6.10895,1411,GE
+DUS,Düsseldorf Airport,Düsseldorf,DE,51.289501,6.76678,147,NW
+WAW,Warsaw Chopin Airport,Warsaw,PL,52.165699,20.9671,362,MZ
+VCE,Venice Marco Polo Airport,Venezia (VE),IT,45.505299,12.3519,7,34
+AGP,Málaga-Costa del Sol Airport,Málaga,ES,36.6749,-4.49911,53,AN
+SVO,Sheremetyevo International Airport,Moscow,RU,55.972599,37.4146,622,MOS
+MLA,Malta International Airport,Valletta,MT,35.857498,14.4775,300,25
+RIX,Riga International Airport,Riga,LV,56.923599,23.9711,36,62
+OPO,Francisco de Sá Carneiro Airport,Porto,PT,41.24810028,-8.681389809,228,13
+OTP,Bucharest Henri Coandă International Airport,Otopeni,RO,44.572127,26.103396,314,IF
+HER,Heraklion International Nikos Kazantzakis Airport,Heraklion,GR,35.339699,25.1803,115,M
+KRK,Kraków John Paul II International Airport,Balice,PL,50.077702,19.7848,791,MA
+BEG,Belgrade Nikola Tesla Airport,Belgrade,RS,44.818401,20.309099,335,0
+FAO,Faro Airport,Faro,PT,37.01440048,-7.965909958,24,8
+CRL,Brussels South Charleroi Airport,Charleroi,BE,50.460982,4.457158,614,WHT
+DBV,Dubrovnik Ruđer Bošković Airport,Čilipi,HR,42.562247,18.265543,527,19
+ZAG,Zagreb Franjo Tuđman International Airport,Velika Gorica,HR,45.742901,16.0688,353,1
+GOT,Göteborg Landvetter Airport,Göteborg,SE,57.6628,12.2798,506,Q
+DME,Domodedovo International Airport,Moscow,RU,55.408798,37.9063,588,MOS
+TLL,Lennart Meri Tallinn Airport,Tallinn,EE,59.413246,24.83264,131,37
+SNN,Shannon Airport,Shannon,IE,52.702,-8.92482,46,CE
+EIN,Eindhoven Airport,Eindhoven,NL,51.45009995,5.374529839,74,NB
+LUX,Luxembourg-Findel International Airport,Luxembourg,LU,49.6233333,6.2044444,1234,L
+SOF,Sofia Airport,Sofia,BG,42.696357,23.417671,1742,22
+LED,Pulkovo Airport,St. Petersburg,RU,59.800301,30.262501,78,SPE
+SZG,Salzburg Airport,Salzburg,AT,47.793301,13.0043,1411,5
+LJU,Ljubljana Jože Pučnik Airport,Zgornji Brnik,SI,46.223701,14.4576,1273,12
+SPU,Split Airport,Kaštel Štafilić,HR,43.538898,16.298,79,17
+KBP,Boryspil International Airport,Boryspil,UA,50.345001,30.894699,427,32
+VNO,Vilnius International Airport,Vilnius,LT,54.634102,25.285801,648,VL
+SKG,Thessaloniki Macedonia International Airport,Thessaloniki,GR,40.51928,22.970009,22,B
+GDN,Gdańsk Lech Wałęsa Airport,Gdańsk,PL,54.377602,18.4662,489,PM
+BLL,Billund Airport,Billund,DK,55.740335,9.157019,247,83
+RTM,Rotterdam The Hague Airport,Rotterdam,NL,51.956902,4.43722,-15,ZH
+BTS,M. R. Štefánik Airport,Bratislava,SK,48.1702,17.2127,436,BL
+NYO,Stockholm Skavsta Airport,Nyköping,SE,58.788601,16.912201,140,D
+JER,Jersey Airport,Saint Helier,JE,49.207901,-2.195509911,277,U
+ORK,Cork Airport,Cork,IE,51.841301,-8.49111,502,CO
+INN,Innsbruck Airport,Innsbruck,AT,47.260201,11.344,1907,7
+RKV,Reykjavík Domestic Airport,Reykjavík,IS,64.128732,-21.93759,48,1
+SJJ,Sarajevo International Airport,Sarajevo,BA,43.8246,18.331499,1708,BIH
+TIA,Tirana International Airport Mother Teresa,Rinas,AL,41.4147,19.7206,126,2
+ANR,Antwerp International Airport (Deurne),Antwerp,BE,51.190667,4.463153,39,VAN
+GIB,Gibraltar Airport,Gibraltar,GI,36.151199,-5.34966,12,U
+GCI,Guernsey Airport,Saint Peter Port,GG,49.435001,-2.60197,336,G
+SKP,Skopje International Airport,Ilinden,MK,41.958087,21.622581,781,8
+OUL,Oulu Airport,Oulu / Oulunsalo,FI,64.930099,25.354601,47,14
+BOJ,Burgas Airport,Burgas,BG,42.569917,27.515173,135,2
+TGD,Podgorica Airport / Podgorica Golubovci Airbase,Podgorica,ME,42.359402,19.2519,141,16
+AAL,Aalborg Airport,Aalborg,DK,57.094763,9.84993,10,81
+BRN,Bern Airport,Bern,CH,46.912868,7.498512,1671,BE
+CLJ,Cluj Avram Iancu International Airport,Cluj-Napoca,RO,46.787425,23.684292,1039,CJ
+RVN,Rovaniemi Airport,Rovaniemi,FI,66.56479645,25.83040047,642,10
+MSQ,Minsk National Airport,Minsk,BY,53.888071,28.039964,670,MI
+BBU,Bucharest Băneasa Aurel Vlaicu International Airport,Bucharest,RO,44.503201,26.1021,297,B
+VAR,Varna Airport,Varna,BG,43.232101,27.8251,230,3
+IOM,Isle of Man Airport,Castletown,IM,54.083302,-4.62389,52,U
+RMO,Chişinău International Airport,Chişinău,MD,46.9277,28.931,399,CU
+MBX,Maribor Edvard Rusjan Airport,Orehova Vas,SI,46.4799,15.6861,876,160
+POW,Portorož Airport,Sečovlje,SI,45.47201,13.615951,7,90
+BRQ,Brno-Tuřany Airport,Brno,CZ,49.15129852,16.69440079,778,JM
+IEV,Ihor Sikorsky Kyiv International Airport (Zhuliany),Kyiv,UA,50.40194,30.45194,587,30
+PRN,Priština Adem Jashari International Airport,Prishtina,XK,42.5728,21.035801,1789,1
+TIV,Tivat Airport,Tivat,ME,42.40470123,18.72330093,20,19
+KUN,Kaunas International Airport,Kaunas,LT,54.96390152,24.08480072,256,KU
+FAE,Vágar Airport,Vágar,FO,62.063256,-7.275782,280,U
+ODS,Odessa International Airport,Odessa,UA,46.4268,30.6765,172,51
+AEY,Akureyri Airport,Akureyri,IS,65.656573,-18.072018,6,6
+ACI,Alderney Airport,Saint Anne,GG,49.706104,-2.21472,290,A
+KSC,Košice International Airport,Košice,SK,48.663101,21.2411,755,KI
+KLV,Karlovy Vary Airport,Karlovy Vary,CZ,50.202999,12.915,1989,KA
+BNX,Banja Luka International Airport,Mahovljani,BA,44.941399,17.297501,400,SRP
+INI,Niš Constantine the Great Airport,Niš,RS,43.337009,21.85451,648,20
+TZL,Tuzla International Airport,Dubrave Gornje,BA,44.458698,18.7248,784,BIH
+DEB,Debrecen International Airport,Debrecen,HU,47.488899,21.615299,359,HB
+PLQ,Palanga International Airport,Palanga,LT,55.97320175,21.09390068,33,KL
+MCM,Monaco Heliport,Fontvieille,MC,43.725798,7.419673,20,U
+URE,Kuressaare Airport,Kuressaare,EE,58.22990036,22.5095005,14,74
+OHD,Ohrid St. Paul the Apostle Airport,Ohrid,MK,41.18,20.7423,2313,3
+SOB,Hévíz–Balaton Airport,Sármellék,HU,46.686391,17.159084,408,ZA
+SLD,Sliač Airport,Sliač,SK,48.63779831,19.13409996,1043,BC
+TAY,Tartu Airport,Reola,EE,58.307438,26.686473,220,7B
+LPX,Liepāja International Airport,Liepāja,LV,56.517502,21.096901,16,112
+TEQ,Tekirdağ Çorlu Airport,Çorlu,TR,41.13819885,27.91909981,574,59
+KVO,Morava Airport,Kraljevo,RS,43.817519,20.586662,686,18
+BZY,Bălți International Airport,Bălți,MD,47.837666,27.781108,758,RS
+BQT,Brest Airport,Brest,BY,52.108299,23.8981,468,BR
+IVG,Berane Airport,Berane,ME,42.8390007,19.86199951,2287,3
+GME,Gomel Airport,Gomel,BY,52.52700043,31.01670074,472,HO
+KFZ,Kukës International Airport,Kukës,AL,42.035802,20.415955,1120,7
+VNT,Ventspils International Airport,Ventspils,LV,57.3578,21.544201,19,VEN

@@ -6,7 +6,7 @@ namespace AetheriumBack.Utils;
 public static class LoadCsv
 {
     public static async Task SeedDataAsync(this IServiceProvider services)
-    {
+    { 
         try
         {
             using IServiceScope scope = services.CreateScope();
@@ -21,14 +21,16 @@ public static class LoadCsv
             {
                 foreach (string file in files)
                 {
+                    Console.WriteLine($"🔄️ Procesando archivo: {Path.GetFileName(file)}");
                     ParseTypes(file, context);
                     await context.SaveChangesAsync();
+                    Console.WriteLine($"✅ Archivo guardado: {Path.GetFileName(file)}");
                 }
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error saving changes to the database: {ex.Message}");
+            Console.WriteLine($"Error saving changes to the database: {ex.InnerException?.Message ?? ex.Message}");
         }
     }
 
