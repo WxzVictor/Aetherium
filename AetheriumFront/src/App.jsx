@@ -10,6 +10,8 @@ import AboutUS from './pages/aboutUs';
 import UserProfile from './pages/perfilUsuario';
 import FAQ from './pages/FAQ-Page';
 
+import ResultadoVuelos from './pages/resultadoVuelos';
+
 // ✅ Solo para proteger rutas específicas
 const ProtectedRoute = ({ children }) => {
   const [user, setUser] = useState(undefined);
@@ -46,7 +48,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/contact" element={<ContactForm />} />
         <Route path="/aboutUs" element={<AboutUS />} />
-         <Route path="/FAQ-Page" element={<FAQ />} />
+        <Route path="/FAQ-Page" element={<FAQ />} />
 
         {/* ✅ Protegida */}
         <Route
@@ -57,6 +59,8 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route path="/resultadoVuelos" element={<ResultadoVuelos />} />
       </Routes>
     </Router>
   );
