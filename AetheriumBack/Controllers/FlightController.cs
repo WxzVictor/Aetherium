@@ -218,7 +218,7 @@ public class FlightController : ControllerBase
         FlightSearchResultDto result = new()
         {
             OutFlights = outFlights,
-            ReturnFlight = returnFlights,
+            ReturnFlights = returnFlights,
             TotalOut = outFlights.Count(),
             TotalReturn = returnFlights.Count(),
             LastUpdate = DateTimeOffset.Now.Date
@@ -261,12 +261,12 @@ public class FlightController : ControllerBase
         // Filtros
         if (!string.IsNullOrWhiteSpace(origin)) 
         {
-            query = query.Where(f => f.DepartureAirport.AirportCode == origin || f.DepartureAirport.City == origin);
+            query = query.Where(f => f.DepartureAirport.AirportCode.ToLower() == origin.Trim().ToLower() || f.DepartureAirport.City.ToLower() == origin.Trim().ToLower());
         }
 
         if (!string.IsNullOrWhiteSpace(destination))
         {
-            query = query.Where(f => f.ArrivalAirport.AirportCode == destination || f.ArrivalAirport.City == destination);
+            query = query.Where(f => f.ArrivalAirport.AirportCode.ToLower() == destination.Trim().ToLower() || f.ArrivalAirport.City.ToLower() == destination.Trim().ToLower());
         }
 
         if (departureDate.HasValue)
