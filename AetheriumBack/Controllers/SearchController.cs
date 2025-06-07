@@ -60,7 +60,6 @@ public class SearchController : ControllerBase
             })
             .ToListAsync();
 
-        // Coleccion vacia
         IEnumerable<FlightResponseDto> returnFlights = Enumerable.Empty<FlightResponseDto>();
         if (search.ReturnDate.HasValue)
         {
@@ -96,6 +95,7 @@ public class SearchController : ControllerBase
                 .ToListAsync();
         }
 
+        // Por si el usuario no marca la casilla de hoteles se inicializa a null
         HotelResponseDto? hotelResult = null;
         if (search.IncludeHotels)
         {
