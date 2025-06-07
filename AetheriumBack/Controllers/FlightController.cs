@@ -158,7 +158,7 @@ public class FlightController : ControllerBase
             .Include(f => f.ArrivalAirport)
             .Where(f => (f.DepartureAirport.AirportCode == search.Origin || f.DepartureAirport.City == search.Origin) &&
                         (f.ArrivalAirport.AirportCode == search.Destination || f.ArrivalAirport.City == search.Destination) &&
-                f.DepartureTime.Date >= search.DepartureDate.Date)
+                         f.DepartureTime.Date >= search.DepartureDate.Date)
             .Select(f => new FlightResponseDto
             {
                 FlightId = f.FlightId,
@@ -183,13 +183,19 @@ public class FlightController : ControllerBase
             })
             .ToListAsync();
 
-        //VUELOS VUELTA
-        IEnumerable<FlightResponseDto> returnFlights = await _context.Flight
+        //VUELOS VUELTA (si el usuario indico la fecha de vuelta)
+        IEnumerable<FlightResponseDto> returnFlights = Enumerable.Empty<FlightResponseDto>();
+        if (search.ReturnDate.HasValue)
+        {
+            if (search.ReturnDate.Value.Date < DateTime.UtcNow.Date)
+                return BadRequest("Return date cannot be in the past");
+
+            returnFlights = await _context.Flight
             .Include(f => f.DepartureAirport)
             .Include(f => f.ArrivalAirport)
             .Where(f => (f.DepartureAirport.AirportCode == search.Destination || f.DepartureAirport.City == search.Destination) &&
                         (f.ArrivalAirport.AirportCode == search.Origin || f.ArrivalAirport.City == search.Origin) &&
-                        f.DepartureTime.Date == search.ReturnDate.Date)
+                         f.DepartureTime.Date == search.ReturnDate.Value.Date)
             .Select(f => new FlightResponseDto
             {
                 FlightId = f.FlightId,
@@ -213,7 +219,7 @@ public class FlightController : ControllerBase
                 Price = f.Price
             })
             .ToListAsync();
-
+        }
 
         FlightSearchResultDto result = new()
         {
