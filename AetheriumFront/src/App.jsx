@@ -6,9 +6,11 @@ import Flights from './pages/flights';
 import Login from './components/auth/login';
 import Register from './components/auth/register';
 import ContactForm from './pages/contact';
-import AboutUS from './pages/aboutUS';
-import UserProfile  from './pages/perfilUsuario';
+import AboutUS from './pages/aboutUs';
+import UserProfile from './pages/perfilUsuario';
+import FAQ from './pages/FAQ-Page';
 
+// ✅ Solo para proteger rutas específicas
 const ProtectedRoute = ({ children }) => {
   const [user, setUser] = useState(undefined);
 
@@ -24,39 +26,40 @@ const ProtectedRoute = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  if (user === undefined) {
-    return <div>Cargando...</div>; // Puedes poner un spinner si quieres
-  }
+  if (user === undefined) return <div>Cargando...</div>;
 
   return user ? children : <Navigate to="/login" />;
 };
 
 function App() {
-  console.log("Renderizando App")
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/vuelos" />} />
+        {/* ✅ Redirección inicial a vuelos */}
+        <Route path="/" element={<Navigate to="/flights" />} />
+
+        {/* ✅ Pública */}
+        <Route path="/flights" element={<Flights />} />
+
+        {/* ✅ Públicas también */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/contact" element={<ContactForm />} />
+        <Route path="/aboutUs" element={<AboutUS />} />
+         <Route path="/FAQ-Page" element={<FAQ />} />
+
+        {/* ✅ Protegida */}
         <Route
-          path="/vuelos"
+          path="/perfilUsuario"
           element={
             <ProtectedRoute>
-              <Flights />
+              <UserProfile />
             </ProtectedRoute>
           }
         />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/contacto" element={<ContactForm />} />
-        <Route path="/sobre-nosotros" element={<AboutUS />} />
-        <Route path="/perfilUsuario" element={<UserProfile />} />
-
-
-        {/* Puedes añadir aquí otras rutas como resultadoVuelos, etc. */}
       </Routes>
     </Router>
-  )
+  );
 }
 
 export default App;
-

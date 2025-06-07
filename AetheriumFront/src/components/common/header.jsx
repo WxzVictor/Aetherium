@@ -22,7 +22,7 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      navigate("/login"); // Redirige a login
+      navigate("/flights"); // Redirige a la pagina principal
     } catch (error) {
       alert("Error al cerrar sesión: " + error.message);
     }
@@ -32,9 +32,9 @@ const Header = () => {
     <header>
       <nav className="barra-navegacion">
         <div className="logo-aetherium">
-          <a href="/vuelos">
+          <a href="/flights">
           <img src={logo} alt="Logo" /></a>
-          <span translate="no"><a href="/vuelos" >Aetherium</a></span>
+          <span translate="no"><a href="/flights" >Aetherium</a></span>
         </div>
         
         <div className="navegacion-derecha">
@@ -42,7 +42,7 @@ const Header = () => {
             <a href="/login">Iniciar sesión</a>
           ) : (
             <>
-              <span><a href="/perfilUsuario">👤 {user.displayName || "Usuario"}</a></span>&nbsp;
+              <span><a href="/perfilUsuario">👤 {user.displayName || "Iniciar sesión"}</a></span>&nbsp;
               <button onClick={handleLogout} className="bt_logout">Cerrar sesión</button>
             </>
           )}
@@ -51,7 +51,7 @@ const Header = () => {
 
       {user && (
         <div className="buscador">
-          <a href="/vuelos"><button>✈️ Vuelos</button></a>
+          <a href="/flights"><button>✈️ Vuelos</button></a>
           <a href="/hoteles"><button>🏨 Hoteles</button></a>
         </div>
       )}

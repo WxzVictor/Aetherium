@@ -13,7 +13,7 @@ html, body, #root {
 
 body {
   font-family: sans-serif;
-  background-color: #f0f0f0;
+  background: linear-gradient(to bottom, #f0f0f0, #dcdcdc);
   min-height: 100vh;
   overflow-x: hidden;
 }
@@ -40,7 +40,7 @@ body {
   width: 90%;
   max-width: 800px;
   box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
-  border: 2px solid #d4af37;
+  border: 2px solid #1d2d4a;
 }
 
 .contenedor-formulario {
@@ -50,7 +50,7 @@ body {
     width: 90%;
     max-width: 800px;
     box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
-    border: 2px solid #d4af37;
+    border: 2px solid #1d2d4a;
 }
 
 .contact-form-container label {
@@ -65,13 +65,13 @@ body {
   padding: 10px;
   margin-bottom: 1rem;
   border-radius: 8px;
-  border: 2px solid #d4af37;
+  border: 2px solid #1d2d4a;
   font-size: 1rem;
   background: #fff;
 }
 
 .contact-form-container button {
-  background-color: #d4af37;
+  background-color: #FDC921;
   color: #1d2d4a;
   border: none;
   padding: 0.7rem 1.5rem;
@@ -82,5 +82,5 @@ body {
 }
 
 .contact-form-container button:hover {
-  background-color: #f1d67a;
+  background-color: #FDD85D;
 }

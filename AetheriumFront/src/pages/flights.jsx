@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { auth } from '../services/firebaseConfig';
-import { onAuthStateChanged, getIdToken } from 'firebase/auth';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/vuelos.css';
 import '../styles/cloud.css';
 import Layout from '../components/common/layout';
 
 const Flights = () => {
-  const [user, setUser] = useState(null);
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [departureDate, setDepartureDate] = useState('');
@@ -16,30 +13,14 @@ const Flights = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [suggestionsFrom, setSuggestionsFrom] = useState([]);
   const [suggestionsTo, setSuggestionsTo] = useState([]);
+  const [cabinClass, setCabinClass] = useState('turista');
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser && currentUser.emailVerified) {
-        // Verificar el token de acceso
-        try {
-          const token = await getIdToken(currentUser);
-          if (!token) {
-            // Si no hay token válido, redirigir al login
-            navigate('/login');
-          } else {
-            setUser(currentUser);
-          }
-        } catch (error) {
-          console.error("Error al obtener el token:", error);
-          navigate('/login');
-        }
-      } else {
-        navigate('/login');
-      }
-    });
-    return () => unsubscribe();
-  }, [navigate]);
+  const classLabels = {
+    turista: 'Turista',
+    business: 'Business',
+    first: 'First',
+  };
 
   const handleSwap = () => {
     setFrom((prev) => {
@@ -72,7 +53,7 @@ const Flights = () => {
     try {
       const fromCode = from.match(/\(([A-Z]{3})\)/)?.[1] || from;
       const toCode = to.match(/\(([A-Z]{3})\)/)?.[1] || to;
-      navigate(`/resultadoVuelos/${fromCode}/${toCode}/${departureDate}/${returnDate || departureDate}`);
+      navigate(`/resultadoVuelos/${fromCode}/${toCode}/${departureDate}/${returnDate || departureDate}?clase=${cabinClass}`);
     } catch (error) {
       console.error("🚨 Error al buscar vuelos:", error);
       alert("🚨 Error al buscar vuelos");
@@ -93,7 +74,7 @@ const Flights = () => {
         </div>
 
         <div>
-          <h1>No hace falta alas para volar, ¡solo una buena oferta!</h1>
+          <h1>No hacen falta alas para volar, ¡solo una buena oferta!</h1>
           <div className="contenedor-formulario">
             <div className="grupo-input">
               <div className="etiqueta-pequeña">Desde</div>
@@ -156,7 +137,9 @@ const Flights = () => {
               <input
                 type="text"
                 id="infoViajeros"
-                value={`${passengers.adults + passengers.children} ${passengers.adults + passengers.children === 1 ? 'Adulto' : 'Viajeros'}, Turista`}
+                value={`${passengers.adults + passengers.children} ${
+                  passengers.adults + passengers.children === 1 ? 'Adulto' : 'Viajeros'
+                }, ${classLabels[cabinClass]}`}
                 readOnly
               />
             </div>
@@ -164,10 +147,35 @@ const Flights = () => {
             {showDropdown && (
               <div className="desplegable-viajeros" id="desplegableViajeros">
                 <h4>Clase de cabina</h4>
-                <p><strong>Solo podemos mostrar precios en clase turista para esta búsqueda.</strong></p>
-                <p style={{ fontSize: '0.85rem', color: '#444' }}>
-                  Indica las fechas y el destino del viaje para ver las opciones de clase business, turista prémium y primera clase.
-                </p>
+                <div className="fila-viajero">
+                  <label>
+                    <input
+                      type="radio"
+                      name="cabinClass"
+                      value="turista"
+                      checked={cabinClass === 'turista'}
+                      onChange={() => setCabinClass('turista')}
+                    /> Turista
+                  </label>
+                  <label style={{ marginLeft: '1rem' }}>
+                    <input
+                      type="radio"
+                      name="cabinClass"
+                      value="business"
+                      checked={cabinClass === 'business'}
+                      onChange={() => setCabinClass('business')}
+                    /> Business
+                  </label>
+                  <label style={{ marginLeft: '1rem' }}>
+                    <input
+                      type="radio"
+                      name="cabinClass"
+                      value="first"
+                      checked={cabinClass === 'first'}
+                      onChange={() => setCabinClass('first')}
+                    /> First
+                  </label>
+                </div>
 
                 <br />
 

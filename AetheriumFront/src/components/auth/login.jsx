@@ -20,7 +20,7 @@ const Login = () => {
         alert('Tu correo no ha sido verificado. Por favor revisa tu bandeja de entrada.');
         return;
       }
-      navigate('/vuelos');
+      navigate('/flights');
     } catch (error) {
       if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
         alert("Correo o contraseña incorrectos.");

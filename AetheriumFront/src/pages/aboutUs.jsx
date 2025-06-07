@@ -1,27 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { auth } from '../services/firebaseConfig';
-import { useNavigate } from 'react-router-dom';
-import { onAuthStateChanged } from 'firebase/auth';
 import Layout from '../components/common/layout';
 import '../styles/cloud.css';
 import '../styles/aboutUs.css';
 
 const AboutUs = () => {
-  const [user, setUser] = useState(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-      } else {
-        setUser(null);
-        navigate('/login');
-      }
-    });
-    return () => unsubscribe();
-  }, [navigate]);
-
   return (
     <Layout>
       <div className="login-page">

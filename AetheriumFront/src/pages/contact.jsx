@@ -1,8 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState} from 'react';
 import emailjs from 'emailjs-com';
-import { auth } from '../services/firebaseConfig';
-import { useNavigate } from 'react-router-dom';
-import { onAuthStateChanged } from 'firebase/auth';
 import '../styles/cloud.css';
 import '../styles/contact.css';
 import Layout from '../components/common/layout';
@@ -11,20 +8,6 @@ const ContactForm = () => {
   const form = useRef();
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-      } else {
-        setUser(null);
-        navigate('/login');
-      }
-    });
-    return () => unsubscribe();
-  }, [navigate]);
 
   const sendEmail = (e) => {
     e.preventDefault();
