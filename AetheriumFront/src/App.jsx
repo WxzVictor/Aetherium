@@ -9,6 +9,7 @@ import ContactForm from './pages/contact';
 import AboutUS from './pages/aboutUs';
 import UserProfile from './pages/perfilUsuario';
 import FAQ from './pages/FAQ-Page';
+import Hoteles from './pages/hoteles';
 
 import ResultadoVuelos from './pages/resultadoVuelos';
 import ResultadoVuelosPrueba from './pages/resultadoVuelosPrueba';
@@ -64,6 +65,9 @@ function App() {
 
         <Route path="/resultadoVuelos" element={<ResultadoVuelos />} />
         <Route path="/resultadoVuelosPrueba" element={<ResultadoVuelosPrueba />} />
+
+        <Route path="/hoteles" element={<Hoteles />} />
+
       </Routes>
     </Router>
   );
