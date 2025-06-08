@@ -1,0 +1,222 @@
+{
+  "es": {
+  "FAQ": {
+    "title": "Preguntas Frecuentes",
+    "reservas.title": "Reservas y disponibilidad",
+    "reservas.questions": [
+      {
+        "question": "¿Cómo puedo buscar un vuelo?",
+        "answer": "Solo ingresa origen, destino y fechas en el formulario principal y haz clic en 'Buscar'."
+      },
+      {
+        "question": "¿Puedo reservar vuelos para más de una persona?",
+        "answer": "Sí, selecciona el número de pasajeros en el buscador antes de iniciar la búsqueda."
+      }
+    ],
+    "pagos.title": "Pagos",
+    "pagos.questions": [
+      {
+        "question": "¿Qué métodos de pago aceptan?",
+        "answer": "Tarjetas de crédito, débito, PayPal y otros métodos seguros dependiendo del país."
+      },
+      {
+        "question": "¿Los precios incluyen impuestos?",
+        "answer": "Sí, el precio final mostrado incluye tasas e impuestos obligatorios."
+      }
+    ],
+    "cambios.title": "Cambios y cancelaciones",
+    "cambios.questions": [
+      {
+        "question": "¿Puedo cancelar mi vuelo?",
+        "answer": "Depende de la tarifa. Algunas permiten cancelación con reembolso parcial o total."
+      },
+      {
+        "question": "¿Se pueden hacer cambios de fecha?",
+        "answer": "Sí, pero pueden tener un coste adicional según la aerolínea y el tipo de tarifa."
+      }
+    ]
+  },
+
+    "userProfile": {
+      "title": "👤 Perfil del Usuario",
+      "name": "Nombre",
+      "email": "Correo",
+      "showReservations": "Ver próximas reservas 📆",
+      "hideReservations": "Ocultar reservas 📆",
+      "showStats": "Ver mis estadísticas 📊",
+      "hideStats": "Ocultar estadísticas 📊",
+      "noReservations": "No tienes reservas aún.",
+      "statsTitle": "📊 Estadísticas de Vuelo",
+      "totalFlights": "Total de vuelos",
+      "totalHours": "Horas totales voladas",
+      "mostUsedAirline": "Compañía más usada",
+      "favoriteDestination": "Destino favorito",
+      "reservationsTitle": "📅 Próximas Reservas",
+      "table": {
+        "origen": "Origen",
+        "destino": "Destino",
+        "fecha": "Fecha",
+        "salida": "Hora salida",
+        "llegada": "Hora llegada",
+        "compania": "Compañía"
+      }
+    },
+     "header": {
+      "flights": "✈️ Vuelos",
+      "hotels": "🏨 Hoteles",
+      "login": "Iniciar sesión",
+      "logout": "Cerrar sesión"
+    },
+    "footer": {
+    "navigation": "Navegación del pie de página",
+    "copyright": "Derechos de autor de Aetherium",
+    "aboutUs": "Sobre Nosotros",
+    "contact": "Contacto",
+    "faq": "Preguntas Frecuentes"
+  },
+    "flights": {
+      "title": "No necesitas alas para volar, solo una buena oferta!",
+      "labels": {
+        "city": "Ciudad",
+        "from": "Origen",
+        "to": "Destino",
+        "departure": "Fecha de ida",
+        "return": "Fecha de vuelta",
+        "passengersAndClass": "Pasajeros y clase",
+        "cabinClass": "Clase de cabina",
+        "adults": "Adultos",
+        "adultsDesc": "18 años o más",
+        "children": "Niños",
+        "childrenDesc": "0 a 17 años",
+        "searchHotel": "¿Buscar hotel también?",
+        "adult": "Adulto",
+        "passengers": "Pasajeros"
+      },
+      "class": {
+        "turista": "Turista",
+        "business": "Business",
+        "first": "Primera"
+      },
+      "buttons": {
+        "apply": "Aplicar",
+        "search": "Buscar"
+      },
+      "error": {
+        "autocomplete": "Error en autocompletado",
+        "completeFields": "❌ Por favor completa origen, destino y fecha de ida",
+        "searchError": "🚨 Error al buscar vuelos"
+      }
+    }
+  },
+  "en": {
+    "FAQ": {
+    "title": "Frequently Asked Questions",
+    "reservas.title": "Reservations and Availability",
+    "reservas.questions": [
+      {
+        "question": "How can I search for a flight?",
+        "answer": "Just enter origin, destination, and dates in the main form and click 'Search'."
+      },
+      {
+        "question": "Can I book flights for more than one person?",
+        "answer": "Yes, select the number of passengers in the search form before starting your search."
+      }
+    ],
+    "pagos.title": "Payments",
+    "pagos.questions": [
+      {
+        "question": "What payment methods are accepted?",
+        "answer": "Credit cards, debit cards, PayPal, and other secure methods depending on the country."
+      },
+      {
+        "question": "Are taxes included in the price?",
+        "answer": "Yes, the final price shown includes mandatory taxes and fees."
+      }
+    ],
+    "cambios.title": "Changes and Cancellations",
+    "cambios.questions": [
+      {
+        "question": "Can I cancel my flight?",
+        "answer": "It depends on the fare. Some allow cancellation with full or partial refund."
+      },
+      {
+        "question": "Can I change the travel date?",
+        "answer": "Yes, but it may have an additional cost depending on the airline and fare type."
+      }
+    ]
+  },
+    "userProfile": {
+      "title": "👤 User Profile",
+      "name": "Name",
+      "email": "Email",
+      "showReservations": "Show upcoming reservations 📆",
+      "hideReservations": "Hide reservations 📆",
+      "showStats": "Show my statistics 📊",
+      "hideStats": "Hide statistics 📊",
+      "noReservations": "You have no reservations yet.",
+      "statsTitle": "📊 Flight Statistics",
+      "totalFlights": "Total flights",
+      "totalHours": "Total hours flown",
+      "mostUsedAirline": "Most used airline",
+      "favoriteDestination": "Favorite destination",
+      "reservationsTitle": "📅 Upcoming Reservations",
+      "table": {
+        "origen": "From",
+        "destino": "To",
+        "fecha": "Date",
+        "salida": "Departure",
+        "llegada": "Arrival",
+        "compania": "Airline"
+      }
+    },
+    "header": {
+      "flights": "✈️ Flights",
+      "hotels": "🏨 Hotels",
+      "login": "Login",
+      "logout": "Logout"
+    },
+    "footer": {
+    "navigation": "Footer navigation",
+    "copyright": "Aetherium copyright",
+    "aboutUs": "About Us",
+    "contact": "Contact",
+    "faq": "FAQ Page"
+  },
+    "flights": {
+      "title": "You don't need wings to fly, just a good offer!",
+      "labels": {
+        "city": "City",
+        "from": "From",
+        "to": "To",
+        "departure": "Departure",
+        "return": "Return",
+        "passengersAndClass": "Passengers and cabin class",
+        "cabinClass": "Cabin class",
+        "adults": "Adults",
+        "adultsDesc": "18 years or older",
+        "children": "Children",
+        "childrenDesc": "0 to 17 years old",
+        "searchHotel": "Search hotel as well?",
+        "adult": "Adult",
+        "passengers": "Passengers"
+      },
+      "class": {
+        "turista": "Economy",
+        "business": "Business",
+        "first": "First"
+      },
+      "buttons": {
+        "apply": "Apply",
+        "search": "Search"
+      },
+      "error": {
+        "autocomplete": "Autocomplete error",
+        "completeFields": "❌ Please complete origin, destination and departure date",
+        "searchError": "🚨 Error searching flights"
+      }
+    }
+  }
+}
+
+
+

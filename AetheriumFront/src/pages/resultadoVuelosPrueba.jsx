@@ -1,5 +1,6 @@
 import React from "react";
 import "../styles/ResultadoVuelosPrueba.css";
+import Layout from '../components/common/layout';
 
 const ResultadoVuelosPrueba = () => {
   const resumen = [
@@ -55,6 +56,7 @@ const ResultadoVuelosPrueba = () => {
   ];
 
   return (
+    <Layout>
     <div className="resultado-vuelos-container">
       <div className="resumen-opciones">
         {resumen.map((item, index) => (
@@ -102,6 +104,7 @@ const ResultadoVuelosPrueba = () => {
         ))}
       </div>
     </div>
+    </Layout>
   );
 };
 

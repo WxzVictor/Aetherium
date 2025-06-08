@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './services/i18n';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './services/firebaseConfig';
