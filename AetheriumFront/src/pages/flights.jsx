@@ -74,10 +74,10 @@ const Flights = () => {
         </div>
 
         <div>
-          <h1>No hacen falta alas para volar, ¡solo una buena oferta!</h1>
+          <h1>You don't need wings to fly, just a good offer!</h1>
           <div className="contenedor-formulario">
             <div className="grupo-input">
-              <div className="etiqueta-pequeña">Desde</div>
+              <div className="etiqueta-pequeña">From</div>
               <input
                 type="text"
                 id="origen"
@@ -101,7 +101,7 @@ const Flights = () => {
             <div className="icono-intercambiar" id="botonIntercambiar" onClick={handleSwap}>↔️</div>
 
             <div className="grupo-input">
-              <div className="etiqueta-pequeña">A</div>
+              <div className="etiqueta-pequeña">To</div>
               <input
                 type="text"
                 id="destino"
@@ -123,12 +123,12 @@ const Flights = () => {
             </div>
 
             <div className="grupo-input">
-              <div className="etiqueta-pequeña">Ida</div>
+              <div className="etiqueta-pequeña">Departure</div>
               <input type="date" id="fechaIda" value={departureDate} onChange={(e) => setDepartureDate(e.target.value)} />
             </div>
 
             <div className="grupo-input">
-              <div className="etiqueta-pequeña">Vuelta</div>
+              <div className="etiqueta-pequeña">Retunr</div>
               <input type="date" id="fechaVuelta" value={returnDate} onChange={(e) => setReturnDate(e.target.value)} />
             </div>
 

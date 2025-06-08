@@ -39,11 +39,11 @@ const Header = () => {
         
         <div className="navegacion-derecha">
           {!user ? (
-            <a href="/login">Iniciar sesión</a>
+            <a href="/login">Login</a>
           ) : (
             <>
               <span><a href="/perfilUsuario">👤 {user.displayName || "Iniciar sesión"}</a></span>&nbsp;
-              <button onClick={handleLogout} className="bt_logout">Cerrar sesión</button>
+              <button onClick={handleLogout} className="bt_logout">Logout</button>
             </>
           )}
         </div>
@@ -51,8 +51,8 @@ const Header = () => {
 
       {user && (
         <div className="buscador">
-          <a href="/flights"><button>✈️ Vuelos</button></a>
-          <a href="/hoteles"><button>🏨 Hoteles</button></a>
+          <a href="/flights"><button>✈️ Flights</button></a>
+          <a href="/hoteles"><button>🏨 Hotels</button></a>
         </div>
       )}
     </header>

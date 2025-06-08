@@ -11,6 +11,8 @@ import UserProfile from './pages/perfilUsuario';
 import FAQ from './pages/FAQ-Page';
 
 import ResultadoVuelos from './pages/resultadoVuelos';
+import ResultadoVuelosPrueba from './pages/resultadoVuelosPrueba';
+
 
 // ✅ Solo para proteger rutas específicas
 const ProtectedRoute = ({ children }) => {
@@ -61,6 +63,7 @@ function App() {
         />
 
         <Route path="/resultadoVuelos" element={<ResultadoVuelos />} />
+        <Route path="/resultadoVuelosPrueba" element={<ResultadoVuelosPrueba />} />
       </Routes>
     </Router>
   );
