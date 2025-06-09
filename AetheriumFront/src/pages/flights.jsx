@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { autocompleteAirports } from '../services/flightService';
+import { searchFlights } from '../services/flightService';
+import { getAvailableSeats } from '../services/flightService';
+//import { useNavigate } from 'react-router-dom';
 import '../styles/vuelos.css';
 import '../styles/cloud.css';
 import Layout from '../components/common/layout';
@@ -16,7 +18,10 @@ const Flights = () => {
   const [suggestionsFrom, setSuggestionsFrom] = useState([]);
   const [suggestionsTo, setSuggestionsTo] = useState([]);
   const [cabinClass, setCabinClass] = useState('turista');
-  const navigate = useNavigate();
+  const [searchResults, setSearchResults] = useState(null);
+  const [availableSeats, setAvailableSeats] = useState(null);
+  const [selectedFlight, setSelectedFlight] = useState(null);
+  //const navigate = useNavigate();
 
   const classLabels = {
     turista: t('class.turista'),
@@ -38,9 +43,9 @@ const Flights = () => {
       return;
     }
     try {
-      const res = await fetch(`/api/aeropuertos?q=${encodeURIComponent(query)}`);
-      const data = await res.json();
-      setResults(data.slice(0, 10));
+      const data = await autocompleteAirports(query);
+      console.log("Resultados de autocompletado:", data);
+      setResults(data.slice(0, 5));
     } catch (error) {
       console.error(t('error.autocomplete'), error);
     }
@@ -55,14 +60,33 @@ const Flights = () => {
     try {
       const fromCode = from.match(/\(([A-Z]{3})\)/)?.[1] || from;
       const toCode = to.match(/\(([A-Z]{3})\)/)?.[1] || to;
-      navigate(
-        `/resultadoVuelos/${fromCode}/${toCode}/${departureDate}/${returnDate || departureDate}?clase=${cabinClass}`
-      );
+      const searchData = {
+        Origin: fromCode,
+        Destination: toCode,
+        DepartureDate: departureDate,
+        ReturnDate: returnDate || null,
+        Passengers: passengers.adults + passengers.children,
+        CabinClass: cabinClass,
+      };
+      const data = await searchFlights(searchData);
+      setSearchResults(data);
     } catch (error) {
       console.error(t('error.searchError'), error);
       alert(t('error.searchError'));
     }
   };
+
+  const handleShowSeats = async (flightId) => {
+    try {
+      setSelectedFlight(flightId);
+      const data = await getAvailableSeats(flightId);
+      setAvailableSeats(data);
+    } catch (error) {
+      console.error("🚨 Error al obtener asientos disponibles:", error);
+      alert("🚨 Error al obtener asientos disponibles");
+      setAvailableSeats(null);
+    }
+  }
 
   return (
     <Layout>
@@ -91,12 +115,8 @@ const Flights = () => {
               />
               <div className="dropdown-sugerencias" id="sugerenciasOrigen">
                 {suggestionsFrom.map((s, i) => (
-                  <div
-                    key={i}
-                    className="sugerencia"
-                    onClick={() => setFrom(`${s.ciudad}, ${s.pais} (${s.codigo})`)}
-                  >
-                    {s.ciudad}, {s.pais} ({s.codigo})
+                  <div key={i} className="sugerencia" onClick={() => setFrom(`${s.city}, ${s.airportName} (${s.code})`)}>
+                    {s.city}, {s.airportName} ({s.code})
                   </div>
                 ))}
               </div>
@@ -121,12 +141,8 @@ const Flights = () => {
               />
               <div className="dropdown-sugerencias" id="sugerenciasDestino">
                 {suggestionsTo.map((s, i) => (
-                  <div
-                    key={i}
-                    className="sugerencia"
-                    onClick={() => setTo(`${s.ciudad}, ${s.pais} (${s.codigo})`)}
-                  >
-                    {s.ciudad}, {s.pais} ({s.codigo})
+                  <div key={i} className="sugerencia" onClick={() => setTo(`${s.city}, ${s.airportName} (${s.code})`)}>
+                    {s.city}, {s.airportName} ({s.code})
                   </div>
                 ))}
               </div>
@@ -161,11 +177,8 @@ const Flights = () => {
               <input
                 type="text"
                 id="infoViajeros"
-                value={`${passengers.adults + passengers.children} ${
-                  passengers.adults + passengers.children === 1
-                    ? t('labels.adult')
-                    : t('labels.passengers')
-                }, ${classLabels[cabinClass]}`}
+                value={`${passengers.adults + passengers.children} ${passengers.adults + passengers.children === 1 ? 'Adulto' : 'Viajeros'
+                  }, ${classLabels[cabinClass]}`}
                 readOnly
               />
             </div>
@@ -278,6 +291,38 @@ const Flights = () => {
               {t('buttons.search')}
             </button>
           </div>
+
+          {searchResults && (
+            <div>
+              <h2>Vuelos encontrados</h2>
+              <ul>
+                {searchResults.outFlights.map(f => (
+                  <li
+                    key={f.flightId}
+                    onClick={() => handleShowSeats(f.flightId)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {f.airlineName} - {f.flightCode} - {f.departureTime}
+                    {/*Mostrar asientos si el vuelo esta seleccionado*/}
+                    {selectedFlight === f.flightId && availableSeats && (
+                      <div>
+                        <strong>Asientos disponibles:</strong>
+                        <ul>
+                          {availableSeats.availableSeats.map(seat => (
+                            <li key={seat.seatId}>
+                              {seat.seatNumber} ({seat.seatClass}, {seat.seatType})
+                            </li>
+                          ))}
+                        </ul>
+                        <div>Total: {availableSeats.totalSeats}</div>
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
         </div>
       </div>
     </Layout>
