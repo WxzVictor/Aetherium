@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
 import Layout from "../components/common/layout";
 import "./../styles/hoteles.css";
 
@@ -9,7 +9,8 @@ const allHoteles = [
         ciudad: "Barcelona",
         estrellas: 4,
         precio: 95,
-        imagen: "https://media.cntraveler.com/photos/5a7b25a20bb24c1f0b5dc18c/16:9/w_2560,c_limit/El-Palace-Hotel-__2018_Hotel-Facade.jpg"
+        imagen:
+            "https://media.cntraveler.com/photos/5a7b25a20bb24c1f0b5dc18c/16:9/w_2560,c_limit/El-Palace-Hotel-__2018_Hotel-Facade.jpg"
     },
     {
         id: 2,
@@ -17,7 +18,8 @@ const allHoteles = [
         ciudad: "Lisboa",
         estrellas: 3,
         precio: 70,
-        imagen: "https://th.bing.com/th/id/OIP.p62xNIHfdwCSKxUjU7a5FgHaFj?rs=1&pid=ImgDetMain"
+        imagen:
+            "https://th.bing.com/th/id/OIP.p62xNIHfdwCSKxUjU7a5FgHaFj?rs=1&pid=ImgDetMain"
     },
     {
         id: 3,
@@ -86,55 +88,11 @@ const allHoteles = [
 ];
 
 export default function Hoteles() {
-    const [visibleHoteles, setVisibleHoteles] = useState([]);
-    const [index, setIndex] = useState(0);
-    const [hasMore, setHasMore] = useState(true);
-    const [isLoading, setIsLoading] = useState(false);
-    const containerRef = useRef(null);
-    const batchSize = 4;
+    const [search, setSearch] = useState("");
 
-    // Carga inicial
-    useEffect(() => {
-        const initial = allHoteles.slice(0, batchSize);
-        setVisibleHoteles(initial);
-        setIndex(batchSize);
-    }, []);
-
-    // Observer para carga adicional
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            async ([entry]) => {
-                if (entry.isIntersecting && hasMore && !isLoading) {
-                    setIsLoading(true);
-
-                    const next = allHoteles.slice(index, index + batchSize);
-                    if (next.length > 0) {
-                        setVisibleHoteles(prev => {
-                            const nuevos = next.filter(hotel => !prev.some(h => h.id === hotel.id));
-                            return [...prev, ...nuevos];
-                        });
-
-                        setIndex(prev => prev + batchSize);
-                        if (index + batchSize >= allHoteles.length) {
-                            setHasMore(false);
-                        }
-                    } else {
-                        setHasMore(false);
-                    }
-
-                    setIsLoading(false);
-                }
-            },
-            { threshold: 1 }
-        );
-
-        const currentRef = containerRef.current;
-        if (currentRef) observer.observe(currentRef);
-
-        return () => {
-            if (currentRef) observer.unobserve(currentRef);
-        };
-    }, [index, hasMore, isLoading]);
+    const filteredHoteles = allHoteles.filter(hotel =>
+        hotel.ciudad.toLowerCase().includes(search.toLowerCase())
+    );
 
     return (
         <Layout>
@@ -147,8 +105,25 @@ export default function Hoteles() {
 
                 <div>
                     <h1>Hoteles Disponibles</h1>
+
                     <div className="contenedor-formulario hoteles-container">
-                        {visibleHoteles.map(hotel => (
+                        <div className="buscador-container">
+                            <input
+                                type="text"
+                                placeholder="Buscar por ciudad..."
+                                value={search}
+                                onChange={e => setSearch(e.target.value)}
+                                className="buscador-hotel"
+                            />
+
+                            {search === "" ? (
+                                <p className="fin-lista">Busca un hotel por ciudad</p>
+                            ) : filteredHoteles.length === 0 ? (
+                                <p className="fin-lista">No se encontraron hoteles en esa ciudad.</p>
+                            ) : null}
+                        </div>
+
+                        {filteredHoteles.map(hotel => (
                             <div key={hotel.id} className="hotel-card">
                                 <img
                                     src={hotel.imagen}
@@ -161,15 +136,6 @@ export default function Hoteles() {
                                 <p>Precio: {hotel.precio} € / noche</p>
                             </div>
                         ))}
-                        {hasMore && (
-                            <div
-                                ref={containerRef}
-                                style={{ height: "1px", marginTop: "2rem" }}
-                            ></div>
-                        )}
-                        {!hasMore && (
-                            <p className="fin-lista">No hay más hoteles para mostrar.</p>
-                        )}
                     </div>
                 </div>
             </div>

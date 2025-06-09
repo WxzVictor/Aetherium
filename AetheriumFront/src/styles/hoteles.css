@@ -42,3 +42,30 @@
 .hotel-card:hover p {
   color: #3f598a;
 }
+
+.buscador-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.buscador-hotel {
+  padding: 0.75rem 1rem;
+  width: 100%;
+  max-width: 320px;
+  border-radius: 8px;
+  border: 2px solid #1d2d4a;
+  font-size: 1rem;
+  outline: none;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.fin-lista {
+  text-align: center;
+  font-style: italic;
+  color: #1d2d4a;
+  margi
+}
