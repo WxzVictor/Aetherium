@@ -1,0 +1,79 @@
+.contenedor-formulario {
+    background-color: rgba(230, 230, 230, 0.8);
+    border-radius: 16px;
+    margin: 2rem auto;
+    width: 90%;
+    max-width: 800px;
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+    border: 2px solid #1d2d4a;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    min-height: 300px;
+}
+
+.flight-card-horizontal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  background-color: rgba(255, 253, 247, 0.8);
+  padding: 1rem 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.trayecto {
+  font-weight: 700;
+  margin-right: 2rem;
+  white-space: nowrap;
+}
+
+.flight-card-horizontal .info {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.cargando {
+    font-size: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+    letter-spacing: 10px;
+    color: #1d2d4a;
+}
+
+.cargando:before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #3f598a;
+    overflow: hidden;
+    animation: load 6s linear infinite;
+    border-right: 2px solid #3f598a;
+
+}
+
+@keyframes load {
+
+    0% {
+        width: 0;
+    }
+
+    50% {
+        width: 75%;
+    }
+
+    100% {
+        width: 0;
+    }
+}

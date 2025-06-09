@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './services/i18n';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './services/firebaseConfig';
@@ -9,6 +10,11 @@ import ContactForm from './pages/contact';
 import AboutUS from './pages/aboutUs';
 import UserProfile from './pages/perfilUsuario';
 import FAQ from './pages/FAQ-Page';
+import Hoteles from './pages/hoteles';
+
+import ResultadoVuelos from './pages/resultadoVuelos';
+import ResultadoVuelosPrueba from './pages/resultadoVuelosPrueba';
+
 
 // ✅ Solo para proteger rutas específicas
 const ProtectedRoute = ({ children }) => {
@@ -46,7 +52,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/contact" element={<ContactForm />} />
         <Route path="/aboutUs" element={<AboutUS />} />
-         <Route path="/FAQ-Page" element={<FAQ />} />
+        <Route path="/FAQ-Page" element={<FAQ />} />
 
         {/* ✅ Protegida */}
         <Route
@@ -57,6 +63,12 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route path="/resultadoVuelos" element={<ResultadoVuelos />} />
+        <Route path="/resultadoVuelosPrueba" element={<ResultadoVuelosPrueba />} />
+
+        <Route path="/hoteles" element={<Hoteles />} />
+
       </Routes>
     </Router>
   );
