@@ -1,5 +1,21 @@
 {
   "es": {
+    "resultadoVuelos": {
+  "title": "Resultados de la búsqueda",
+  "totalOut": "Precio total vuelos de ida",
+  "totalReturn": "Precio total vuelos de vuelta",
+  "outbound": "Vuelos de ida",
+  "return": "Vuelos de vuelta",
+  "noFlights": "No hay vuelos",
+  "noOutbound": "No se encontraron vuelos de ida.",
+  "noReturn": "No se encontraron vuelos de vuelta.",
+  "pricesOut": "Precios individuales vuelos de ida",
+  "pricesReturn": "Precios individuales vuelos de vuelta",
+  "price": "Precio",
+  "duration": "Duración",
+  "direct": "Directo",
+  "book": "Reservar"
+},
     "aboutUs": {
   "title": "Sobre Nosotros",
   "intro": "✈️ En TuCompañía, creemos que viajar debería ser sencillo, accesible y emocionante. Desde nuestros inicios en 2025, nos hemos comprometido a crear experiencias de viaje sin estrés.",
@@ -74,6 +90,7 @@
       "title": "👤 Perfil del Usuario",
       "name": "Nombre",
       "email": "Correo",
+      "contrasena": "¿Olvidaste tu contraseña?",
       "showReservations": "Ver próximas reservas 📆",
       "hideReservations": "Ocultar reservas 📆",
       "showStats": "Ver mis estadísticas 📊",
@@ -142,6 +159,23 @@
     }
   },
   "en": {
+    "resultadoVuelos": {
+  "title": "Search Results",
+  "totalOut": "Total price for outbound flights",
+  "totalReturn": "Total price for return flights",
+  "outbound": "Outbound Flights",
+  "return": "Return Flights",
+  "noFlights": "No flights",
+  "noOutbound": "No outbound flights found.",
+  "noReturn": "No return flights found.",
+  "pricesOut": "Individual prices for outbound flights",
+  "pricesReturn": "Individual prices for return flights",
+  "price": "Price",
+  "duration": "Duration",
+  "direct": "Direct",
+  "book": "Book"
+}
+,
     "aboutUs": {
   "title": "About Us",
   "intro": "✈️ At YourCompany, we believe travel should be simple, accessible, and exciting. Since our beginning in 2025, we've been committed to creating stress-free travel experiences.",
@@ -214,6 +248,7 @@
       "title": "👤 User Profile",
       "name": "Name",
       "email": "Email",
+      "contrasena": "Forgot password?",
       "showReservations": "Show upcoming reservations 📆",
       "hideReservations": "Hide reservations 📆",
       "showStats": "Show my statistics 📊",

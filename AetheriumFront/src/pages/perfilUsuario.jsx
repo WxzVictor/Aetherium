@@ -6,6 +6,7 @@ import Layout from '../components/common/layout';
 import '../styles/cloud.css';
 import '../styles/perfilUsuario.css';
 import { useTranslation } from 'react-i18next';
+import {sendPasswordResetEmail } from 'firebase/auth';
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -13,8 +14,7 @@ const UserProfile = () => {
   const [showStats, setShowStats] = useState(false);
   const [flightStats, setFlightStats] = useState([]);
   const navigate = useNavigate();
-  const { t } = useTranslation('userProfile'); // Namespace
-
+  const { t } = useTranslation('userProfile');
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -85,6 +85,18 @@ const UserProfile = () => {
     });
     return Object.entries(count).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A';
   };
+ 
+  const handleForgotPassword = async () => {
+    const emailPrompt = prompt("Introduce tu correo electrónico para recuperar la contraseña:");
+    if (emailPrompt) {
+      try {
+        await sendPasswordResetEmail(auth, emailPrompt.trim());
+        alert("Si el correo está registrado, recibirás un mensaje para restablecer tu contraseña.");
+      } catch (error) {
+        alert("Error al enviar el correo de recuperación: " + error.message);
+      }
+    }
+  };
 
   return (
     <Layout>
@@ -104,6 +116,7 @@ const UserProfile = () => {
                 <div style={{ marginBottom: '20px' }}>
                   <p><strong>{t('name')}:</strong> {user.displayName || 'Usuario'}</p>
                   <p><strong>{t('email')}:</strong> {user.email}</p>
+                  <p><strong><a href="#" onClick={handleForgotPassword} className="forgot">{t('contrasena')}</a></strong></p>
                 </div>
               )}
 
@@ -116,40 +129,33 @@ const UserProfile = () => {
                 </button>
               </div>
 
+              {/* Redesigned Reservations */}
               {showReservations && (
                 <div>
                   <h2>{t('reservationsTitle')}</h2>
                   {flightStats.length > 0 ? (
-                    <table style={{ width: '100%', marginTop: '10px', borderCollapse: 'collapse' }}>
-                      <thead>
-                        <tr style={{ backgroundColor: '#f0f0f0' }}>
-                          <th>{t('table.origen')}</th>
-                          <th>{t('table.destino')}</th>
-                          <th>{t('table.fecha')}</th>
-                          <th>{t('table.salida')}</th>
-                          <th>{t('table.llegada')}</th>
-                          <th>{t('table.compania')}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {flightStats.map((reserva, i) => (
-                          <tr key={i}>
-                            <td>{reserva.origen}</td>
-                            <td>{reserva.destino}</td>
-                            <td>{reserva.fecha}</td>
-                            <td>{reserva.horaSalida}</td>
-                            <td>{reserva.horaLlegada}</td>
-                            <td>{reserva.compania}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                    <div className="reservas-cards-container">
+                      {flightStats.map((reserva, i) => (
+                        <div key={i} className="reserva-card">
+                          <div className="reserva-header">
+                            <span className="reserva-route">{reserva.origen} ➜ {reserva.destino}</span>
+                            <span className="reserva-fecha">{reserva.fecha}</span>
+                          </div>
+                          <div className="reserva-detalles">
+                            <div><strong>{t('table.salida')}:</strong> {reserva.horaSalida}</div>
+                            <div><strong>{t('table.llegada')}:</strong> {reserva.horaLlegada}</div>
+                            <div><strong>{t('table.compania')}:</strong> {reserva.compania}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   ) : (
                     <p>{t('noReservations')}</p>
                   )}
                 </div>
               )}
 
+              {/* Stats Section */}
               {showStats && (
                 <div style={{ marginTop: '30px' }}>
                   <h2>{t('statsTitle')}</h2>
