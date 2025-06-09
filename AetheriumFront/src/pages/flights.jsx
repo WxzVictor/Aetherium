@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { autocompleteAirports } from '../services/flightService';
-import { searchFlights } from '../services/flightService';
-import { getAvailableSeats } from '../services/flightService';
-//import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { autocompleteAirports, searchFlights } from '../services/flightService';
 import '../styles/vuelos.css';
 import '../styles/cloud.css';
 import Layout from '../components/common/layout';
+import { useTranslation } from 'react-i18next';
 
 const Flights = () => {
   const { t } = useTranslation('flights');
+  const navigate = useNavigate();
+
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const [departureDate, setDepartureDate] = useState('');
@@ -18,10 +19,6 @@ const Flights = () => {
   const [suggestionsFrom, setSuggestionsFrom] = useState([]);
   const [suggestionsTo, setSuggestionsTo] = useState([]);
   const [cabinClass, setCabinClass] = useState('turista');
-  const [searchResults, setSearchResults] = useState(null);
-  const [availableSeats, setAvailableSeats] = useState(null);
-  const [selectedFlight, setSelectedFlight] = useState(null);
-  //const navigate = useNavigate();
 
   const classLabels = {
     turista: t('class.turista'),
@@ -44,7 +41,6 @@ const Flights = () => {
     }
     try {
       const data = await autocompleteAirports(query);
-      console.log("Resultados de autocompletado:", data);
       setResults(data.slice(0, 5));
     } catch (error) {
       console.error(t('error.autocomplete'), error);
@@ -53,13 +49,14 @@ const Flights = () => {
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (!from || !to || !departureDate) {
+    if (!from || !departureDate) {
       alert(t('error.completeFields'));
       return;
     }
     try {
       const fromCode = from.match(/\(([A-Z]{3})\)/)?.[1] || from;
-      const toCode = to.match(/\(([A-Z]{3})\)/)?.[1] || to;
+      const toCode = to ? (to.match(/\(([A-Z]{3})\)/)?.[1] || to) : null;
+
       const searchData = {
         Origin: fromCode,
         Destination: toCode,
@@ -68,25 +65,16 @@ const Flights = () => {
         Passengers: passengers.adults + passengers.children,
         CabinClass: cabinClass,
       };
+
       const data = await searchFlights(searchData);
-      setSearchResults(data);
+
+      // Navegar a ResultadoVuelosPrueba pasando los resultados en el estado
+      navigate('/resultadovuelosPrueba', { state: { searchResults: data } });
     } catch (error) {
       console.error(t('error.searchError'), error);
       alert(t('error.searchError'));
     }
   };
-
-  const handleShowSeats = async (flightId) => {
-    try {
-      setSelectedFlight(flightId);
-      const data = await getAvailableSeats(flightId);
-      setAvailableSeats(data);
-    } catch (error) {
-      console.error("🚨 Error al obtener asientos disponibles:", error);
-      alert("🚨 Error al obtener asientos disponibles");
-      setAvailableSeats(null);
-    }
-  }
 
   return (
     <Layout>
@@ -99,7 +87,7 @@ const Flights = () => {
 
         <div>
           <h1>{t('title')}</h1>
-          <div className="contenedor-formulario">
+          <form className="contenedor-formulario" onSubmit={handleSearch}>
             <div className="grupo-input">
               <div className="etiqueta-pequeña">{t('labels.from')}</div>
               <input
@@ -115,7 +103,11 @@ const Flights = () => {
               />
               <div className="dropdown-sugerencias" id="sugerenciasOrigen">
                 {suggestionsFrom.map((s, i) => (
-                  <div key={i} className="sugerencia" onClick={() => setFrom(`${s.city}, ${s.airportName} (${s.code})`)}>
+                  <div
+                    key={i}
+                    className="sugerencia"
+                    onClick={() => setFrom(`${s.city}, ${s.airportName} (${s.code})`)}
+                  >
                     {s.city}, {s.airportName} ({s.code})
                   </div>
                 ))}
@@ -127,7 +119,7 @@ const Flights = () => {
             </div>
 
             <div className="grupo-input">
-              <div className="etiqueta-pequeña">{t('labels.to')}</div>
+              <div className="etiqueta-pequeña">{t('labels.to')} (opcional)</div>
               <input
                 type="text"
                 id="destino"
@@ -141,7 +133,11 @@ const Flights = () => {
               />
               <div className="dropdown-sugerencias" id="sugerenciasDestino">
                 {suggestionsTo.map((s, i) => (
-                  <div key={i} className="sugerencia" onClick={() => setTo(`${s.city}, ${s.airportName} (${s.code})`)}>
+                  <div
+                    key={i}
+                    className="sugerencia"
+                    onClick={() => setTo(`${s.city}, ${s.airportName} (${s.code})`)}
+                  >
                     {s.city}, {s.airportName} ({s.code})
                   </div>
                 ))}
@@ -159,7 +155,7 @@ const Flights = () => {
             </div>
 
             <div className="grupo-input">
-              <div className="etiqueta-pequeña">{t('labels.return')}</div>
+              <div className="etiqueta-pequeña">{t('labels.return')} (opcional)</div>
               <input
                 type="date"
                 id="fechaVuelta"
@@ -177,8 +173,9 @@ const Flights = () => {
               <input
                 type="text"
                 id="infoViajeros"
-                value={`${passengers.adults + passengers.children} ${passengers.adults + passengers.children === 1 ? 'Adulto' : 'Viajeros'
-                  }, ${classLabels[cabinClass]}`}
+                value={`${passengers.adults + passengers.children} ${
+                  passengers.adults + passengers.children === 1 ? 'Adulto' : 'Viajeros'
+                }, ${classLabels[cabinClass]}`}
                 readOnly
               />
             </div>
@@ -287,42 +284,10 @@ const Flights = () => {
               <label htmlFor="buscarHotel">{t('labels.searchHotel')}</label>
             </div>
 
-            <button className="boton-buscar" type="submit" onClick={handleSearch}>
+            <button className="boton-buscar" type="submit">
               {t('buttons.search')}
             </button>
-          </div>
-
-          {searchResults && (
-            <div>
-              <h2>Vuelos encontrados</h2>
-              <ul>
-                {searchResults.outFlights.map(f => (
-                  <li
-                    key={f.flightId}
-                    onClick={() => handleShowSeats(f.flightId)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    {f.airlineName} - {f.flightCode} - {f.departureTime}
-                    {/*Mostrar asientos si el vuelo esta seleccionado*/}
-                    {selectedFlight === f.flightId && availableSeats && (
-                      <div>
-                        <strong>Asientos disponibles:</strong>
-                        <ul>
-                          {availableSeats.availableSeats.map(seat => (
-                            <li key={seat.seatId}>
-                              {seat.seatNumber} ({seat.seatClass}, {seat.seatType})
-                            </li>
-                          ))}
-                        </ul>
-                        <div>Total: {availableSeats.totalSeats}</div>
-                      </div>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
+          </form>
         </div>
       </div>
     </Layout>

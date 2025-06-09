@@ -1,8 +1,12 @@
+import React from 'react';
 import Layout from '../components/common/layout';
 import '../styles/cloud.css';
 import '../styles/aboutUs.css';
+import { useTranslation } from 'react-i18next';
 
 const AboutUs = () => {
+  const { t } = useTranslation('aboutUs');
+
   return (
     <Layout>
       <div className="login-page">
@@ -17,33 +21,24 @@ const AboutUs = () => {
         </div>
 
         <div>
-          <h1>Sobre Nosotros</h1>
+          <h1>{t('title')}</h1>
           <div className="contenedor-formulario">
             <div className="aboutUs-form-container">
-              <p>
-                ✈️ En <strong>TuCompañía</strong>, creemos que viajar debería ser sencillo, accesible y emocionante.
-                Desde nuestros inicios en 2025, nos hemos comprometido a crear experiencias de viaje sin estrés.
-              </p>
+              <p>{t('intro')}</p>
               <br />
-              <h2>Nuestra misión</h2>
-              <p>
-                Ofrecer a los viajeros todas las opciones de vuelo, hospedaje y experiencias en un solo lugar.
-                Nuestro objetivo es eliminar la confusión de las reservas online y permitir que tú tomes el control.
-              </p>
+              <h2>{t('missionTitle')}</h2>
+              <p>{t('missionText')}</p>
               <br />
-              <h2>Lo que nos hace diferentes</h2>
+              <h2>{t('differenceTitle')}</h2>
               <ul>
-                <li>✔️ Comparación de cientos de aerolíneas en segundos</li>
-                <li>✔️ Plataforma intuitiva y sin publicidad invasiva</li>
-                <li>✔️ Soporte humano y disponible 24/7</li>
-                <li>✔️ Comprometidos con la sostenibilidad del turismo</li>
+                <li>✔️ {t('difference.0')}</li>
+                <li>✔️ {t('difference.1')}</li>
+                <li>✔️ {t('difference.2')}</li>
+                <li>✔️ {t('difference.3')}</li>
               </ul>
               <br />
-              <h2>Equipo</h2>
-              <p>
-                Nuestro equipo está formado por apasionados del viaje, la tecnología y la atención al cliente.
-                Trabajamos desde múltiples países para traerte la mejor experiencia posible.
-              </p>
+              <h2>{t('teamTitle')}</h2>
+              <p>{t('teamText')}</p>
             </div>
           </div>
         </div>

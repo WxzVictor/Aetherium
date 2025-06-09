@@ -1,13 +1,16 @@
-import React, { useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import emailjs from 'emailjs-com';
 import '../styles/cloud.css';
 import '../styles/contact.css';
 import Layout from '../components/common/layout';
+import { useTranslation } from 'react-i18next';
 
 const ContactForm = () => {
   const form = useRef();
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const { t } = useTranslation('contact');
 
   const sendEmail = (e) => {
     e.preventDefault();
@@ -26,7 +29,7 @@ const ContactForm = () => {
       .catch((error) => {
         console.error('EmailJS error:', error);
         setLoading(false);
-        alert(`Error al enviar el mensaje: ${error.text || error}`);
+        alert(`${t('contact.error.sending')}: ${error.text || error}`);
       });
   };
 
@@ -44,18 +47,20 @@ const ContactForm = () => {
         </div>
 
         <div>
-          <h1>Contáctanos</h1>
+          <h1>{t('title')}</h1>
           <div className="contenedor-formulario">
             <div className="contact-form-container">
               <form ref={form} onSubmit={sendEmail}>
-                <label>Nombre</label>
-                <input type="text" name="nombre" required placeholder="Tu nombre" />
-                <label>Email</label>
-                <input type="email" name="correo" required placeholder="tu@email.com" />
-                <label>Mensaje</label>
-                <textarea name="asunto" required placeholder="Escribe tu mensaje aquí..." rows="5"></textarea>
-                <button type="submit" disabled={loading}>{loading ? 'Enviando...' : 'Enviar'}</button>
-                {sent && <p>Mensaje enviado con éxito ✅</p>}
+                <label>{t('name')}</label>
+                <input type="text" name="nombre" required placeholder={t('placeholder.name')} />
+                <label>{t('email')}</label>
+                <input type="email" name="correo" required placeholder={t('placeholder.email')} />
+                <label>{t('message')}</label>
+                <textarea name="asunto" required placeholder={t('placeholder.message')} rows="5"></textarea>
+                <button type="submit" disabled={loading}>
+                  {loading ? t('sending') : t('send')}
+                </button>
+                {sent && <p>{t('contact.success')}</p>}
               </form>
             </div>
           </div>

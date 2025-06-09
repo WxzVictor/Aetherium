@@ -67,7 +67,7 @@ const Header = () => {
         </div>
       </nav>
 
-      {user && (
+      { (
         <div className="buscador">
           <a href="/flights">
             <button>{t("flights")}</button>

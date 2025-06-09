@@ -1,5 +1,38 @@
 {
   "es": {
+    "aboutUs": {
+  "title": "Sobre Nosotros",
+  "intro": "✈️ En TuCompañía, creemos que viajar debería ser sencillo, accesible y emocionante. Desde nuestros inicios en 2025, nos hemos comprometido a crear experiencias de viaje sin estrés.",
+  "missionTitle": "Nuestra misión",
+  "missionText": "Ofrecer a los viajeros todas las opciones de vuelo, hospedaje y experiencias en un solo lugar. Nuestro objetivo es eliminar la confusión de las reservas online y permitir que tú tomes el control.",
+  "differenceTitle": "Lo que nos hace diferentes",
+  "difference": [
+    "Comparación de cientos de aerolíneas en segundos",
+    "Plataforma intuitiva y sin publicidad invasiva",
+    "Soporte humano y disponible 24/7",
+    "Comprometidos con la sostenibilidad del turismo"
+  ],
+  "teamTitle": "Equipo",
+  "teamText": "Nuestro equipo está formado por apasionados del viaje, la tecnología y la atención al cliente. Trabajamos desde múltiples países para traerte la mejor experiencia posible."
+},
+    "contact": {
+    "title": "Contáctanos",
+    "name": "Nombre",
+    "email": "Email",
+    "message": "Mensaje",
+    "send": "Enviar",
+    "sending": "Enviando...",
+    "success": "Mensaje enviado con éxito ✅",
+    "placeholder": {
+      "name": "Tu nombre",
+      "email": "tu@email.com",
+      "message": "Escribe tu mensaje aquí..."
+    },
+    "error": {
+    "sending": "Error al enviar el mensaje"
+  }
+  },
+  
   "FAQ": {
     "title": "Preguntas Frecuentes",
     "reservas.title": "Reservas y disponibilidad",
@@ -109,6 +142,38 @@
     }
   },
   "en": {
+    "aboutUs": {
+  "title": "About Us",
+  "intro": "✈️ At YourCompany, we believe travel should be simple, accessible, and exciting. Since our beginning in 2025, we've been committed to creating stress-free travel experiences.",
+  "missionTitle": "Our Mission",
+  "missionText": "To offer travelers all flight, lodging, and experience options in one place. Our goal is to remove the confusion of online booking and put you in control.",
+  "differenceTitle": "What Makes Us Different",
+  "difference": [
+    "Compare hundreds of airlines in seconds",
+    "Intuitive platform with no invasive ads",
+    "Human support available 24/7",
+    "Committed to sustainable tourism"
+  ],
+  "teamTitle": "Team",
+  "teamText": "Our team is made up of travel, technology, and customer service enthusiasts. We work from multiple countries to bring you the best experience possible."
+},
+    "contact": {
+    "title": "Contact Us",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send",
+    "sending": "Sending...",
+    "success": "Message sent successfully ✅",
+    "placeholder": {
+      "name": "Your name",
+      "email": "your@email.com",
+      "message": "Write your message here..."
+    },
+    "error": {
+    "sending": "Error sending the message"
+  }
+  },
     "FAQ": {
     "title": "Frequently Asked Questions",
     "reservas.title": "Reservations and Availability",
