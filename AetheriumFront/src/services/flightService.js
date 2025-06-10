@@ -19,17 +19,6 @@ export async function getFlightsPaged(page = 1, pageSize = 10) {
     return res.json();
 }
 
-// Buscar vuelos
-export async function searchFlights(searchData) {
-    const res = await fetch('/api/Flight/search', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(searchData)
-    });
-    if (!res.ok) throw new Error('Error al buscar vuelos');
-    return res.json();
-}
-
 // Autocompletar aeropuertos
 export async function autocompleteAirports(airport) {
     const res = await fetch(`/api/Flight/autocomplete?airport=${encodeURIComponent(airport)}`);
@@ -49,5 +38,15 @@ export async function getFilteredFlights(params) {
 export async function getAvailableSeats(flightId) {
     const res = await fetch(`/api/Flight/${flightId}/available-seats`);
     if (!res.ok) throw new Error('Error al obtener asientos disponibles');
+    return res.json();
+}
+
+export async function searchFlights(data) {
+    const res = await fetch('/api/Flight/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error('Error al buscar vuelos');
     return res.json();
 }

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { autocompleteAirports } from '../services/flightService';
-import { searchFlights } from '../services/flightService';
-import { getAvailableSeats } from '../services/flightService';
-//import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../styles/vuelos.css';
 import '../styles/cloud.css';
 import Layout from '../components/common/layout';
@@ -16,14 +14,11 @@ const Flights = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [suggestionsFrom, setSuggestionsFrom] = useState([]);
   const [suggestionsTo, setSuggestionsTo] = useState([]);
-  const [cabinClass, setCabinClass] = useState('turista');
-  const [searchResults, setSearchResults] = useState(null);
-  const [availableSeats, setAvailableSeats] = useState(null);
-  const [selectedFlight, setSelectedFlight] = useState(null);
-  //const navigate = useNavigate();
+  const [cabinClass, setCabinClass] = useState('economy');
+  const navigate = useNavigate();
 
   const classLabels = {
-    turista: 'Turista',
+    economy: 'Turista',
     business: 'Business',
     first: 'First',
   };
@@ -56,36 +51,10 @@ const Flights = () => {
       alert("❌ Completa origen, destino y fecha de ida");
       return;
     }
-    try {
       const fromCode = from.match(/\(([A-Z]{3})\)/)?.[1] || from;
       const toCode = to.match(/\(([A-Z]{3})\)/)?.[1] || to;
-      const searchData = {
-        Origin: fromCode,
-        Destination: toCode,
-        DepartureDate: departureDate,
-        ReturnDate: returnDate || null,
-        Passengers: passengers.adults + passengers.children,
-        CabinClass: cabinClass,
-      };
-      const data = await searchFlights(searchData);
-      setSearchResults(data);
-    } catch (error) {
-      console.error("🚨 Error al buscar vuelos:", error);
-      alert("🚨 Error al buscar vuelos");
-    }
+      navigate(`/resultadoVuelos?from=${fromCode}&to=${toCode}&departureDate=${departureDate}&returnDate=${returnDate || ''}&passengers=${passengers.adults + passengers.children}&cabinClass=${cabinClass}`);
   };
-
-  const handleShowSeats = async (flightId) => {
-    try {
-      setSelectedFlight(flightId);
-      const data = await getAvailableSeats(flightId);
-      setAvailableSeats(data);
-    } catch (error) {
-      console.error("🚨 Error al obtener asientos disponibles:", error);
-      alert("🚨 Error al obtener asientos disponibles");
-      setAvailableSeats(null);
-    }
-  }
 
   return (
     <Layout>
@@ -164,8 +133,7 @@ const Flights = () => {
               <input
                 type="text"
                 id="infoViajeros"
-                value={`${passengers.adults + passengers.children} ${passengers.adults + passengers.children === 1 ? 'Adulto' : 'Viajeros'
-                  }, ${classLabels[cabinClass]}`}
+                value={`${passengers.adults + passengers.children} ${passengers.adults + passengers.children === 1 ? 'Adulto' : 'Viajeros'}, ${classLabels[cabinClass]}`}
                 readOnly
               />
             </div>
@@ -178,9 +146,9 @@ const Flights = () => {
                     <input
                       type="radio"
                       name="cabinClass"
-                      value="turista"
-                      checked={cabinClass === 'turista'}
-                      onChange={() => setCabinClass('turista')}
+                      value="economy"
+                      checked={cabinClass === 'economy'}
+                      onChange={() => setCabinClass('economy')}
                     /> Turista
                   </label>
                   <label style={{ marginLeft: '1rem' }}>
@@ -238,38 +206,6 @@ const Flights = () => {
 
             <button className="boton-buscar" type="submit" onClick={handleSearch}>Buscar</button>
           </div>
-
-          {searchResults && (
-            <div>
-              <h2>Vuelos encontrados</h2>
-              <ul>
-                {searchResults.outFlights.map(f => (
-                  <li
-                    key={f.flightId}
-                    onClick={() => handleShowSeats(f.flightId)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    {f.airlineName} - {f.flightCode} - {f.departureTime}
-                    {/*Mostrar asientos si el vuelo esta seleccionado*/}
-                    {selectedFlight === f.flightId && availableSeats && (
-                      <div>
-                        <strong>Asientos disponibles:</strong>
-                        <ul>
-                          {availableSeats.availableSeats.map(seat => (
-                            <li key={seat.seatId}>
-                              {seat.seatNumber} ({seat.seatClass}, {seat.seatType})
-                            </li>
-                          ))}
-                        </ul>
-                        <div>Total: {availableSeats.totalSeats}</div>
-                      </div>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
         </div>
       </div>
     </Layout>

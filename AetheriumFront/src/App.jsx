@@ -9,6 +9,7 @@ import ContactForm from './pages/contact';
 import AboutUS from './pages/aboutUs';
 import UserProfile from './pages/perfilUsuario';
 import FAQ from './pages/FAQ-Page';
+import ResultadoVuelos from './pages/resultadoVuelos';
 
 // ✅ Solo para proteger rutas específicas
 const ProtectedRoute = ({ children }) => {
@@ -46,7 +47,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/contact" element={<ContactForm />} />
         <Route path="/aboutUs" element={<AboutUS />} />
-         <Route path="/FAQ-Page" element={<FAQ />} />
+        <Route path="/FAQ-Page" element={<FAQ />} />
+        <Route path="/resultadoVuelos" element={<ResultadoVuelos />} />
 
         {/* ✅ Protegida */}
         <Route
