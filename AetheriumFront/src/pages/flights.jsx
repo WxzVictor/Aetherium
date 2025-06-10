@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { autocompleteAirports } from '../services/flightService';
 import { useNavigate } from 'react-router-dom';
-import { autocompleteAirports, searchFlights } from '../services/flightService';
 import '../styles/vuelos.css';
 import '../styles/cloud.css';
 import Layout from '../components/common/layout';
@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 
 const Flights = () => {
   const { t } = useTranslation('flights');
-  const navigate = useNavigate();
 
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
@@ -18,12 +17,13 @@ const Flights = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [suggestionsFrom, setSuggestionsFrom] = useState([]);
   const [suggestionsTo, setSuggestionsTo] = useState([]);
-  const [cabinClass, setCabinClass] = useState('turista');
+  const [cabinClass, setCabinClass] = useState('economy');
+  const navigate = useNavigate();
 
   const classLabels = {
-    turista: t('class.turista'),
-    business: t('class.business'),
-    first: t('class.first'),
+    economy: 'Turista',
+    business: 'Business',
+    first: 'First',
   };
 
   const handleSwap = () => {
@@ -53,27 +53,9 @@ const Flights = () => {
       alert(t('error.completeFields'));
       return;
     }
-    try {
       const fromCode = from.match(/\(([A-Z]{3})\)/)?.[1] || from;
-      const toCode = to ? (to.match(/\(([A-Z]{3})\)/)?.[1] || to) : null;
-
-      const searchData = {
-        Origin: fromCode,
-        Destination: toCode,
-        DepartureDate: departureDate,
-        ReturnDate: returnDate || null,
-        Passengers: passengers.adults + passengers.children,
-        CabinClass: cabinClass,
-      };
-
-      const data = await searchFlights(searchData);
-
-      // Navegar a ResultadoVuelosPrueba pasando los resultados en el estado
-      navigate('/resultadovuelosPrueba', { state: { searchResults: data } });
-    } catch (error) {
-      console.error(t('error.searchError'), error);
-      alert(t('error.searchError'));
-    }
+      const toCode = to.match(/\(([A-Z]{3})\)/)?.[1] || to;
+      navigate(`/resultadoVuelos?from=${fromCode}&to=${toCode}&departureDate=${departureDate}&returnDate=${returnDate || ''}&passengers=${passengers.adults + passengers.children}&cabinClass=${cabinClass}`);
   };
 
   return (
@@ -188,11 +170,10 @@ const Flights = () => {
                     <input
                       type="radio"
                       name="cabinClass"
-                      value="turista"
-                      checked={cabinClass === 'turista'}
-                      onChange={() => setCabinClass('turista')}
-                    />{' '}
-                    {t('class.turista')}
+                      value="economy"
+                      checked={cabinClass === 'economy'}
+                      onChange={() => setCabinClass('economy')}
+                    /> Turista
                   </label>
                   <label style={{ marginLeft: '1rem' }}>
                     <input
