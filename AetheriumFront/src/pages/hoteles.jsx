@@ -91,7 +91,8 @@ export default function Hoteles() {
     const [search, setSearch] = useState("");
 
     const filteredHoteles = allHoteles.filter(hotel =>
-        hotel.ciudad.toLowerCase().includes(search.toLowerCase())
+        hotel.ciudad.toLowerCase().includes(search.toLowerCase().trim()) ||
+        hotel.nombre.toLowerCase().includes(search.toLowerCase().trim())
     );
 
     return (
@@ -119,7 +120,7 @@ export default function Hoteles() {
                             {search === "" ? (
                                 <p className="fin-lista">Busca un hotel por ciudad</p>
                             ) : filteredHoteles.length === 0 ? (
-                                <p className="fin-lista">No se encontraron hoteles en esa ciudad.</p>
+                                <p className="fin-lista">No se encontraron hoteles en {search}</p>
                             ) : null}
                         </div>
 
@@ -132,7 +133,7 @@ export default function Hoteles() {
                                 />
                                 <h3>{hotel.nombre}</h3>
                                 <p>Ciudad: {hotel.ciudad}</p>
-                                <p>Estrellas: {hotel.estrellas} ★</p>
+                                <p><strong>Estrellas:</strong> {"★".repeat(hotel.estrellas)}</p>
                                 <p>Precio: {hotel.precio} € / noche</p>
                             </div>
                         ))}
