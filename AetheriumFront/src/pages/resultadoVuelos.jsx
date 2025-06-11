@@ -1,95 +1,129 @@
-import { useEffect, useState } from "react";
-import "./../styles/vuelos.css";
-import { searchFlights } from "../services/flightService";
-import { useLocation } from "react-router-dom";
-import Layout from "../components/common/layout";
-import '../styles/resultadoVuelos.css';
+    import React, { useEffect, useState } from "react";
+    import { useLocation } from "react-router-dom";
+    import { useTranslation } from 'react-i18next';
+    import { searchFlights } from "../services/flightService";
+    import Layout from "../components/common/layout";
+    import "../styles/ResultadoVuelos.css";
+    import "../styles/cloud.css"; 
 
-function FlightCard({ vuelo }) {
-    return (
-        <div className="card">
-            <div className="info">
-                <span><strong>{vuelo.airlineName}</strong></span>
-                <div className="horarios">
-                    <div className="hora-bloque">
-                        <div className="hora">{new Date(vuelo.departureTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</div>
-                        <div className="ciudad">{`${vuelo.departureAirport.city} (${vuelo.departureAirport.code})`}</div>
-                    </div>
-                    <div className="duracion">
-                        {/* Puedes añadir aquí el icono ✈ o info de directo si lo deseas */}
-                    </div>
-                    <div className="hora-bloque">
-                        <div className="hora">{new Date(vuelo.arrivalTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</div>
-                        <div className="ciudad">{`${vuelo.arrivalAirport.city} (${vuelo.arrivalAirport.code})`}</div>
-                    </div>
-                </div>
-                <div className="duracion-texto">
-                    Duración: {Math.floor(vuelo.durationMinutes / 60)} h {vuelo.durationMinutes % 60} min
-                </div>
-            </div>
-            <div className="precio">
-                <div className="monto">{vuelo.price} €</div>
-                {/* <button className="btn">Reservar</button> Si quieres el botón */}
-            </div>
-        </div>
-    );
-}
-
-export default function ResultadoVuelos() {
-    const [flights, setFlights] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const ResultadoVuelos = () => {
     const location = useLocation();
+    const { t } = useTranslation('resultadoVuelos');
+
+    const [loading, setLoading] = useState(true);
+    const [outFlights, setOutFlights] = useState([]);
+    const [returnFlights, setReturnFlights] = useState([]);
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const searchData = {
-            Origin: params.get("from"),
-            Destination: params.get("to"),
-            DepartureDate: params.get("departureDate"),
-            ReturnDate: params.get("returnDate") || null,
-            Passengers: params.get("passengers") ? parseInt(params.get("passengers")) : 1,
-            CabinClass: params.get("cabinClass") || "economy"
+        Origin: params.get("from"),
+        Destination: params.get("to"),
+        DepartureDate: params.get("departureDate"),
+        ReturnDate: params.get("returnDate") || null,
+        Passengers: parseInt(params.get("passengers") || "1"),
+        CabinClass: params.get("cabinClass") || "economy"
         };
-        setLoading(true);
+
         searchFlights(searchData)
-            .then(data => {
-                setFlights(data.outFlights || []);
-                setLoading(false);
-            })
-            .catch(() => {
-                setFlights([]);
-                setLoading(false);
-            });
+        .then(data => {
+            setOutFlights(data.outFlights || []);
+            setReturnFlights(data.returnFlights || []);
+            setLoading(false);
+        })
+        .catch(() => {
+            setOutFlights([]);
+            setReturnFlights([]);
+            setLoading(false);
+        });
     }, [location.search]);
+
+    const formatDate = (datetime) => {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(datetime).toLocaleDateString(undefined, options);
+    };
+
+
+    const renderFlightCard = (vuelo) => (
+    <div className="card" key={vuelo.flightId || Math.random()}>
+        <div className="info">
+        <strong>{vuelo.airlineName}</strong>
+        <div className="fecha-vuelo" style={{ fontSize: '0.9rem', color: '#555', marginBottom: '0.5rem' }}>
+            {formatDate(vuelo.departureTime)}
+        </div>
+        <div className="horarios">
+            <div className="hora-bloque">
+            <div className="hora">
+                {new Date(vuelo.departureTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            </div>
+            <div className="ciudad">
+                {`${vuelo.departureAirport.city} (${vuelo.departureAirport.code})`}
+            </div>
+            </div>
+            <div className="duracion">
+            ✈ <span className="directo">{t('direct')}</span>
+            </div>
+            <div className="hora-bloque">
+            <div className="hora">
+                {new Date(vuelo.arrivalTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            </div>
+            <div className="ciudad">
+                {`${vuelo.arrivalAirport.city} (${vuelo.arrivalAirport.code})`}
+            </div>
+            </div>
+        </div>
+        <div className="duracion-texto">
+            {t('duration')}: {Math.floor(vuelo.durationMinutes / 60)} h {vuelo.durationMinutes % 60} min
+        </div>
+        </div>
+        <div className="precio">
+        <div className="monto">{vuelo.price/100} €</div>
+        <button className="btn">{t('book')}</button>
+        </div>
+    </div>
+    );
+
 
     return (
         <Layout>
-            <div className="login-page">
-                <div id="clouds">
-                    {[...Array(7)].map((_, i) => (
-                        <div className={`cloud x${i + 1}`} key={i}></div>
-                    ))}
-                </div>
+        {/* Fondo de nubes */}
+        <div id="clouds">
+            {[...Array(7)].map((_, i) => (
+            <div key={i} className={`cloud x${i + 1}`}></div>
+            ))}
+        </div>
+        <div className="contenido-visible">
+            
+        <div className="resultado-vuelos-container">
+            <h1>{t('title')}</h1>
 
-                <div>
-                    <h1>Resultados de Vuelos</h1>
-                    <div className="contenedor-formulario">
-                        <div className="resultado-vuelos">
-                            {loading ? (
-                                <p className="cargando" data-text="Cargando vuelos...">Cargando vuelos...</p>
-                            ) : flights.length === 0 ? (
-                                <p>No se han encontrado vuelos para tu búsqueda.</p>
-                            ) : (
-                                <div className="resultado-vuelos">
-                                    {flights.map((vuelo) => (
-                                        <FlightCard key={vuelo.flightId} vuelo={vuelo} />
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    </div>
+            {loading ? (
+            <p className="cargando" data-text="Cargando vuelos...">{t('loading')}</p>
+            ) : (
+            <>
+                <section>
+                <h2>
+                    {t('outbound')}
+                </h2>
+                <div className="resultado-vuelos">
+                    {outFlights.length === 0 ? <p>{t('noOutbound')}</p> : outFlights.map(renderFlightCard)}
                 </div>
-            </div>
+                </section>
+
+                <section style={{ marginTop: '2rem' }}>
+                    <h2>
+                    {t('return')}
+                    </h2>
+                    <div className="resultado-vuelos">
+                    {returnFlights.length === 0 ? <p>{t('noReturn')}</p> : returnFlights.map(renderFlightCard)}
+                    </div>
+                </section>
+            </>
+            )}
+        </div>
+        </div>  
         </Layout>
     );
-}
+    };
+
+    export default ResultadoVuelos;

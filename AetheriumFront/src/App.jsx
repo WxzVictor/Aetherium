@@ -13,6 +13,7 @@ import FAQ from './pages/FAQ-Page';
 import Hoteles from './pages/hoteles';
 import ResultadoVuelos from './pages/resultadoVuelos';
 import ResultadoVuelosPrueba from './pages/resultadoVuelosPrueba';
+import SelectSeat  from './pages/selectSeat';
 
 
 // ✅ Solo para proteger rutas específicas
@@ -43,16 +44,16 @@ function App() {
         {/* ✅ Redirección inicial a vuelos */}
         <Route path="/" element={<Navigate to="/flights" />} />
 
-        {/* ✅ Pública */}
+        {/* ✅ Públicas */}
         <Route path="/flights" element={<Flights />} />
-
-        {/* ✅ Públicas también */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/contact" element={<ContactForm />} />
         <Route path="/aboutUs" element={<AboutUS />} />
         <Route path="/FAQ-Page" element={<FAQ />} />
         <Route path="/resultadoVuelos" element={<ResultadoVuelos />} />
+        <Route path="/seleccionAsientos" element={<SelectSeat />} />
+        <Route path="/hoteles" element={<Hoteles />} />
 
         {/* ✅ Protegida */}
         <Route
@@ -63,12 +64,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-        <Route path="/resultadoVuelos" element={<ResultadoVuelos />} />
-        <Route path="/resultadoVuelosPrueba" element={<ResultadoVuelosPrueba />} />
-
-        <Route path="/hoteles" element={<Hoteles />} />
-
       </Routes>
     </Router>
   );

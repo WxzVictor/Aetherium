@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
-import "../styles/ResultadoVuelosPrueba.css";
 import Layout from '../components/common/layout';
 
 const ResultadoVuelosPrueba = () => {
