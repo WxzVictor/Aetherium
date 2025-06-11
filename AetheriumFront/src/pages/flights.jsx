@@ -47,15 +47,15 @@ const Flights = () => {
     }
   };
 
-  const handleSearch = async (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
     if (!from || !departureDate) {
       alert(t('error.completeFields'));
       return;
     }
-      const fromCode = from.match(/\(([A-Z]{3})\)/)?.[1] || from;
-      const toCode = to.match(/\(([A-Z]{3})\)/)?.[1] || to;
-      navigate(`/resultadoVuelos?from=${fromCode}&to=${toCode}&departureDate=${departureDate}&returnDate=${returnDate || ''}&passengers=${passengers.adults + passengers.children}&cabinClass=${cabinClass}`);
+    const fromCode = from.match(/\(([A-Z]{3})\)/)?.[1] || from;
+    const toCode = to.match(/\(([A-Z]{3})\)/)?.[1] || to;
+    navigate(`/resultadoVuelos?from=${fromCode}&to=${toCode}&departureDate=${departureDate}&returnDate=${returnDate || ''}&passengers=${passengers.adults + passengers.children}&cabinClass=${cabinClass}`);
   };
 
   return (
@@ -82,13 +82,17 @@ const Flights = () => {
                   setFrom(e.target.value);
                   handleAutocomplete(e.target.value, setSuggestionsFrom);
                 }}
+                onBlur={() => setTimeout(() => setSuggestionsFrom([]), 100)}
               />
               <div className="dropdown-sugerencias" id="sugerenciasOrigen">
                 {suggestionsFrom.map((s, i) => (
                   <div
                     key={i}
                     className="sugerencia"
-                    onClick={() => setFrom(`${s.city}, ${s.airportName} (${s.code})`)}
+                    onClick={() => {
+                      setFrom(`${s.city}, ${s.airportName} (${s.code})`);
+                      setSuggestionsFrom([]);
+                    }}
                   >
                     {s.city}, {s.airportName} ({s.code})
                   </div>
@@ -101,7 +105,7 @@ const Flights = () => {
             </div>
 
             <div className="grupo-input">
-              <div className="etiqueta-pequeña">{t('labels.to')} (opcional)</div>
+              <div className="etiqueta-pequeña">{t('labels.to')}</div>
               <input
                 type="text"
                 id="destino"
@@ -112,13 +116,17 @@ const Flights = () => {
                   setTo(e.target.value);
                   handleAutocomplete(e.target.value, setSuggestionsTo);
                 }}
+                onBlur={() => setTimeout(() => setSuggestionsTo([]), 100)}
               />
               <div className="dropdown-sugerencias" id="sugerenciasDestino">
                 {suggestionsTo.map((s, i) => (
                   <div
                     key={i}
                     className="sugerencia"
-                    onClick={() => setTo(`${s.city}, ${s.airportName} (${s.code})`)}
+                    onClick={() => {
+                      setTo(`${s.city}, ${s.airportName} (${s.code})`);
+                      setSuggestionsTo([]);
+                    }}
                   >
                     {s.city}, {s.airportName} ({s.code})
                   </div>
@@ -182,8 +190,7 @@ const Flights = () => {
                       value="business"
                       checked={cabinClass === 'business'}
                       onChange={() => setCabinClass('business')}
-                    />{' '}
-                    {t('class.business')}
+                    /> {t('class.business')}
                   </label>
                   <label style={{ marginLeft: '1rem' }}>
                     <input
@@ -192,8 +199,7 @@ const Flights = () => {
                       value="first"
                       checked={cabinClass === 'first'}
                       onChange={() => setCabinClass('first')}
-                    />{' '}
-                    {t('class.first')}
+                    /> {t('class.first')}
                   </label>
                 </div>
 
@@ -211,16 +217,12 @@ const Flights = () => {
                       onClick={() =>
                         setPassengers((p) => ({ ...p, adults: Math.max(1, p.adults - 1) }))
                       }
-                    >
-                      −
-                    </button>
+                    >−</button>
                     <span id="contadorAdultos">{passengers.adults}</span>
                     <button
                       type="button"
                       onClick={() => setPassengers((p) => ({ ...p, adults: p.adults + 1 }))}
-                    >
-                      +
-                    </button>
+                    >+</button>
                   </div>
                 </div>
 
@@ -236,16 +238,12 @@ const Flights = () => {
                       onClick={() =>
                         setPassengers((p) => ({ ...p, children: Math.max(0, p.children - 1) }))
                       }
-                    >
-                      −
-                    </button>
+                    >−</button>
                     <span id="contadorNiños">{passengers.children}</span>
                     <button
                       type="button"
                       onClick={() => setPassengers((p) => ({ ...p, children: p.children + 1 }))}
-                    >
-                      +
-                    </button>
+                    >+</button>
                   </div>
                 </div>
 
@@ -276,3 +274,4 @@ const Flights = () => {
 };
 
 export default Flights;
+
