@@ -38,10 +38,17 @@ body {
   width: 320px;
 }
 
+.logo {
+  text-align: center;
+  margin-top: -10%;
+  margin-bottom: -10%;
+}
+
 .logo img {
-  width: 100%;
-  margin-bottom: -30%;
-  margin-top: -30%;
+  width: 300%;
+  height: auto;
+  display: inline-block;
+  margin-left: 50%;
 }
 
 h2 {

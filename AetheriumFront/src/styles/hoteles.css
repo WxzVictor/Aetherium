@@ -43,6 +43,44 @@
   color: #3f598a;
 }
 
+.estrellas {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  margin: 0.5rem 0;
+}
+
+.estrella {
+  color: #ccc;
+  font-size: 1.2rem;
+}
+
+.estrella.llena {
+  color: #6e8ec9;
+}
+
+.ver-mas-container {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.ver-mas-btn {
+  background-color: #1d2d4a;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.ver-mas-btn:hover {
+  color: #1d2d4a;
+  background-color: #6e8ec9;
+}
+
 .buscador-container {
   display: flex;
   flex-direction: column;
@@ -51,7 +89,7 @@
   width: 100%;
 }
 
-.buscador-hotel {
+.filtros-container .buscador-hotel {
   padding: 0.75rem 1rem;
   width: 100%;
   max-width: 320px;
@@ -63,8 +101,35 @@
   margin-bottom: 1rem;
 }
 
+.buscador-hotel::placeholder {
+  color: #1d2d4a;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+.filtros-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.buscador-container .buscador-hotel,
+.selector-estrellas {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 2px solid #274472;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+
 .fin-lista {
   text-align: center;
+  width: 100%;
+  margin-top: 2rem;
   font-style: italic;
   color: #1d2d4a;
+  grid-column: 1 / -1;
 }
