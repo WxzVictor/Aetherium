@@ -12,7 +12,6 @@ import UserProfile from './pages/perfilUsuario';
 import FAQ from './pages/FAQ-Page';
 import Hoteles from './pages/hoteles';
 import ResultadoVuelos from './pages/resultadoVuelos';
-import ResultadoVuelosPrueba from './pages/resultadoVuelosPrueba';
 import SelectSeat  from './pages/selectSeat';
 
 
