@@ -3,19 +3,33 @@ import "./../styles/vuelos.css";
 import { searchFlights } from "../services/flightService";
 import { useLocation } from "react-router-dom";
 import Layout from "../components/common/layout";
+import '../styles/resultadoVuelos.css';
 
 function FlightCard({ vuelo }) {
     return (
-        <div className="flight-card-horizontal">
-            <div className="trayecto">
-                {vuelo.departureAirport.city} ({vuelo.departureAirport.code}) → {vuelo.arrivalAirport.city} ({vuelo.arrivalAirport.code})
-            </div>
+        <div className="card">
             <div className="info">
-                <span>Salida: {new Date(vuelo.departureTime).toLocaleString()}</span>
-                <span>Llegada: {new Date(vuelo.arrivalTime).toLocaleString()}</span>
-                <span>Duracion: {vuelo.durationMinutes} min</span>
-                <span>Precio: {vuelo.price} €</span>
-                <span>Aerolinea: {vuelo.airlineName}</span>
+                <span><strong>{vuelo.airlineName}</strong></span>
+                <div className="horarios">
+                    <div className="hora-bloque">
+                        <div className="hora">{new Date(vuelo.departureTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</div>
+                        <div className="ciudad">{`${vuelo.departureAirport.city} (${vuelo.departureAirport.code})`}</div>
+                    </div>
+                    <div className="duracion">
+                        {/* Puedes añadir aquí el icono ✈ o info de directo si lo deseas */}
+                    </div>
+                    <div className="hora-bloque">
+                        <div className="hora">{new Date(vuelo.arrivalTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</div>
+                        <div className="ciudad">{`${vuelo.arrivalAirport.city} (${vuelo.arrivalAirport.code})`}</div>
+                    </div>
+                </div>
+                <div className="duracion-texto">
+                    Duración: {Math.floor(vuelo.durationMinutes / 60)} h {vuelo.durationMinutes % 60} min
+                </div>
+            </div>
+            <div className="precio">
+                <div className="monto">{vuelo.price} €</div>
+                {/* <button className="btn">Reservar</button> Si quieres el botón */}
             </div>
         </div>
     );
