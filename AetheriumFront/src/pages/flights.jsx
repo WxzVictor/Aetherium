@@ -58,6 +58,22 @@ const Flights = () => {
     navigate(`/resultadoVuelos?from=${fromCode}&to=${toCode}&departureDate=${departureDate}&returnDate=${returnDate || ''}&passengers=${passengers.adults + passengers.children}&cabinClass=${cabinClass}`);
   };
 
+  // HANDLERS PARA AUTOCOMPLETADO CON ENTER
+  const handleKeyDownFrom = (e) => {
+    if (e.key === 'Enter' && suggestionsFrom.length > 0) {
+      setFrom(`${suggestionsFrom[0].city}, ${suggestionsFrom[0].airportName} (${suggestionsFrom[0].code})`);
+      setSuggestionsFrom([]);
+      e.preventDefault();
+    }
+  };
+  const handleKeyDownTo = (e) => {
+    if (e.key === 'Enter' && suggestionsTo.length > 0) {
+      setTo(`${suggestionsTo[0].city}, ${suggestionsTo[0].airportName} (${suggestionsTo[0].code})`);
+      setSuggestionsTo([]);
+      e.preventDefault();
+    }
+  };
+
   return (
     <Layout>
       <div className="login-page">
@@ -66,7 +82,6 @@ const Flights = () => {
             <div key={i} className={`cloud x${i + 1}`}></div>
           ))}
         </div>
-
         <div>
           <h1>{t('title')}</h1>
           <form className="contenedor-formulario" onSubmit={handleSearch}>
@@ -83,6 +98,7 @@ const Flights = () => {
                   handleAutocomplete(e.target.value, setSuggestionsFrom);
                 }}
                 onBlur={() => setTimeout(() => setSuggestionsFrom([]), 100)}
+                onKeyDown={handleKeyDownFrom}
               />
               <div className="dropdown-sugerencias" id="sugerenciasOrigen">
                 {suggestionsFrom.map((s, i) => (
@@ -117,6 +133,7 @@ const Flights = () => {
                   handleAutocomplete(e.target.value, setSuggestionsTo);
                 }}
                 onBlur={() => setTimeout(() => setSuggestionsTo([]), 100)}
+                onKeyDown={handleKeyDownTo}
               />
               <div className="dropdown-sugerencias" id="sugerenciasDestino">
                 {suggestionsTo.map((s, i) => (
