@@ -1,67 +1,67 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
 }
 
 html,
 body,
 #root {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: sans-serif;
-    background: linear-gradient(to bottom, #f0f0f0, #dcdcdc);
-    min-height: 100vh;
-    overflow-x: hidden;
+  background: linear-gradient(to bottom, #f0f0f0, #dcdcdc);
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 .contact-page {
-    padding: 2rem;
-    background: linear-gradient(to bottom, #f0f0f0, #dcdcdc);
-    color: #1d2d4a;
-    min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(to bottom, #f0f0f0, #dcdcdc);
+  color: #1d2d4a;
+  min-height: 100vh;
 }
 
 .contact-page h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-    font-size: 2rem;
-    color: #1d2d4a;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #1d2d4a;
 }
 
 .contenedor-formulario {
-    background-color: rgba(255, 252, 245, 0.8);
-    border-radius: 16px;
-    margin: 2rem auto;
-    width: 90%;
-    max-width: 800px;
-    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
-    border: 2px solid #1d2d4a;
+  background-color: rgba(255, 252, 245, 0.8);
+  border-radius: 16px;
+  margin: 2rem auto;
+  width: 90%;
+  max-width: 800px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+  border: 2px solid #1d2d4a;
 }
 
 .perfilUsuario-form-container {
-    background-color: rgba(216, 216, 216, 0.8);
-    border-radius: 16px;
-    padding: 2rem;
-    margin: 2rem auto;
-    width: 90%;
-    max-width: 800px;
-    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
-    border: 2px solid #1d2d4a;
+  background-color: rgba(216, 216, 216, 0.8);
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 2rem auto;
+  width: 90%;
+  max-width: 800px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+  border: 2px solid #1d2d4a;
 }
 
-p, li {
-    color: #3f598a;
-    font-weight: 500;
+p,
+li {
+  color: #3f598a;
+  font-weight: 500;
 }
 
 strong {
-    color: #1d2d4a;
+  color: #1d2d4a;
 }
 
 button {
@@ -81,6 +81,7 @@ button:hover {
   background-color: #f1d67a;
   color: #3f598a;
 }
+
 .reservas-cards-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -122,4 +123,19 @@ button:hover {
 .reserva-detalles div {
   margin-top: 0.25rem;
   font-size: 0.9rem;
+}
+
+/* Nuevas clases movidas desde JSX */
+.perfil-info {
+  margin-bottom: 20px;
+}
+
+.toggle-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.stats-section {
+  margin-top: 30px;
 }

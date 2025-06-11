@@ -16,7 +16,7 @@
   "direct": "Directo",
   "book": "Reservar"
 },
-    "aboutUs": {
+  "aboutUs": {
   "title": "Sobre Nosotros",
   "intro": "✈️ En TuCompañía, creemos que viajar debería ser sencillo, accesible y emocionante. Desde nuestros inicios en 2025, nos hemos comprometido a crear experiencias de viaje sin estrés.",
   "missionTitle": "Nuestra misión",
@@ -91,7 +91,7 @@
       "name": "Nombre",
       "email": "Correo",
       "contrasena": "¿Olvidaste tu contraseña?",
-      "showReservations": "Ver próximas reservas 📆",
+      "showReservations": "Ver mis reservas 📆",
       "hideReservations": "Ocultar reservas 📆",
       "showStats": "Ver mis estadísticas 📊",
       "hideStats": "Ocultar estadísticas 📊",
@@ -112,10 +112,9 @@
       }
     },
      "header": {
-      "flights": "✈️ Vuelos",
-      "hotels": "🏨 Hoteles",
       "login": "Iniciar sesión",
-      "logout": "Cerrar sesión"
+        "logout": "Cerrar sesión"
+      
     },
     "footer": {
     "navigation": "Navegación del pie de página",
@@ -126,6 +125,8 @@
   },
     "flights": {
       "title": "No necesitas alas para volar, solo una buena oferta!",
+      "flights": "✈️ Vuelos",
+        "hotels": "🏨 Hoteles",
       "labels": {
         "city": "Ciudad",
         "from": "Origen",
@@ -141,6 +142,8 @@
         "searchHotel": "¿Buscar hotel también?",
         "adult": "Adulto",
         "passengers": "Pasajeros"
+        
+        
       },
       "class": {
         "turista": "Turista",
@@ -249,7 +252,7 @@
       "name": "Name",
       "email": "Email",
       "contrasena": "Forgot password?",
-      "showReservations": "Show upcoming reservations 📆",
+      "showReservations": "Show my reservations 📆",
       "hideReservations": "Hide reservations 📆",
       "showStats": "Show my statistics 📊",
       "hideStats": "Hide statistics 📊",
@@ -270,8 +273,6 @@
       }
     },
     "header": {
-      "flights": "✈️ Flights",
-      "hotels": "🏨 Hotels",
       "login": "Login",
       "logout": "Logout"
     },
@@ -284,6 +285,8 @@
   },
     "flights": {
       "title": "You don't need wings to fly, just a good offer!",
+      "flights": "✈️ Flights",
+        "hotels": "🏨 Hotels",
       "labels": {
         "city": "City",
         "from": "From",
@@ -299,6 +302,7 @@
         "searchHotel": "Search hotel as well?",
         "adult": "Adult",
         "passengers": "Passengers"
+        
       },
       "class": {
         "turista": "Economy",

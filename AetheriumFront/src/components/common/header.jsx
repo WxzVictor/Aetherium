@@ -66,17 +66,6 @@ const Header = () => {
           )}
         </div>
       </nav>
-
-      { (
-        <div className="buscador">
-          <a href="/flights">
-            <button>{t("flights")}</button>
-          </a>
-          <a href="/hoteles">
-            <button>{t("hotels")}</button>
-          </a>
-        </div>
-      )}
     </header>
   );
 };

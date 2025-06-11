@@ -3,12 +3,12 @@ import "../styles/selectSeat.css";
 import Layout from "../components/common/layout";
 
 const fakeSeatData = [
-  { seatNumber: "A1", seatClass: "economy", seatType: "window", seatStatus: false },
-  { seatNumber: "A2", seatClass: "first", seatType: "middle", seatStatus: true },
+  { seatNumber: "A1", seatClass: "economy", seatType: "window", seatStatus: true },
+  { seatNumber: "A2", seatClass: "first", seatType: "middle", seatStatus: false },
   { seatNumber: "A3", seatClass: "economy", seatType: "aisle", seatStatus: false },
   { seatNumber: "B1", seatClass: "economy", seatType: "window", seatStatus: false },
   { seatNumber: "B2", seatClass: "economy", seatType: "middle", seatStatus: false },
-  { seatNumber: "B3", seatClass: "economy", seatType: "aisle", seatStatus: true },
+  { seatNumber: "B3", seatClass: "economy", seatType: "aisle", seatStatus: false },
   { seatNumber: "C1", seatClass: "economy", seatType: "window", seatStatus: false },
   { seatNumber: "C2", seatClass: "economy", seatType: "middle", seatStatus: false },
   { seatNumber: "C3", seatClass: "economy", seatType: "aisle", seatStatus: false },
@@ -60,6 +60,9 @@ const SelectSeat = () => {
     <div className="contenedor-visible">
     <div className="seat-picker">
       <h2>Selecciona tu asiento</h2>
+      {selectedSeat && (
+        <div className="selection-info">Asiento seleccionado: {selectedSeat}</div>
+      )}
       <div className="seat-grid">
         {sortedRows.map((row) => (
           <div className="seat-row" key={row}>
@@ -70,9 +73,7 @@ const SelectSeat = () => {
           </div>
         ))}
       </div>
-      {selectedSeat && (
-        <div className="selection-info">Asiento seleccionado: {selectedSeat}</div>
-      )}
+      
     </div>
     </div>
     

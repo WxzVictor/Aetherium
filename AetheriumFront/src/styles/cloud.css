@@ -4,7 +4,7 @@
   height: 100%;
   background: linear-gradient(to bottom, #6798C0, #99D6EA);
   overflow: hidden;
-  z-index: 0;
+  z-index: -1;
 }
 
 .cloud {

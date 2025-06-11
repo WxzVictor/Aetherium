@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { onAuthStateChanged, getIdToken } from 'firebase/auth';
+import { onAuthStateChanged, getIdToken, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../services/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/common/layout';
 import '../styles/cloud.css';
 import '../styles/perfilUsuario.css';
 import { useTranslation } from 'react-i18next';
-import {sendPasswordResetEmail } from 'firebase/auth';
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -85,7 +84,7 @@ const UserProfile = () => {
     });
     return Object.entries(count).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A';
   };
- 
+
   const handleForgotPassword = async () => {
     const emailPrompt = prompt("Introduce tu correo electrónico para recuperar la contraseña:");
     if (emailPrompt) {
@@ -100,7 +99,7 @@ const UserProfile = () => {
 
   return (
     <Layout>
-      <div className="login-page">
+      
         <div id="clouds">
           {[...Array(7)].map((_, i) => (
             <div className={`cloud x${i + 1}`} key={i}></div>
@@ -113,14 +112,14 @@ const UserProfile = () => {
           <div className="contenedor-formulario">
             <div className="perfilUsuario-form-container">
               {user && (
-                <div style={{ marginBottom: '20px' }}>
+                <div className="perfil-info">
                   <p><strong>{t('name')}:</strong> {user.displayName || 'Usuario'}</p>
                   <p><strong>{t('email')}:</strong> {user.email}</p>
                   <p><strong><a href="#" onClick={handleForgotPassword} className="forgot">{t('contrasena')}</a></strong></p>
                 </div>
               )}
 
-              <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+              <div className="toggle-buttons">
                 <button onClick={() => setShowReservations(!showReservations)}>
                   {showReservations ? t('hideReservations') : t('showReservations')}
                 </button>
@@ -129,7 +128,6 @@ const UserProfile = () => {
                 </button>
               </div>
 
-              {/* Redesigned Reservations */}
               {showReservations && (
                 <div>
                   <h2>{t('reservationsTitle')}</h2>
@@ -155,9 +153,8 @@ const UserProfile = () => {
                 </div>
               )}
 
-              {/* Stats Section */}
               {showStats && (
-                <div style={{ marginTop: '30px' }}>
+                <div className="stats-section">
                   <h2>{t('statsTitle')}</h2>
                   <p><strong>{t('totalFlights')}:</strong> {flightStats.length}</p>
                   <p><strong>{t('totalHours')}:</strong> {calcularHorasTotales()}h</p>
@@ -168,7 +165,7 @@ const UserProfile = () => {
             </div>
           </div>
         </div>
-      </div>
+      
     </Layout>
   );
 };
