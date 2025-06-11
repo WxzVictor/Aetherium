@@ -10,7 +10,7 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
     {
         builder.ToTable(nameof(Reservation), "Aetherium");
 
-        builder.HasKey(c => c.RerservationId);
+        builder.HasKey(c => c.ReservationId);
 
         builder.Property(c => c.ReservationDateTime)
             .HasColumnName(nameof(Reservation.ReservationDateTime))
