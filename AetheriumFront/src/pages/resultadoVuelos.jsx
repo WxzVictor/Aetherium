@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { searchFlights } from "../services/flightService";
+import { auth } from "../services/firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
 import Layout from "../components/common/layout";
 import "../styles/ResultadoVuelos.css";
 import "../styles/cloud.css";
 
 const ResultadoVuelos = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const { t } = useTranslation('resultadoVuelos');
 
     const [loading, setLoading] = useState(true);
     const [outFlights, setOutFlights] = useState([]);
     const [returnFlights, setReturnFlights] = useState([]);
+    const [user, setUser] = useState(null);
     const [combinedResults, setCombinedResults] = useState([]);
     const [hasReturn, setHasReturn] = useState(false);
 
@@ -21,21 +25,21 @@ const ResultadoVuelos = () => {
         const returnDate = params.get("returnDate");
 
         const searchData = {
-            Origin: params.get("from"),
-            Destination: params.get("to"),
-            DepartureDate: params.get("departureDate"),
-            ReturnDate: returnDate || null,
-            Passengers: parseInt(params.get("passengers") || "1"),
-            CabinClass: params.get("cabinClass") || "economy"
+                Origin: params.get("from"),
+                Destination: params.get("to"),
+                DepartureDate: params.get("departureDate"),
+                ReturnDate: returnDate || null,
+                Passengers: parseInt(params.get("passengers") || "1"),
+                CabinClass: params.get("cabinClass") || "economy"
         };
 
         setHasReturn(returnDate !== null); // <-- indica si se seleccionó día de vuelta
 
         searchFlights(searchData)
-            .then(data => {
-                setOutFlights(data.outFlights || []);
-                setReturnFlights(data.returnFlights || []);
-
+                .then(data => {
+                    setOutFlights(data.outFlights || []);
+                    setReturnFlights(data.returnFlights || []);
+    
                 if (returnDate && data.returnFlights && data.returnFlights.length > 0) {
                     const combinados = [];
                     data.outFlights.forEach(ida => {
@@ -49,18 +53,39 @@ const ResultadoVuelos = () => {
                 }
 
                 setLoading(false);
-            })
-            .catch(() => {
-                setOutFlights([]);
-                setReturnFlights([]);
-                setCombinedResults([]);
+                })
+                .catch(() => {
+                    setOutFlights([]);
+                    setReturnFlights([]);
+                    setCombinedResults([]);
                 setLoading(false);
-            });
+                });
     }, [location.search]);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            if (currentUser && currentUser.emailVerified) {
+                setUser(currentUser);
+            } else {
+                setUser(null);
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
 
     const formatDate = (datetime) => {
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(datetime).toLocaleDateString(undefined, options);
+    };
+
+    const handleReserve = (vuelo) => {
+        if (!user) {
+            sessionStorage.setItem('vueloPendiente', JSON.stringify(vuelo));
+            navigate('/login');
+        } else {
+            navigate('/confirmReservation', { state: { vuelo } });
+        }
     };
 
     const renderFlightCard = (vuelo, mostrarPrecioIndividual = true) => (
@@ -99,7 +124,7 @@ const ResultadoVuelos = () => {
             {mostrarPrecioIndividual && (
                 <div className="precio">
                     <div className="monto">{(vuelo.price / 100).toFixed(2)} €</div>
-                    {!hasReturn && <button className="btn">{t('book')}</button>}
+                    <button className="btn" onClick={() => handleReserve(vuelo)}>{t('book')}</button>
                 </div>
             )}
         </div>

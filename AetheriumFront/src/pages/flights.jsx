@@ -47,31 +47,19 @@ const Flights = () => {
     }
   };
 
-  const handleSearch = async (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
     if (!from || !departureDate) {
       alert(t('error.completeFields'));
       return;
     }
-
     const fromCode = from.match(/\(([A-Z]{3})\)/)?.[1] || from;
     const toCode = to.match(/\(([A-Z]{3})\)/)?.[1] || to;
-
     navigate(`/resultadoVuelos?from=${fromCode}&to=${toCode}&departureDate=${departureDate}&returnDate=${returnDate || ''}&passengers=${passengers.adults + passengers.children}&cabinClass=${cabinClass}`);
   };
 
   return (
     <Layout>
-      { (
-        <div className="buscador">
-          <a href="/flights">
-            <button>{t("flights")}</button>
-          </a>
-          <a href="/hoteles">
-            <button>{t("hotels")}</button>
-          </a>
-        </div>
-      )}
       <div className="login-page">
         <div id="clouds">
           {[...Array(7)].map((_, i) => (
@@ -82,7 +70,6 @@ const Flights = () => {
         <div>
           <h1>{t('title')}</h1>
           <form className="contenedor-formulario" onSubmit={handleSearch}>
-            {/* ORIGEN */}
             <div className="grupo-input">
               <div className="etiqueta-pequeña">{t('labels.from')}</div>
               <input
@@ -95,14 +82,6 @@ const Flights = () => {
                   setFrom(e.target.value);
                   handleAutocomplete(e.target.value, setSuggestionsFrom);
                 }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && suggestionsFrom.length > 0) {
-                    e.preventDefault();
-                    const s = suggestionsFrom[0];
-                    setFrom(`${s.city}, ${s.airportName} (${s.code})`);
-                    setSuggestionsFrom([]);
-                  }
-                }}
                 onBlur={() => setTimeout(() => setSuggestionsFrom([]), 100)}
               />
               <div className="dropdown-sugerencias" id="sugerenciasOrigen">
@@ -110,7 +89,10 @@ const Flights = () => {
                   <div
                     key={i}
                     className="sugerencia"
-                    onClick={() => setFrom(`${s.city}, ${s.airportName} (${s.code})`)}
+                    onClick={() => {
+                      setFrom(`${s.city}, ${s.airportName} (${s.code})`);
+                      setSuggestionsFrom([]);
+                    }}
                   >
                     {s.city}, {s.airportName} ({s.code})
                   </div>
@@ -118,12 +100,10 @@ const Flights = () => {
               </div>
             </div>
 
-            {/* SWAP */}
             <div className="icono-intercambiar" id="botonIntercambiar" onClick={handleSwap}>
               ↔️
             </div>
 
-            {/* DESTINO */}
             <div className="grupo-input">
               <div className="etiqueta-pequeña">{t('labels.to')}</div>
               <input
@@ -136,14 +116,6 @@ const Flights = () => {
                   setTo(e.target.value);
                   handleAutocomplete(e.target.value, setSuggestionsTo);
                 }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && suggestionsTo.length > 0) {
-                    e.preventDefault();
-                    const s = suggestionsTo[0];
-                    setTo(`${s.city}, ${s.airportName} (${s.code})`);
-                    setSuggestionsTo([]);
-                  }
-                }}
                 onBlur={() => setTimeout(() => setSuggestionsTo([]), 100)}
               />
               <div className="dropdown-sugerencias" id="sugerenciasDestino">
@@ -151,7 +123,10 @@ const Flights = () => {
                   <div
                     key={i}
                     className="sugerencia"
-                    onClick={() => setTo(`${s.city}, ${s.airportName} (${s.code})`)}
+                    onClick={() => {
+                      setTo(`${s.city}, ${s.airportName} (${s.code})`);
+                      setSuggestionsTo([]);
+                    }}
                   >
                     {s.city}, {s.airportName} ({s.code})
                   </div>
@@ -159,7 +134,6 @@ const Flights = () => {
               </div>
             </div>
 
-            {/* FECHAS */}
             <div className="grupo-input">
               <div className="etiqueta-pequeña">{t('labels.departure')}</div>
               <input
@@ -180,7 +154,6 @@ const Flights = () => {
               />
             </div>
 
-            {/* PASAJEROS Y CLASE */}
             <div
               className="grupo-input"
               id="abrirDesplegable"
@@ -239,17 +212,17 @@ const Flights = () => {
                     <small>{t('labels.adultsDesc')}</small>
                   </div>
                   <div className="controles">
-                    <button type="button" onClick={() =>
-                      setPassengers((p) => ({ ...p, adults: Math.max(1, p.adults - 1) }))
-                    }>
-                      −
-                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setPassengers((p) => ({ ...p, adults: Math.max(1, p.adults - 1) }))
+                      }
+                    >−</button>
                     <span id="contadorAdultos">{passengers.adults}</span>
-                    <button type="button" onClick={() =>
-                      setPassengers((p) => ({ ...p, adults: p.adults + 1 }))
-                    }>
-                      +
-                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPassengers((p) => ({ ...p, adults: p.adults + 1 }))}
+                    >+</button>
                   </div>
                 </div>
 
@@ -260,27 +233,31 @@ const Flights = () => {
                     <small>{t('labels.childrenDesc')}</small>
                   </div>
                   <div className="controles">
-                    <button type="button" onClick={() =>
-                      setPassengers((p) => ({ ...p, children: Math.max(0, p.children - 1) }))
-                    }>
-                      −
-                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setPassengers((p) => ({ ...p, children: Math.max(0, p.children - 1) }))
+                      }
+                    >−</button>
                     <span id="contadorNiños">{passengers.children}</span>
-                    <button type="button" onClick={() =>
-                      setPassengers((p) => ({ ...p, children: p.children + 1 }))
-                    }>
-                      +
-                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPassengers((p) => ({ ...p, children: p.children + 1 }))}
+                    >+</button>
                   </div>
                 </div>
 
-                <button className="boton-aplicar" type="button" onClick={() => setShowDropdown(false)}>
+                <button
+                  className="boton-aplicar"
+                  id="botonAplicar"
+                  type="button"
+                  onClick={() => setShowDropdown(false)}
+                >
                   {t('buttons.apply')}
                 </button>
               </div>
             )}
 
-            {/* HOTEL CHECK */}
             <div className="grupo-input grupo-checkbox">
               <input type="checkbox" id="buscarHotel" />
               <label htmlFor="buscarHotel">{t('labels.searchHotel')}</label>
@@ -297,3 +274,4 @@ const Flights = () => {
 };
 
 export default Flights;
+
