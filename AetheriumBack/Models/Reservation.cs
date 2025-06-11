@@ -1,7 +1,7 @@
 ﻿namespace AetheriumBack.Models;
 public class Reservation
 {
-    public int RerservationId { get; set; }
+    public int ReservationId { get; set; }
     public int UserId { get; set; }
     public int FlightId { get; set; }
     public int? SeatId { get; set; }
@@ -10,12 +10,7 @@ public class Reservation
     public Seat Seat { get; set; }
     public DateTimeOffset ReservationDateTime { get; set; }
 
-    private Reservation() { }
-    public Reservation(string[] attributes)
-    {
-        UserId = int.Parse(attributes[0]);
-        FlightId = int.Parse(attributes[1]);
-        SeatId = int.Parse(attributes[2]);
-        ReservationDateTime = DateTimeOffset.Parse(attributes[3]);
-    }
+#pragma warning disable CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required" o declararlo como un valor que acepta valores NULL.
+    public Reservation() { }
+#pragma warning restore CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required" o declararlo como un valor que acepta valores NULL.
 }
