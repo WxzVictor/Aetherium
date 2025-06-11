@@ -12,7 +12,7 @@ import UserProfile from './pages/perfilUsuario';
 import FAQ from './pages/FAQ-Page';
 import Hoteles from './pages/hoteles';
 import ResultadoVuelos from './pages/resultadoVuelos';
-import ResultadoVuelosPrueba from './pages/resultadoVuelosPrueba';
+import ConfirmReservation from './pages/confirmReservation';
 import SelectSeat  from './pages/selectSeat';
 
 
@@ -54,6 +54,7 @@ function App() {
         <Route path="/resultadoVuelos" element={<ResultadoVuelos />} />
         <Route path="/seleccionAsientos" element={<SelectSeat />} />
         <Route path="/hoteles" element={<Hoteles />} />
+        <Route path="/confirmReservation" element={<ConfirmReservation />} />
 
         {/* ✅ Protegida */}
         <Route
