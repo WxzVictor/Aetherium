@@ -41,6 +41,7 @@ const ConfirmReservation = () => {
     }
   }, [ida, checking, navigate]);
 
+
   if (!ida || checking) return null;
 
   const renderVueloInfo = (vuelo, titulo) => (
