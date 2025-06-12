@@ -1,39 +1,57 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/selectSeat.css";
 import Layout from "../components/common/layout";
 
 const SelectSeat = () => {
   const location = useLocation();
-  const vuelo = location.state?.vuelo;
+  const navigate = useNavigate();
+
+  const vuelos = location.state?.vuelos || [];
+  const pasajeros = location.state?.pasajeros || 1;
+
   const [asientosIda, setAsientosIda] = useState([]);
   const [asientosVuelta, setAsientosVuelta] = useState([]);
-  const [selectedSeatIda, setSelectedSeatIda] = useState(null);
-  const [selectedSeatVuelta, setSelectedSeatVuelta] = useState(null);
+  const [selectedSeatsIda, setSelectedSeatsIda] = useState([]);
+  const [selectedSeatsVuelta, setSelectedSeatsVuelta] = useState([]);
 
   useEffect(() => {
-    if (!vuelo)
-      return;
+    if (vuelos.length === 0) return;
 
-    //Asientos de ida
-    fetch(`/api/Flight/${vuelo.flightId}/available-seats`)
+    // Ida
+    fetch(`/api/Flight/${vuelos[0].flightId}/available-seats`)
       .then(res => res.json())
-      .then(data => setAsientosIda(data));
+      .then(data => {
+        const unicos = Array.from(new Map((data.availableSeats || []).map(seat => [seat.seatNumber, seat])).values());
+        setAsientosIda(unicos);
+      });
 
-    //Asientos de vuelta si existe
-    if (vuelo.vuelta) {
-      fetch(`/api/Flight/${vuelo.vuelta.flightId}/available-seats`)
+    // Vuelta si existe
+    if (vuelos[1]) {
+      fetch(`/api/Flight/${vuelos[1].flightId}/available-seats`)
         .then(res => res.json())
-        .then(data => setAsientosVuelta(data));
+        .then(data => {
+          const unicos = Array.from(new Map((data.availableSeats || []).map(seat => [seat.seatNumber, seat])).values());
+          setAsientosVuelta(unicos);
+        });
     }
-  }, [vuelo]);
+  }, [vuelos]);
 
-  const renderSeat = (seats, selectedSeat, setSelectedSeat) => {
-    if (!seats || seats.length === 0) 
-      return <div>Cargando asientos...</div>
+  const handleSeatClick = (seatNumber, setSelectedSeats, selectedSeats) => {
+    setSelectedSeats(prev =>
+      prev.includes(seatNumber)
+        ? prev.filter(seat => seat !== seatNumber)
+        : prev.length < pasajeros
+          ? [...prev, seatNumber]
+          : prev
+    );
+  };
+
+  const renderSeatGrid = (seats, selectedSeats, setSelectedSeats, flightIndex) => {
+    if (!seats || seats.length === 0) return <div>Cargando asientos...</div>;
 
     const seatMap = {};
-    seats.forEach((seat) => {
+    seats.forEach(seat => {
       const row = seat.seatNumber[0];
       seatMap[row] = seatMap[row] || [];
       seatMap[row].push(seat);
@@ -43,19 +61,20 @@ const SelectSeat = () => {
 
     return (
       <div className="seat-grid">
-        {sortedRows.map((row) => (
-          <div className="seat-row" key={row}>
+        {sortedRows.map(row => (
+          <div className="seat-row" key={`${flightIndex}-${row}`}>
             <span className="row-label">{row}</span>
             {seatMap[row]
               .sort((a, b) => parseInt(a.seatNumber.slice(1)) - parseInt(b.seatNumber.slice(1)))
               .map(seat => {
-                const isSelected = selectedSeat === seat.seatNumber;
+                const isSelected = selectedSeats.includes(seat.seatNumber);
                 const isUnavailable = seat.seatStatus === true;
+
                 return (
                   <button
-                    key={seat.seatNumber}
+                    key={`${flightIndex}-${seat.seatNumber}`}
                     className={`seat ${isSelected ? "selected" : ""} ${isUnavailable ? "disabled" : ""}`}
-                    onClick={() => !isUnavailable && setSelectedSeat(seat.seatNumber)}
+                    onClick={() => !isUnavailable && handleSeatClick(seat.seatNumber, setSelectedSeats, selectedSeats)}
                     disabled={isUnavailable}
                   >
                     {seat.seatNumber}
@@ -68,25 +87,87 @@ const SelectSeat = () => {
     );
   };
 
+  const obtenerPrecioExtra = (seatNumber) => {
+    const num = seatNumber.slice(1);
+    if (num === "1" || num === "3") return 15; // Ventanilla
+    if (num === "2") return 10;                // Pasillo
+    return 0;
+  };
+
+  const calcularSuplementoTotal = (selectedSeats) => {
+    return selectedSeats.reduce((total, seat) => total + obtenerPrecioExtra(seat), 0);
+  };
+
+  // Precio base total por todos los pasajeros
+  const precioBase = vuelos.reduce((total, vuelo) => total + vuelo.price, 0);
+  const totalBase = (precioBase / 100) * pasajeros;
+
+  const suplementoTotal = calcularSuplementoTotal(selectedSeatsIda) + calcularSuplementoTotal(selectedSeatsVuelta);
+  const precioFinal = totalBase + suplementoTotal;
+
   return (
     <Layout>
-      <div className="contenedor-visible">
-        <div className="seat-picker">
-          <h2>Selecciona tu asiento de ida</h2>
-          {renderSeat(asientosIda, selectedSeatIda, setSelectedSeatIda)}
-          {selectedSeatIda && (
-            <div className="selection-info">Asiento de ida seleccionado: {selectedSeatIda}</div>
-          )}
+      <div className="login-page">
+        <div id="clouds">
+          {[...Array(7)].map((_, i) => (
+            <div className={`cloud x${i + 1}`} key={i}></div>
+          ))}
+        </div>
 
-          {vuelo.vuelta && (
-            <>
-              <h2 style={{marginTop: '2rem'}}>Selecciona tu asiento de vuelta</h2>
-              {renderSeat(asientosVuelta, selectedSeatVuelta, setSelectedSeatVuelta)}
-              {selectedSeatVuelta && (
-                <div className="selection-info">Asiento de vuelta seleccionado: {selectedSeatVuelta}</div>
-              )}
-            </>
-          )}
+        <div className="contenedor-visible">
+          <div className="seat-picker">
+            <h2>Selecciona tu asiento de ida</h2>
+            {renderSeatGrid(asientosIda, selectedSeatsIda, setSelectedSeatsIda, 0)}
+            {selectedSeatsIda.length > 0 && (
+              <div className="selection-info">
+                Asientos seleccionados de ida: {selectedSeatsIda.join(", ")}
+              </div>
+            )}
+
+            {vuelos[1] && (
+              <>
+                <h2 style={{ marginTop: "2rem" }}>Selecciona tu asiento de vuelta</h2>
+                {renderSeatGrid(asientosVuelta, selectedSeatsVuelta, setSelectedSeatsVuelta, 1)}
+                {selectedSeatsVuelta.length > 0 && (
+                  <div className="selection-info">
+                    Asientos seleccionados de vuelta: {selectedSeatsVuelta.join(", ")}
+                  </div>
+                )}
+              </>
+            )}
+
+            <div className="total-precio">
+              Precio total actualizado: {precioFinal.toFixed(2)} €
+            </div>
+
+            <button
+              className="btn"
+              style={{ marginTop: "1rem" }}
+              onClick={() => {
+                if (selectedSeatsIda.length !== pasajeros) {
+                  alert(`Selecciona ${pasajeros} asiento(s) para el vuelo de ida.`);
+                  return;
+                }
+
+                if (vuelos[1] && selectedSeatsVuelta.length !== pasajeros) {
+                  alert(`Selecciona ${pasajeros} asiento(s) para el vuelo de vuelta.`);
+                  return;
+                }
+
+                navigate("/ConfirmReservation", {
+                  state: {
+                    vuelos,
+                    pasajeros,
+                    selectedSeatsIda,
+                    selectedSeatsVuelta,
+                    totalPrecio: precioFinal
+                  }
+                });
+              }}
+            >
+              Confirmar asientos
+            </button>
+          </div>
         </div>
       </div>
     </Layout>

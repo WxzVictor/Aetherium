@@ -10,7 +10,7 @@ const ConfirmReservation = () => {
   const [ida, setIda] = useState(location.state?.vuelo || null);
   const [vuelta, setVuelta] = useState(location.state?.vuelo?.vuelta || null);
   const [checking, setChecking] = useState(!location.state?.vuelo);
-  const [ setUser] = useState(null);
+  const [user, setUser] = useState(null);
   const [loading] = useState(false);
 
   // Escucha cambios de sesión Firebase
