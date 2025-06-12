@@ -61,6 +61,74 @@
   background: white;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
   position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.combo-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border: 2px solid #FDC921;
+  border-radius: 16px;
+  background: #fffbe7;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  margin-bottom: 2rem;
+  padding: 1.5rem 2rem;
+}
+.combo-vuelo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+.combo-precio {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+.separador {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #6798C0;
+  margin: 0.5rem 0;
+}
+
+.cargando {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #6798C0;
+  margin: 2rem 0;
+}
+
+.resultado-vuelos-container h1 {
+  text-align: center;
+  font-size: 2.2rem;
+  color: #1d2d4a;
+  margin-bottom: 2rem;
+}
+.resultado-vuelos-container h2 {
+  font-size: 1.3rem;
+  color: #1d2d4a;
+  margin-bottom: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn {
+  background-color: #FDC921;
+  color: #1d2d4a;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: background 0.2s;
+}
+.btn:hover {
+  background-color: #ffe07a;
 }
 
 .info {
@@ -159,35 +227,4 @@
   font-size: 1.2rem;
   color: #666;
   cursor: pointer;
-}
-
-.combo-card {
-  display: flex;
-  flex-direction: column;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  padding: 1rem;
-  margin-bottom: 2rem;
-  background-color: #fdfdfd;
-}
-
-.combo-vuelo {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.separador {
-  text-align: center;
-  font-size: 1.5rem;
-  margin: 0.5rem 0;
-  color: #555;
-}
-
-.combo-precio {
-  margin-top: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: bold;
 }

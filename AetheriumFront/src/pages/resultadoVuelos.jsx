@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { searchFlights } from "../services/flightService";
+import { auth } from "../services/firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
 import Layout from "../components/common/layout";
 import "../styles/ResultadoVuelos.css";
 import "../styles/cloud.css";
 
 const ResultadoVuelos = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const { t } = useTranslation('resultadoVuelos');
 
     const [loading, setLoading] = useState(true);
     const [outFlights, setOutFlights] = useState([]);
-    const [returnFlights, setReturnFlights] = useState([]);
+    const [user, setUser] = useState(null);
     const [combinedResults, setCombinedResults] = useState([]);
     const [hasReturn, setHasReturn] = useState(false);
 
@@ -21,21 +24,20 @@ const ResultadoVuelos = () => {
         const returnDate = params.get("returnDate");
 
         const searchData = {
-            Origin: params.get("from"),
-            Destination: params.get("to"),
-            DepartureDate: params.get("departureDate"),
-            ReturnDate: returnDate || null,
-            Passengers: parseInt(params.get("passengers") || "1"),
-            CabinClass: params.get("cabinClass") || "economy"
+                Origin: params.get("from"),
+                Destination: params.get("to"),
+                DepartureDate: params.get("departureDate"),
+                ReturnDate: returnDate || null,
+                Passengers: parseInt(params.get("passengers") || "1"),
+                CabinClass: params.get("cabinClass") || "economy"
         };
 
         setHasReturn(returnDate !== null);
 
         searchFlights(searchData)
-            .then(data => {
-                setOutFlights(data.outFlights || []);
-                setReturnFlights(data.returnFlights || []);
-
+                .then(data => {
+                    setOutFlights(data.outFlights || []);
+    
                 if (returnDate && data.returnFlights && data.returnFlights.length > 0) {
                     const combinados = [];
                     data.outFlights.forEach(ida => {
@@ -49,18 +51,38 @@ const ResultadoVuelos = () => {
                 }
 
                 setLoading(false);
-            })
-            .catch(() => {
-                setOutFlights([]);
-                setReturnFlights([]);
-                setCombinedResults([]);
+                })
+                .catch(() => {
+                    setOutFlights([]);
+                    setCombinedResults([]);
                 setLoading(false);
-            });
+                });
     }, [location.search]);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            if (currentUser && currentUser.emailVerified) {
+                setUser(currentUser);
+            } else {
+                setUser(null);
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
 
     const formatDate = (datetime) => {
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(datetime).toLocaleDateString(undefined, options);
+    };
+
+    const handleReserve = (vuelo) => {
+        if (!user) {
+            sessionStorage.setItem('vueloPendiente', JSON.stringify(vuelo));
+            navigate('/login');
+        } else {
+            navigate('/confirmReservation', { state: { vuelo } });
+        }
     };
 
     const renderFlightCard = (vuelo, mostrarPrecioIndividual = true) => (
@@ -99,7 +121,7 @@ const ResultadoVuelos = () => {
             {mostrarPrecioIndividual && (
                 <div className="precio">
                     <div className="monto">{(vuelo.price / 100).toFixed(2)} €</div>
-                    {!hasReturn && <button className="btn">{t('book')}</button>}
+                    <button className="btn" onClick={() => handleReserve(vuelo)}>{t('book')}</button>
                 </div>
             )}
         </div>
@@ -107,48 +129,49 @@ const ResultadoVuelos = () => {
 
     return (
         <Layout>
-            <div id="clouds">
-                {[...Array(7)].map((_, i) => (
-                    <div key={i} className={`cloud x${i + 1}`}></div>
-                ))}
-            </div>
+            <div className="login-page">
+                <div id="clouds">
+                    {[...Array(7)].map((_, i) => (
+                        <div key={i} className={`cloud x${i + 1}`}></div>
+                    ))}
+                </div>
+                <div className="contenido-visible">
+                    <div className="resultado-vuelos-container">
+                        <h1>{t('title')}</h1>
 
-            <div className="contenido-visible">
-                <div className="resultado-vuelos-container">
-                    <h1>{t('title')}</h1>
-
-                    {loading ? (
-                        <p className="cargando" data-text="Cargando vuelos...">{t('loading')}</p>
-                    ) : (
-                        <>
-                            {hasReturn && combinedResults.length > 0 ? (
-                                <div className="resultado-vuelos">
-                                    {combinedResults.map((par, i) => (
-                                        <div key={i} className="combo-card">
-                                            <div className="combo-vuelo">
-                                                {renderFlightCard(par.ida, false)}
-                                                <div className="separador">⬇</div>
-                                                {renderFlightCard(par.vuelta, false)}
-                                            </div>
-                                            <div className="combo-precio">
-                                                <strong>Total:</strong> {((par.ida.price + par.vuelta.price) / 100).toFixed(2)} €
-                                                <button className="btn">{t('book')}</button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <section>
-                                    <h2>{t('outbound')}</h2>
+                        {loading ? (
+                            <p className="cargando" data-text="Cargando vuelos...">{t('loading')}</p>
+                        ) : (
+                            <>
+                                {hasReturn && combinedResults.length > 0 ? (
                                     <div className="resultado-vuelos">
-                                        {outFlights.length === 0
-                                            ? <p>{t('noOutbound')}</p>
-                                            : outFlights.map(v => renderFlightCard(v, true))}
+                                        {combinedResults.map((par, i) => (
+                                            <div key={i} className="combo-card">
+                                                <div className="combo-vuelo">
+                                                    {renderFlightCard(par.ida, false)}
+                                                    <div className="separador">⬇</div>
+                                                    {renderFlightCard(par.vuelta, false)}
+                                                </div>
+                                                <div className="combo-precio">
+                                                    <strong>Total:</strong> {((par.ida.price + par.vuelta.price) / 100).toFixed(2)} €
+                                                    <button className="btn" onClick={() => handleReserve({ ...par.ida, vuelta: par.vuelta })}>{t('book')}</button>
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
-                                </section>
-                            )}
-                        </>
-                    )}
+                                ) : (
+                                    <section>
+                                        <h2>{t('outbound')}</h2>
+                                        <div className="resultado-vuelos">
+                                            {outFlights.length === 0
+                                                ? <p>{t('noOutbound')}</p>
+                                                : outFlights.map(v => renderFlightCard(v, true))}
+                                        </div>
+                                    </section>
+                                )}
+                            </>
+                        )}
+                    </div>
                 </div>
             </div>
         </Layout>
