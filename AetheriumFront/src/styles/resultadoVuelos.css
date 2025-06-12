@@ -40,6 +40,9 @@
   align-items: center;
   border: 2px solid #FDC921;
 }
+.claseParrafo{
+  text-align: center;
+}
 
 .duracion-resumen {
   color: #1d2d4a;
@@ -49,7 +52,7 @@
 .resultado-vuelos {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+   gap: 1rem;
 }
 
 .card {
