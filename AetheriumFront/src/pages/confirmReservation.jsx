@@ -77,10 +77,11 @@ const ConfirmReservation = () => {
 
       // Crear payload para la reserva (ajusta según tu API)
       const payload = {
-        UserId: user.uid,
-        FlightId: ida.flightId, // asegúrate que venga ese dato
-        SeatId: null, // si tienes asiento seleccionado, envíalo
+        userId: user.uid,
+        flightId: ida.flightId, // asegúrate que venga ese dato
+        seatId: null, // si tienes asiento seleccionado, envíalo
       };
+      console.log("Payload enviado:", payload);
 
       const response = await fetch("http://localhost:5120/api/reservation", {
         method: "POST",

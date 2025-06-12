@@ -17,29 +17,41 @@ const Register = () => {
     return regex.test(password);
   };
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    if (!validarPassword(password)) {
-      alert("❌ La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.");
-      return;
-    }
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), password);
-      const user = userCredential.user;
+ const handleRegister = async (e) => {
+  e.preventDefault();
+  if (!validarPassword(password)) {
+    alert("❌ La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.");
+    return;
+  }
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), password);
+    const user = userCredential.user;
 
-      await sendEmailVerification(user);
-      alert("✅ Cuenta creada correctamente. Revisa tu correo para verificar la cuenta.");
+    await sendEmailVerification(user);
+    alert("✅ Cuenta creada correctamente. Revisa tu correo para verificar la cuenta.");
+    await updateProfile(user, { displayName: username });
 
-      await updateProfile(user, { displayName: username });
-      navigate('/login');
-    } catch (error) {
-      if (error.code === "auth/email-already-in-use") {
-        alert("❌ El correo ya está registrado.");
-      } else {
-        alert("❌ Error al registrar: " + error.message);
-      }
+    // 👇 REGISTRO EN TU BASE DE DATOS
+    await fetch("http://localhost:5120/api/user/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        uid: user.uid,
+        email: user.email,
+        username: username
+      })
+    });
+
+    navigate('/login');
+  } catch (error) {
+    if (error.code === "auth/email-already-in-use") {
+      alert("❌ El correo ya está registrado.");
+    } else {
+      alert("❌ Error al registrar: " + error.message);
     }
-  };
+  }
+};
+
 
   return (
     <div className="login-page">
