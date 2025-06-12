@@ -115,25 +115,6 @@ public class ReservationController : ControllerBase
             SeatId = seatDto
         };
 
-        // ---------------------
-        // ✉️ ENVÍO DEL CORREO
-        // ---------------------
-        try
-        {
-            string userName = $"{user.FirstName} {user.LastName}";
-            string userEmail = user.Email;
-
-            string htmlBody = EmailTemplateHelper.LoadReservationEmailTemplate(response, userName, userEmail);
-
-            var emailService = new EmailService();
-            await emailService.SendEmailAsync(userEmail, "✈️ Confirmación de tu reserva Aetherium", htmlBody);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Error al enviar el correo: " + ex.Message);
-            // No interrumpas la creación de la reserva si el correo falla
-        }
-
         return Ok(response);
     }
 
