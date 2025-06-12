@@ -129,49 +129,48 @@ const ResultadoVuelos = () => {
 
     return (
         <Layout>
-            <div className="login-page">
-                <div id="clouds">
-                    {[...Array(7)].map((_, i) => (
-                        <div key={i} className={`cloud x${i + 1}`}></div>
-                    ))}
-                </div>
-                <div className="contenido-visible">
-                    <div className="resultado-vuelos-container">
-                        <h1>{t('title')}</h1>
+            <div id="clouds">
+                {[...Array(7)].map((_, i) => (
+                    <div key={i} className={`cloud x${i + 1}`}></div>
+                ))}
+            </div>
 
-                        {loading ? (
-                            <p className="cargando" data-text="Cargando vuelos...">{t('loading')}</p>
-                        ) : (
-                            <>
-                                {hasReturn && combinedResults.length > 0 ? (
-                                    <div className="resultado-vuelos">
-                                        {combinedResults.map((par, i) => (
-                                            <div key={i} className="combo-card">
-                                                <div className="combo-vuelo">
-                                                    {renderFlightCard(par.ida, false)}
-                                                    <div className="separador">⬇</div>
-                                                    {renderFlightCard(par.vuelta, false)}
-                                                </div>
-                                                <div className="combo-precio">
-                                                    <strong>Total:</strong> {((par.ida.price + par.vuelta.price) / 100).toFixed(2)} €
-                                                    <button className="btn" onClick={() => handleReserve({ ...par.ida, vuelta: par.vuelta })}>{t('book')}</button>
-                                                </div>
+            <div className="contenido-visible">
+                <div className="resultado-vuelos-container">
+                    <h1>{t('title')}</h1>
+
+                    {loading ? (
+                        <p className="cargando" data-text="Cargando vuelos...">{t('loading')}</p>
+                    ) : (
+                        <>
+                            {hasReturn && combinedResults.length > 0 ? (
+                                <div className="resultado-vuelos">
+                                    {combinedResults.map((par, i) => (
+                                        <div key={i} className="combo-card">
+                                            <div className="combo-vuelo">
+                                                {renderFlightCard(par.ida, false)}
+                                                <div className="separador">⬇</div>
+                                                {renderFlightCard(par.vuelta, false)}
                                             </div>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <section>
-                                        <h2>{t('outbound')}</h2>
-                                        <div className="resultado-vuelos">
-                                            {outFlights.length === 0
-                                                ? <p>{t('noOutbound')}</p>
-                                                : outFlights.map(v => renderFlightCard(v, true))}
+                                            <div className="combo-precio">
+                                                <strong>Total:</strong> {((par.ida.price + par.vuelta.price) / 100).toFixed(2)} €
+                                                <button className="btn">{t('book')}</button>
+                                            </div>
                                         </div>
-                                    </section>
-                                )}
-                            </>
-                        )}
-                    </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <section>
+                                    <h2>{t('outbound')}</h2>
+                                    <div className="resultado-vuelos">
+                                        {outFlights.length === 0
+                                            ? <p>{t('noOutbound')}</p>
+                                            : outFlights.map(v => renderFlightCard(v, true))}
+                                    </div>
+                                </section>
+                            )}
+                        </>
+                    )}
                 </div>
             </div>
         </Layout>
