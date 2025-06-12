@@ -29,7 +29,7 @@ const ResultadoVuelos = () => {
             CabinClass: params.get("cabinClass") || "economy"
         };
 
-        setHasReturn(returnDate !== null); // <-- indica si se seleccionó día de vuelta
+        setHasReturn(returnDate !== null);
 
         searchFlights(searchData)
             .then(data => {
