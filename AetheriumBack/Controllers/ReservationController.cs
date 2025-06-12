@@ -2,7 +2,6 @@
 using AetheriumBack.Models;
 using AetheriumBack.Dto;
 using AetheriumBack.Database;
-using AetheriumBack.Utils.Email;    
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
