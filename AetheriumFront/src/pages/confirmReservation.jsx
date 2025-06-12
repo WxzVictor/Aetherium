@@ -41,7 +41,6 @@ const ConfirmReservation = () => {
     }
   }, [ida, checking, navigate]);
 
-<<<<<<< HEAD
   if (!ida || checking) return null;
 
   const renderVueloInfo = (vuelo, titulo) => (
@@ -137,44 +136,6 @@ const ConfirmReservation = () => {
       </div>
     </Layout>
   );
-=======
-    return (
-        <Layout>
-            <div className="login-page">
-                <div id="clouds">
-                    <div className="cloud x1"></div>
-                    <div className="cloud x2"></div>
-                    <div className="cloud x3"></div>
-                    <div className="cloud x4"></div>
-                    <div className="cloud x5"></div>
-                    <div className="cloud x6"></div>
-                    <div className="cloud x7"></div>
-                </div>
-                <div className="resultado-vuelos-container">
-                    <h1>Confirmar Reserva</h1>
-                    <div className="card">
-                        <div className="info">
-                            <strong>{vuelo.airlineName}</strong>
-                            <div>
-                                {vuelo.departureAirport.city} ({vuelo.departureAirport.code}) → {vuelo.arrivalAirport.city} ({vuelo.arrivalAirport.code})
-                            </div>
-                            <div>
-                                Salida: {new Date(vuelo.departureTime).toLocaleString()}
-                            </div>
-                            <div>
-                                Llegada: {new Date(vuelo.arrivalTime).toLocaleString()}
-                            </div>
-                            <div>
-                                Precio: {vuelo.price / 100} €
-                            </div>
-                        </div>
-                    </div>
-                    <button className="btn" style={{ marginTop: "2rem" }}>Confirmar Reserva</button>
-                </div>
-            </div>
-        </Layout>
-    );
->>>>>>> b0b2b53d862be35ad947f1574439286490b7f567
 };
 
 export default ConfirmReservation;
