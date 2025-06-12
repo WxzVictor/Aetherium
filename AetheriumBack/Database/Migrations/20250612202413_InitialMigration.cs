@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace AetheriumBack.Database.Migrations
+namespace AetheriumBack.Migrations
 {
     /// <inheritdoc />
     public partial class InitialMigration : Migration
@@ -63,6 +63,7 @@ namespace AetheriumBack.Database.Migrations
                 {
                     UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    FirebaseUid = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
@@ -189,7 +190,7 @@ namespace AetheriumBack.Database.Migrations
                 schema: "Aetherium",
                 columns: table => new
                 {
-                    RerservationId = table.Column<int>(type: "int", nullable: false)
+                    ReservationId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     FlightId = table.Column<int>(type: "int", nullable: false),
@@ -198,7 +199,7 @@ namespace AetheriumBack.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reservation", x => x.RerservationId);
+                    table.PrimaryKey("PK_Reservation", x => x.ReservationId);
                     table.ForeignKey(
                         name: "FK_Reservation_Flight_FlightId",
                         column: x => x.FlightId,
