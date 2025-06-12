@@ -2,6 +2,7 @@
 using AetheriumBack.Models;
 using AetheriumBack.Dto;
 using AetheriumBack.Database;
+using AetheriumBack.Utils.Email;    
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
@@ -21,11 +22,18 @@ public class ReservationController : ControllerBase
     public async Task<IActionResult> CreateReservation([FromBody] ReservationDto dto)
     {
         if (dto.UserId <= 0 || dto.FlightId <= 0)
-            return BadRequest("UserId and FlightId are required and must be greater than zero.");
+            return BadRequest(new {
+                error = "Validation error",
+                message = "UserId and FlightId are required and must be greater than zero.",
+                received = new { dto.UserId, dto.FlightId }
+            });
 
         User? user = await _context.User.FindAsync(dto.UserId);
         if (user is null)
-            return NotFound("User not found.");
+            return NotFound(new {
+                error = "User not found",
+                userId = dto.UserId
+            });
 
         Flight? flight = await _context.Flight
             .Include(f => f.DepartureAirport)
@@ -33,7 +41,10 @@ public class ReservationController : ControllerBase
             .FirstOrDefaultAsync(f => f.FlightId == dto.FlightId);
 
         if (flight is null)
-            return NotFound("Flight not found.");
+            return NotFound(new {
+                error = "Flight not found",
+                flightId = dto.FlightId
+            });
 
         SeatResponseDto? seatDto = null;
 
@@ -41,9 +52,15 @@ public class ReservationController : ControllerBase
         {
             Seat? seat = await _context.Seat.FindAsync(dto.SeatId.Value);
             if (seat is null)
-                return NotFound("Seat not found.");
+                return NotFound(new {
+                    error = "Seat not found",
+                    seatId = dto.SeatId.Value
+                });
             if (seat.SeatStatus)
-                return BadRequest("Seat is already reserved.");
+                return BadRequest(new {
+                    error = "Seat already reserved",
+                    seatId = seat.SeatId
+                });
 
             seat.SeatStatus = true;
             _context.Seat.Update(seat);
@@ -98,13 +115,33 @@ public class ReservationController : ControllerBase
             SeatId = seatDto
         };
 
+        // ---------------------
+        // ✉️ ENVÍO DEL CORREO
+        // ---------------------
+        try
+        {
+            string userName = $"{user.FirstName} {user.LastName}";
+            string userEmail = user.Email;
+
+            string htmlBody = EmailTemplateHelper.LoadReservationEmailTemplate(response, userName, userEmail);
+
+            var emailService = new EmailService();
+            await emailService.SendEmailAsync(userEmail, "✈️ Confirmación de tu reserva Aetherium", htmlBody);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error al enviar el correo: " + ex.Message);
+            // No interrumpas la creación de la reserva si el correo falla
+        }
+
         return Ok(response);
     }
+
 
     [HttpGet("user/{userId}")]
     public async Task<IActionResult> GetReservationsByUser(int userId)
     {
-        IEnumerable<Reservation> reservations = await _context.Reservation
+        var reservations = await _context.Reservation
             .Include(r => r.Flight.DepartureAirport)
             .Include(r => r.Flight.ArrivalAirport)
             .Include(r => r.Seat)
@@ -112,9 +149,12 @@ public class ReservationController : ControllerBase
             .ToListAsync();
 
         if (!reservations.Any())
-            return NotFound("No reservations found for this user.");
+            return NotFound(new {
+                error = "No reservations found",
+                userId = userId
+            });
 
-        IEnumerable<ReservationResponseDto> response = reservations.Select(r => new ReservationResponseDto
+        var response = reservations.Select(r => new ReservationResponseDto
         {
             ReservationId = r.ReservationId,
             UserId = r.UserId,
@@ -163,7 +203,10 @@ public class ReservationController : ControllerBase
             .FirstOrDefaultAsync(r => r.ReservationId == id);
 
         if (reservation is null)
-            return NotFound("Reservation not found.");
+            return NotFound(new {
+                error = "Reservation not found",
+                reservationId = id
+            });
 
         SeatResponseDto? seatDto = null;
         if (reservation.Seat is not null)
@@ -218,7 +261,10 @@ public class ReservationController : ControllerBase
             .FirstOrDefaultAsync(r => r.ReservationId == id);
 
         if (reservation is null)
-            return NotFound("Reservation not found.");
+            return NotFound(new {
+                error = "Reservation not found",
+                reservationId = id
+            });
 
         if (reservation.SeatId.HasValue)
         {
@@ -229,6 +275,6 @@ public class ReservationController : ControllerBase
         _context.Reservation.Remove(reservation);
         await _context.SaveChangesAsync();
 
-        return Ok(new { message = "Reservation delete succesfully"});
+        return Ok(new { message = "Reservation deleted successfully" });
     }
 }

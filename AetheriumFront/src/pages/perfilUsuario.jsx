@@ -6,12 +6,13 @@ import Layout from '../components/common/layout';
 import '../styles/cloud.css';
 import '../styles/perfilUsuario.css';
 import { useTranslation } from 'react-i18next';
+import { getReservationsByUser, deleteReservation } from '../services/reservationService';
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
+  const [reservations, setReservations] = useState([]);
   const [showReservations, setShowReservations] = useState(false);
   const [showStats, setShowStats] = useState(false);
-  const [flightStats, setFlightStats] = useState([]);
   const navigate = useNavigate();
   const { t } = useTranslation('userProfile');
 
@@ -20,70 +21,19 @@ const UserProfile = () => {
       if (currentUser && currentUser.emailVerified) {
         try {
           const token = await getIdToken(currentUser);
-          if (!token) navigate('/login');
-          else {
-            setUser(currentUser);
-            setFlightStats([
-              {
-                origen: 'Madrid',
-                destino: 'Barcelona',
-                fecha: '2025-04-12',
-                horaSalida: '17:00',
-                horaLlegada: '18:00',
-                compania: 'AirEuropa',
-              },
-              {
-                origen: 'Barcelona',
-                destino: 'Madrid',
-                fecha: '2025-04-15',
-                horaSalida: '19:00',
-                horaLlegada: '20:30',
-                compania: 'Vueling',
-              },
-              {
-                origen: 'Madrid',
-                destino: 'Barcelona',
-                fecha: '2025-05-02',
-                horaSalida: '10:00',
-                horaLlegada: '11:15',
-                compania: 'Vueling',
-              },
-            ]);
-          }
-        } catch {
-          navigate('/login');
+          const data = await getReservationsByUser(currentUser.uid, token);
+          setUser(currentUser);
+          setReservations(data);
+        } catch (error) {
+          console.error("Error al obtener reservas:", error);
         }
-      } else navigate('/login');
+      } else {
+        navigate('/login');
+      }
     });
+
     return () => unsubscribe();
   }, [navigate]);
-
-  const calcularHorasTotales = () => {
-    let total = 0;
-    flightStats.forEach((f) => {
-      const salida = new Date(`1970-01-01T${f.horaSalida}`);
-      const llegada = new Date(`1970-01-01T${f.horaLlegada}`);
-      const diff = (llegada - salida) / (1000 * 60 * 60);
-      total += diff;
-    });
-    return total.toFixed(1);
-  };
-
-  const companiaMasUsada = () => {
-    const count = {};
-    flightStats.forEach(f => {
-      count[f.compania] = (count[f.compania] || 0) + 1;
-    });
-    return Object.entries(count).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A';
-  };
-
-  const destinoFavorito = () => {
-    const count = {};
-    flightStats.forEach(f => {
-      count[f.destino] = (count[f.destino] || 0) + 1;
-    });
-    return Object.entries(count).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A';
-  };
 
   const handleForgotPassword = async () => {
     const emailPrompt = prompt("Introduce tu correo electrónico para recuperar la contraseña:");
@@ -97,75 +47,115 @@ const UserProfile = () => {
     }
   };
 
+  const calcularHorasTotales = () => {
+    return reservations.reduce((total, r) => {
+      const salida = new Date(r.flightId.departureTime);
+      const llegada = new Date(r.flightId.arrivalTime);
+      return total + (llegada - salida) / (1000 * 60 * 60);
+    }, 0).toFixed(1);
+  };
+
+  const companiaMasUsada = () => {
+    const count = {};
+    reservations.forEach(r => {
+      const name = r.flightId.airlineName;
+      count[name] = (count[name] || 0) + 1;
+    });
+    return Object.entries(count).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A';
+  };
+
+  const destinoFavorito = () => {
+    const count = {};
+    reservations.forEach(r => {
+      const city = r.flightId.arrivalAirport.city;
+      count[city] = (count[city] || 0) + 1;
+    });
+    return Object.entries(count).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A';
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("¿Estás seguro de que quieres eliminar esta reserva?")) return;
+    try {
+      const token = await getIdToken(user);
+      await deleteReservation(id, token);
+      setReservations(prev => prev.filter(r => r.reservationId !== id));
+    } catch (error) {
+      alert("Error al eliminar la reserva." + error);
+    }
+  };
+
   return (
     <Layout>
-      
-        <div id="clouds">
-          {[...Array(7)].map((_, i) => (
-            <div className={`cloud x${i + 1}`} key={i}></div>
-          ))}
-        </div>
+      <div id="clouds">
+        {[...Array(7)].map((_, i) => (
+          <div className={`cloud x${i + 1}`} key={i}></div>
+        ))}
+      </div>
 
-        <div>
-          <h1>{t('title')}</h1>
+      <div>
+        <h1>{t('title')}</h1>
 
-          <div className="contenedor-formulario">
-            <div className="perfilUsuario-form-container">
-              {user && (
-                <div className="perfil-info">
-                  <p><strong>{t('name')}:</strong> {user.displayName || 'Usuario'}</p>
-                  <p><strong>{t('email')}:</strong> {user.email}</p>
-                  <p><strong><a href="#" onClick={handleForgotPassword} className="forgot">{t('contrasena')}</a></strong></p>
-                </div>
-              )}
-
-              <div className="toggle-buttons">
-                <button onClick={() => setShowReservations(!showReservations)}>
-                  {showReservations ? t('hideReservations') : t('showReservations')}
-                </button>
-                <button onClick={() => setShowStats(!showStats)}>
-                  {showStats ? t('hideStats') : t('showStats')}
-                </button>
+        <div className="contenedor-formulario">
+          <div className="perfilUsuario-form-container">
+            {user && (
+              <div className="perfil-info">
+                <p><strong>{t('name')}:</strong> {user.displayName || 'Usuario'}</p>
+                <p><strong>{t('email')}:</strong> {user.email}</p>
+                <p><strong><a href="#" onClick={handleForgotPassword} className="forgot">{t('contrasena')}</a></strong></p>
               </div>
+            )}
 
-              {showReservations && (
-                <div>
-                  <h2>{t('reservationsTitle')}</h2>
-                  {flightStats.length > 0 ? (
-                    <div className="reservas-cards-container">
-                      {flightStats.map((reserva, i) => (
-                        <div key={i} className="reserva-card">
-                          <div className="reserva-header">
-                            <span className="reserva-route">{reserva.origen} ➜ {reserva.destino}</span>
-                            <span className="reserva-fecha">{reserva.fecha}</span>
-                          </div>
-                          <div className="reserva-detalles">
-                            <div><strong>{t('table.salida')}:</strong> {reserva.horaSalida}</div>
-                            <div><strong>{t('table.llegada')}:</strong> {reserva.horaLlegada}</div>
-                            <div><strong>{t('table.compania')}:</strong> {reserva.compania}</div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p>{t('noReservations')}</p>
-                  )}
-                </div>
-              )}
-
-              {showStats && (
-                <div className="stats-section">
-                  <h2>{t('statsTitle')}</h2>
-                  <p><strong>{t('totalFlights')}:</strong> {flightStats.length}</p>
-                  <p><strong>{t('totalHours')}:</strong> {calcularHorasTotales()}h</p>
-                  <p><strong>{t('mostUsedAirline')}:</strong> {companiaMasUsada()}</p>
-                  <p><strong>{t('favoriteDestination')}:</strong> {destinoFavorito()}</p>
-                </div>
-              )}
+            <div className="toggle-buttons">
+              <button onClick={() => setShowReservations(!showReservations)}>
+                {showReservations ? t('hideReservations') : t('showReservations')}
+              </button>
+              <button onClick={() => setShowStats(!showStats)}>
+                {showStats ? t('hideStats') : t('showStats')}
+              </button>
             </div>
+
+            {showReservations && (
+              <div>
+                <h2>{t('reservationsTitle')}</h2>
+                {reservations.length > 0 ? (
+                  <div className="reservas-cards-container">
+                    {reservations.map((reserva) => (
+                      <div key={reserva.reservationId} className="reserva-card">
+                        <div className="reserva-header">
+                          <span className="reserva-route">
+                            {reserva.flightId.departureAirport.city} ➜ {reserva.flightId.arrivalAirport.city}
+                          </span>
+                          <span className="reserva-fecha">{new Date(reserva.flightId.departureTime).toLocaleDateString()}</span>
+                        </div>
+                        <div className="reserva-detalles">
+                          <div><strong>{t('table.salida')}:</strong> {new Date(reserva.flightId.departureTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                          <div><strong>{t('table.llegada')}:</strong> {new Date(reserva.flightId.arrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                          <div><strong>{t('table.compania')}:</strong> {reserva.flightId.airlineName}</div>
+                        </div>
+                        <button className="delete-button" onClick={() => handleDelete(reserva.reservationId)}>
+                          {t('deleteReservation')}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p>{t('noReservations')}</p>
+                )}
+              </div>
+            )}
+
+            {showStats && (
+              <div className="stats-section">
+                <h2>{t('statsTitle')}</h2>
+                <p><strong>{t('totalFlights')}:</strong> {reservations.length}</p>
+                <p><strong>{t('totalHours')}:</strong> {calcularHorasTotales()}h</p>
+                <p><strong>{t('mostUsedAirline')}:</strong> {companiaMasUsada()}</p>
+                <p><strong>{t('favoriteDestination')}:</strong> {destinoFavorito()}</p>
+              </div>
+            )}
           </div>
         </div>
-      
+      </div>
     </Layout>
   );
 };
