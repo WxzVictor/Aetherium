@@ -74,7 +74,7 @@ public class ReservationController : ControllerBase
             };
         }
 
-        Reservation reservation = new Reservation
+        Reservation reservation = new ()
         {
             UserId = dto.UserId,
             FlightId = dto.FlightId,

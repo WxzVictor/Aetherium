@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace AetheriumBack.Database.Migrations
+namespace AetheriumBack.Migrations
 {
     [DbContext(typeof(AetheriumContext))]
     partial class AetheriumContextModelSnapshot : ModelSnapshot
@@ -230,11 +230,11 @@ namespace AetheriumBack.Database.Migrations
 
             modelBuilder.Entity("AetheriumBack.Models.Reservation", b =>
                 {
-                    b.Property<int>("RerservationId")
+                    b.Property<int>("ReservationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RerservationId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservationId"));
 
                     b.Property<int>("FlightId")
                         .HasColumnType("int");
@@ -249,7 +249,7 @@ namespace AetheriumBack.Database.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("RerservationId");
+                    b.HasKey("ReservationId");
 
                     b.HasIndex("FlightId");
 
@@ -314,6 +314,10 @@ namespace AetheriumBack.Database.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("Email");
+
+                    b.Property<string>("FirebaseUid")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
