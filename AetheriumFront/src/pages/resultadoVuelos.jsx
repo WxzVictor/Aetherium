@@ -147,9 +147,11 @@ const ResultadoVuelos = () => {
                                     <div className="resultado-vuelos">
                                         {combinedResults.map((par, i) => (
                                             <div key={i} className="combo-card">
+                                                <p class="claseParrafo">Vuelo de ida</p>
                                                 <div className="combo-vuelo">
                                                     {renderFlightCard(par.ida, false)}
                                                     <div className="separador">⬇</div>
+                                                    <p class="claseParrafo">Vuelo de vuelta</p>
                                                     {renderFlightCard(par.vuelta, false)}
                                                 </div>
                                                 <div className="combo-precio">
