@@ -104,6 +104,12 @@ const Flights = () => {
           ))}
         </div>
         <div>
+          <button
+            type="button"
+            className="boton-hotel-f"
+            onClick={() => navigate("/hoteles")}>
+            🏨 Buscar Hoteles
+          </button>
           <h1>{t('title')}</h1>
           <form className="contenedor-formulario" onSubmit={handleSearch}>
             <div className="grupo-input">

@@ -62,6 +62,26 @@ body {
   cursor: pointer;
 }
 
+.boton-hotel-f {
+  margin: 1rem auto; /* centrado horizontal y margen vertical */
+  background-color: #FDC921;
+  color: #1d2d4a;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #1d2d4a;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: medium;
+  cursor: pointer;
+  display: block;
+  width: 13%;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.boton-hotel-f:hover {
+  background-color: #fbc921cc;
+}
+
 .buscador {
   background-color: #6798C0;
   display: flex;
