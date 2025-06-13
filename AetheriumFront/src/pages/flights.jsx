@@ -20,10 +20,21 @@ const Flights = () => {
   const [cabinClass, setCabinClass] = useState('economy');
   const navigate = useNavigate();
 
+  const today = new Date().toISOString().split("T")[0];
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const minVuelta = tomorrow.toISOString().split("T")[0];
+
   const classLabels = {
     economy: 'Turista',
     business: 'Business',
     first: 'First',
+  };
+
+  const CLASS_MULTIPLIERS = {
+    economy: 1.0,
+    business: 1.5,
+    first: 2.0
   };
 
   const handleSwap = () => {
@@ -53,12 +64,22 @@ const Flights = () => {
       alert(t('error.completeFields'));
       return;
     }
+
     const fromCode = from.match(/\(([A-Z]{3})\)/)?.[1] || from;
     const toCode = to.match(/\(([A-Z]{3})\)/)?.[1] || to;
-    navigate(`/resultadoVuelos?from=${fromCode}&to=${toCode}&departureDate=${departureDate}&returnDate=${returnDate || ''}&passengers=${passengers.adults + passengers.children}&cabinClass=${cabinClass}`);
+    const totalPassengers = passengers.adults + passengers.children;
+    const multiplier = CLASS_MULTIPLIERS[cabinClass];
+
+    navigate(
+      `/resultadoVuelos?from=${fromCode}&to=${toCode}` +
+      `&departureDate=${departureDate}` +
+      `&returnDate=${returnDate || ''}` +
+      `&passengers=${totalPassengers}` +
+      `&cabinClass=${cabinClass}` +
+      `&classMultiplier=${multiplier}`
+    );
   };
 
-  // HANDLERS PARA AUTOCOMPLETADO CON ENTER
   const handleKeyDownFrom = (e) => {
     if (e.key === 'Enter' && suggestionsFrom.length > 0) {
       setFrom(`${suggestionsFrom[0].city}, ${suggestionsFrom[0].airportName} (${suggestionsFrom[0].code})`);
@@ -156,6 +177,8 @@ const Flights = () => {
               <input
                 type="date"
                 id="fechaIda"
+                max="2028-12-30"
+                min={today}
                 value={departureDate}
                 onChange={(e) => setDepartureDate(e.target.value)}
               />
@@ -166,6 +189,8 @@ const Flights = () => {
               <input
                 type="date"
                 id="fechaVuelta"
+                min={minVuelta}
+                max="2028-12-31"
                 value={returnDate}
                 onChange={(e) => setReturnDate(e.target.value)}
               />
@@ -180,9 +205,7 @@ const Flights = () => {
               <input
                 type="text"
                 id="infoViajeros"
-                value={`${passengers.adults + passengers.children} ${
-                  passengers.adults + passengers.children === 1 ? 'Adulto' : 'Viajeros'
-                }, ${classLabels[cabinClass]}`}
+                value={`${passengers.adults + passengers.children} ${passengers.adults + passengers.children === 1 ? 'Adulto' : 'Viajeros'}, ${classLabels[cabinClass]}`}
                 readOnly
               />
             </div>
@@ -291,4 +314,3 @@ const Flights = () => {
 };
 
 export default Flights;
-

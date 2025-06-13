@@ -5,6 +5,12 @@ import { auth } from "../services/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import "../styles/confirmReservation.css";
 
+const CLASS_MULTIPLIERS = {
+  economy: 1.0,
+  business: 1.5,
+  first: 2.0
+};
+
 const obtenerTipoYPrecio = (seat) => {
   const col = seat.slice(1);
   if (col === "1" || col === "3") return { tipo: "Ventanilla", precio: 15 };
@@ -23,16 +29,13 @@ const ConfirmReservation = () => {
   const totalPrecio = location.state?.totalPrecio || 0;
   const asientosIda = location.state?.asientosIda || [];
   const asientosVuelta = location.state?.asientosVuelta || [];
+  const clase = location.state?.clase || "economy";
 
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-      } else {
-        setUser(null);
-      }
+      setUser(currentUser || null);
     });
     return () => unsubscribe();
   }, []);
@@ -94,6 +97,13 @@ const ConfirmReservation = () => {
     }
   };
 
+  const multiplicador = CLASS_MULTIPLIERS[clase.toLowerCase()] || 1.0;
+  const precioBaseTotalSinClase = vuelos.reduce(
+    (sum, vuelo) => sum + (vuelo.price / multiplicador),
+    0
+  ) * pasajeros;
+  const suplementoClase = ((totalPrecio * 100 - precioBaseTotalSinClase) / 100).toFixed(2);
+
   const renderVueloInfo = (vuelo, titulo) => (
     <div className="card" style={{ marginBottom: "1rem" }}>
       <h3>{titulo}</h3>
@@ -102,6 +112,10 @@ const ConfirmReservation = () => {
         <div>{vuelo.departureAirport.city} ({vuelo.departureAirport.code}) → {vuelo.arrivalAirport.city} ({vuelo.arrivalAirport.code})</div>
         <div>Salida: {new Date(vuelo.departureTime).toLocaleString()}</div>
         <div>Llegada: {new Date(vuelo.arrivalTime).toLocaleString()}</div>
+        <div>
+          Clase: {clase.charAt(0).toUpperCase() + clase.slice(1)}
+          {multiplicador > 1 && <span> ({suplementoClase} €)</span>}
+        </div>
         <div>Precio por persona: {(vuelo.price / 100).toFixed(2)} €</div>
       </div>
     </div>

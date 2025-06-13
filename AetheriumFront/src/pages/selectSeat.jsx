@@ -9,6 +9,7 @@ const SelectSeat = () => {
 
   const vuelos = location.state?.vuelos || [];
   const pasajeros = location.state?.pasajeros || 1;
+  const clase = location.state?.clase || "Turista";
 
   useEffect(() => {
     if (!location.state?.vuelos || !location.state?.pasajeros) {
@@ -176,7 +177,8 @@ const SelectSeat = () => {
                     selectedSeatsVuelta,
                     totalPrecio: precioFinal,
                     asientosIda,
-                    asientosVuelta
+                    asientosVuelta,
+                    clase
                   }
                 });
               }}
