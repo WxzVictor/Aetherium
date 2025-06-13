@@ -20,6 +20,17 @@ const Login = () => {
         alert('Tu correo no ha sido verificado. Por favor revisa tu bandeja de entrada.');
         return;
       }
+
+      const response = await fetch(`http://localhost:5120/api/user/byfirebase/${user.uid}`);
+      if (response.ok) {
+        const userData = await response.json();
+        console.log("userData recibido del backend:", userData);
+        const userId = userData.userId;
+        localStorage.setItem('userId', userId);
+      }else {
+        alert("No se pudo obtener el usuario de la base de datos.");
+        return;
+      }
       const vueloPendiente = sessionStorage.getItem('vueloPendiente');
       if (vueloPendiente) {
         navigate('/confirmReservation');

@@ -9,6 +9,7 @@ const SelectSeat = () => {
 
   const vuelos = location.state?.vuelos || [];
   const pasajeros = location.state?.pasajeros || 1;
+  const userId = localStorage.getItem("userId");
 
   const [asientosIda, setAsientosIda] = useState([]);
   const [asientosVuelta, setAsientosVuelta] = useState([]);
@@ -162,15 +163,15 @@ const SelectSeat = () => {
                   return;
                 }
 
-                navigate("/ConfirmReservation", {
+                navigate("/confirmReservation", {
                   state: {
                     vuelos,
-                    pasajeros,
                     selectedSeatsIda,
                     selectedSeatsVuelta,
                     totalPrecio: precioFinal,
                     asientosIda,
-                    asientosVuelta
+                    asientosVuelta,
+                    userId
                   }
                 });
               }}
