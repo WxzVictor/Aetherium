@@ -25,7 +25,7 @@ const Login = () => {
         return;
       }
 
-      setUserLoggedIn(true); // marca como logueado
+      setUserLoggedIn(true);
 
     } catch (error) {
       if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
