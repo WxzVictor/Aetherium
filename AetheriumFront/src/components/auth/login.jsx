@@ -25,6 +25,17 @@ const Login = () => {
         return;
       }
 
+      const response = await fetch(`http://localhost:5120/api/user/byfirebase/${user.uid}`);
+      if (response.ok) {
+        const userData = await response.json();
+        console.log("userData recibido del backend:", userData);
+        const userId = userData.userId;
+        localStorage.setItem('userId', userId);
+      }else {
+        alert("No se pudo obtener el usuario de la base de datos.");
+        return;
+      }
+
       setUserLoggedIn(true);
 
     } catch (error) {

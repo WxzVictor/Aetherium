@@ -57,6 +57,7 @@ public class UserController : ControllerBase
 
         UserDto response = new ()
         {
+            UserId = user.UserId,
             FirebaseUid = user.FirebaseUid,
             FirstName = user.FirstName,
             LastName = user.LastName,

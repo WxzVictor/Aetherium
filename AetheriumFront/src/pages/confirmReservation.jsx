@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Layout from "../components/common/layout";
-import { auth } from "../services/firebaseConfig";
-import { onAuthStateChanged } from "firebase/auth";
 import "../styles/confirmReservation.css";
 
 const CLASS_MULTIPLIERS = {
@@ -29,16 +27,8 @@ const ConfirmReservation = () => {
   const totalPrecio = location.state?.totalPrecio || 0;
   const asientosIda = location.state?.asientosIda || [];
   const asientosVuelta = location.state?.asientosVuelta || [];
+  const userId = location.state?.userId;
   const clase = location.state?.clase || "economy";
-
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser || null);
-    });
-    return () => unsubscribe();
-  }, []);
 
   const buscarSeatId = (seatNumber, asientos) => {
     const match = asientos.find(s => s.seatNumber === seatNumber);
@@ -46,64 +36,63 @@ const ConfirmReservation = () => {
   };
 
   const confirmarReserva = async () => {
-    if (!user || !user.uid) {
-      alert("Debes iniciar sesión para confirmar la reserva.");
-      return;
+  if (!userId) {
+    alert("Debes iniciar sesión para confirmar la reserva.");
+    return;
+  }
+
+  const reservas = [];
+
+  selectedSeatsIda.forEach(seatNumber => {
+    const seatId = buscarSeatId(seatNumber, asientosIda);
+    reservas.push({
+      UserId: userId,
+      FlightId: vuelos[0].flightId,
+      SeatId: seatId,
+      DateTimeOffset: new Date().toISOString()
+    });
+  });
+
+  if (vuelos[1]) {
+    selectedSeatsVuelta.forEach(seatNumber => {
+      const seatId = buscarSeatId(seatNumber, asientosVuelta);
+      reservas.push({
+        UserId: userId,
+        FlightId: vuelos[1]?.flightId,
+        SeatId: seatId,
+        DateTimeOffset: new Date().toISOString()
+      });
+    });
+  }
+  console.log(reservas);
+
+  try {
+    for (const reserva of reservas) {
+      const response = await fetch("http://localhost:5120/api/reservation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(reserva)
+      });
+
+      if (!response.ok) {
+        alert("Error al guardar la reserva. Por favor, inténtalo de nuevo.");
+        return;
+      }
     }
 
-    try {
-      const reservas = [];
-
-      for (const seat of selectedSeatsIda) {
-        const seatId = buscarSeatId(seat, asientosIda);
-        if (seatId) {
-          reservas.push({
-            UserId: parseInt(user.uid),
-            FlightId: vuelos[0].flightId,
-            SeatId: seatId
-          });
-        }
-      }
-
-      if (vuelos[1]) {
-        for (const seat of selectedSeatsVuelta) {
-          const seatId = buscarSeatId(seat, asientosVuelta);
-          if (seatId) {
-            reservas.push({
-              UserId: parseInt(user.uid),
-              FlightId: vuelos[1].flightId,
-              SeatId: seatId
-            });
-          }
-        }
-      }
-
-      for (const reserva of reservas) {
-        await fetch("/api/Reservation", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(reserva)
-        });
-      }
-
-      alert("Reserva confirmada. Los asientos han sido bloqueados.");
-      navigate("/perfilUsuario");
-
-    } catch (err) {
-      console.error("Error al confirmar reserva:", err);
-      alert("Ocurrió un error al guardar tu reserva.");
-    }
-  };
-
-  const multiplicador = CLASS_MULTIPLIERS[clase.toLowerCase()] || 1.0;
+    alert("Reserva confirmada. Los asientos han sido bloqueados.");
+    navigate("/perfilUsuario");
+  } catch (err) {
+    console.error("Error al confirmar reserva:", err);
+    alert("Ocurrió un error al guardar tu reserva.");
+  }
+};
+const multiplicador = CLASS_MULTIPLIERS[clase.toLowerCase()] || 1.0;
   const precioBaseTotalSinClase = vuelos.reduce(
     (sum, vuelo) => sum + (vuelo.price / multiplicador),
     0
   ) * pasajeros;
   const suplementoClase = ((totalPrecio * 100 - precioBaseTotalSinClase) / 100).toFixed(2);
-
   const renderVueloInfo = (vuelo, titulo) => (
     <div className="card" style={{ marginBottom: "1rem" }}>
       <h3>{titulo}</h3>
