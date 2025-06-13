@@ -114,7 +114,7 @@ const SelectSeat = () => {
           ))}
         </div>
 
-        <div className="contenedor-visible">
+        <div className="contenedor-visible-sS">
           <div className="seat-picker">
             <h2>Selecciona tu asiento de ida</h2>
             {renderSeatGrid(asientosIda, selectedSeatsIda, setSelectedSeatsIda, 0)}
@@ -135,6 +135,14 @@ const SelectSeat = () => {
                 )}
               </>
             )}
+
+            <div className="legend-seat-prices">
+              <strong>Suplemento por tipo de asiento:</strong>
+              <ul style={{ marginTop: "0.5rem", paddingLeft: "1.2rem" }}>
+                <li><strong>Ventanilla:</strong> 15 €</li>
+                <li><strong>Pasillo:</strong> 10 €</li>
+              </ul>
+            </div>
 
             <div className="total-precio">
               Precio total actualizado: {precioFinal.toFixed(2)} €
@@ -160,7 +168,9 @@ const SelectSeat = () => {
                     pasajeros,
                     selectedSeatsIda,
                     selectedSeatsVuelta,
-                    totalPrecio: precioFinal
+                    totalPrecio: precioFinal,
+                    asientosIda,
+                    asientosVuelta
                   }
                 });
               }}
