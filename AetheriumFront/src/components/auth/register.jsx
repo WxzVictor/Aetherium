@@ -7,7 +7,9 @@ import '../../styles/cloud.css';
 import logo from '../../assets/images/logo2-removebg-preview.png';
 
 const Register = () => {
-  const [username, setUsername] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [age, setAge] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -17,41 +19,43 @@ const Register = () => {
     return regex.test(password);
   };
 
- const handleRegister = async (e) => {
-  e.preventDefault();
-  if (!validarPassword(password)) {
-    alert("❌ La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.");
-    return;
-  }
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), password);
-    const user = userCredential.user;
-
-    await sendEmailVerification(user);
-    alert("✅ Cuenta creada correctamente. Revisa tu correo para verificar la cuenta.");
-    await updateProfile(user, { displayName: username });
-
-    // 👇 REGISTRO EN TU BASE DE DATOS
-    await fetch("http://localhost:5120/api/user/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        uid: user.uid,
-        email: user.email,
-        username: username
-      })
-    });
-
-    navigate('/login');
-  } catch (error) {
-    if (error.code === "auth/email-already-in-use") {
-      alert("❌ El correo ya está registrado.");
-    } else {
-      alert("❌ Error al registrar: " + error.message);
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    if (!validarPassword(password)) {
+      alert("❌ La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.");
+      return;
     }
-  }
-};
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email.trim(), password);
+      const user = userCredential.user;
 
+      await sendEmailVerification(user);
+      alert("✅ Cuenta creada correctamente. Revisa tu correo para verificar la cuenta.");
+      await updateProfile(user, { displayName: firstName });
+
+      // Registro en tu base de datos
+      await fetch("http://localhost:5120/api/user", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firebaseUid: user.uid,
+          firstName: firstName,
+          lastName: lastName,
+          email: user.email,
+          age: parseInt(age, 10),
+          signUpDate: new Date().toISOString()
+        })
+      });
+
+      navigate('/login');
+    } catch (error) {
+      if (error.code === "auth/email-already-in-use") {
+        alert("❌ El correo ya está registrado.");
+      } else {
+        alert("❌ Error al registrar: " + error.message);
+      }
+    }
+  };
 
   return (
     <div className="login-page">
@@ -76,12 +80,35 @@ const Register = () => {
               <input
                 type="text"
                 placeholder=" "
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
                 required
               />
-              <label>Username</label>
+              <label>First Name</label>
               <span className="icon">👤</span>
+            </div>
+            <div className="input-group">
+              <input
+                type="text"
+                placeholder=" "
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+              />
+              <label>Last Name</label>
+              <span className="icon">👤</span>
+            </div>
+            <div className="input-group">
+              <input
+                type="number"
+                placeholder=" "
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                min={0}
+                required
+              />
+              <label>Age</label>
+              <span className="icon">🎂</span>
             </div>
             <div className="input-group">
               <input

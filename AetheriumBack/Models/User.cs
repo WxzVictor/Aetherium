@@ -3,6 +3,7 @@
 public class User
 {
     public int UserId { get; set; }
+    public string FirebaseUid { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
@@ -10,15 +11,7 @@ public class User
     public DateTimeOffset SignUpDate { get; set; }
     public ICollection<Reservation> Reservation { get; set; }
 
-    private User() { }
-
-    public User(string[] attributes)
-    {
-        FirstName = attributes[0];
-        LastName = attributes[1];
-        Email = attributes[2];
-        Age = int.Parse(attributes[3]);
-        SignUpDate = DateTimeOffset.Parse(attributes[4]);
-    }
-
+#pragma warning disable CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required" o declararlo como un valor que acepta valores NULL.
+    public User() { }
+#pragma warning restore CS8618 // Un campo que no acepta valores NULL debe contener un valor distinto de NULL al salir del constructor. Considere la posibilidad de agregar el modificador "required" o declararlo como un valor que acepta valores NULL.
 }

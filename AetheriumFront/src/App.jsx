@@ -54,7 +54,7 @@ function App() {
         <Route path="/resultadoVuelos" element={<ResultadoVuelos />} />
         <Route path="/seleccionAsientos" element={<SelectSeat />} />
         <Route path="/hoteles" element={<Hoteles />} />
-        <Route path="/confirmReservation" element={<ConfirmReservation />} />
+        <Route path="/ConfirmReservation" element={<ConfirmReservation />} />
 
         {/* ✅ Protegida */}
         <Route
