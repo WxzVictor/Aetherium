@@ -10,6 +10,12 @@ const SelectSeat = () => {
   const vuelos = location.state?.vuelos || [];
   const pasajeros = location.state?.pasajeros || 1;
 
+  useEffect(() => {
+    if (!location.state?.vuelos || !location.state?.pasajeros) {
+      navigate('/');
+    }
+  }, []);
+
   const [asientosIda, setAsientosIda] = useState([]);
   const [asientosVuelta, setAsientosVuelta] = useState([]);
   const [selectedSeatsIda, setSelectedSeatsIda] = useState([]);

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { auth } from '../../services/firebaseConfig';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import '../../styles/login-register.css';
@@ -9,23 +9,24 @@ import logo from '../../assets/images/logo2-removebg-preview.png';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email.trim(), password);
       const user = userCredential.user;
+
       if (!user.emailVerified) {
         alert('Tu correo no ha sido verificado. Por favor revisa tu bandeja de entrada.');
         return;
       }
-      const vueloPendiente = sessionStorage.getItem('vueloPendiente');
-      if (vueloPendiente) {
-        navigate('/confirmReservation');
-      } else {
-        navigate('/flights');
-      }
+
+      setUserLoggedIn(true); // marca como logueado
+
     } catch (error) {
       if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
         alert("Correo o contraseña incorrectos.");
@@ -34,6 +35,17 @@ const Login = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (userLoggedIn) {
+      const from = location.state?.from || '/flights';
+      const restoreState = {
+        vuelos: location.state?.vuelos,
+        pasajeros: location.state?.pasajeros
+      };
+      navigate(from, { state: restoreState });
+    }
+  }, [userLoggedIn]);
 
   const handleForgotPassword = async () => {
     const emailPrompt = prompt("Introduce tu correo electrónico para recuperar la contraseña:");
@@ -50,13 +62,9 @@ const Login = () => {
   return (
     <div className="login-page">
       <div id="clouds">
-        <div className="cloud x1"></div>
-        <div className="cloud x2"></div>
-        <div className="cloud x3"></div>
-        <div className="cloud x4"></div>
-        <div className="cloud x5"></div>
-        <div className="cloud x6"></div>
-        <div className="cloud x7"></div>
+        {[...Array(7)].map((_, i) => (
+          <div key={i} className={`cloud x${i + 1}`}></div>
+        ))}
       </div>
 
       <div className="background">
@@ -92,7 +100,7 @@ const Login = () => {
               <input type="checkbox" id="remember" />
               <label htmlFor="remember"> Remember me </label>
             </div>
-            <button type="submit" className='bt_subreg'>Login</button>
+            <button type="submit" className="bt_subreg">Login</button>
           </form>
           <a href="#" onClick={handleForgotPassword} className="forgot">Forgot Password?</a>
           <a href="/register" className="forgot">Aren't you register yet?</a>

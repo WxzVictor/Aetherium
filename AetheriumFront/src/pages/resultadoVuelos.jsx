@@ -83,7 +83,14 @@ const ResultadoVuelos = () => {
     const handleReserve = (vuelo) => {
         if (!user) {
             sessionStorage.setItem('vueloPendiente', JSON.stringify(vuelo));
-            navigate('/login');
+            navigate('/login', {
+                state: {
+                    from: '/seleccionAsientos',
+                    vuelos: vuelo.vuelta ? [vuelo, vuelo.vuelta] : [vuelo],
+                    pasajeros: passengerCount
+                }
+            });
+
         } else {
             navigate('/seleccionAsientos', {
                 state: {
