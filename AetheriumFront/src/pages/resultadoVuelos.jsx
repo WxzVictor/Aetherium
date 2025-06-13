@@ -163,9 +163,16 @@ const ResultadoVuelos = () => {
                                                     <p className="claseParrafo">Vuelo de vuelta</p>
                                                     {renderFlightCard(par.vuelta, false)}
                                                 </div>
-                                                <div className="combo-precio">
-                                                    <strong>Total:</strong> {((par.ida.price + par.vuelta.price) / 100).toFixed(2)} €
-                                                    <button className="btn" onClick={() => handleReserve({ ...par.ida, vuelta: par.vuelta })}>{t('book')}</button>
+                                                <div className="combo-precio precio">
+                                                    <div className="monto">
+                                                        Precio por persona: {((par.ida.price + par.vuelta.price) / 100).toFixed(2)} €
+                                                    </div>
+                                                    <div className="monto">
+                                                        Total para {passengerCount} {passengerCount > 1 ? 'personas' : 'persona'}: {(((par.ida.price + par.vuelta.price) / 100) * passengerCount).toFixed(2)} €
+                                                    </div>
+                                                    <button className="btn" onClick={() => handleReserve({ ...par.ida, vuelta: par.vuelta })}>
+                                                        {t('book')}
+                                                    </button>
                                                 </div>
                                             </div>
                                         ))}
