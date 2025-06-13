@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/common/layout";
 import "./../styles/hoteles.css";
+import { useNavigate } from "react-router-dom";
 
 const DEFAULT_IMG = "https://via.placeholder.com/400x250?text=Sin+Imagen";
 const BATCH_SIZE = 10;
@@ -12,6 +13,8 @@ export default function Hoteles() {
     const [hoteles, setHoteles] = useState([]);
     const [filtered, setFiltered] = useState([]);
     const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch("http://localhost:5120/api/hotel")
@@ -71,6 +74,13 @@ export default function Hoteles() {
                         <div className={`cloud x${i + 1}`} key={i}></div>
                     ))}
                 </div>
+
+                <button
+                    type="button"
+                    className="boton-vuelos-h"
+                    onClick={() => navigate("/flights")}>
+                    🛩️ Buscar Vuelos
+                </button>
 
                 <div>
                     <h1>Hoteles</h1>

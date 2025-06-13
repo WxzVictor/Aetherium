@@ -1,3 +1,23 @@
+.boton-vuelos-h {
+  margin: 1rem auto;
+  background-color: #FDC921;
+  color: #1d2d4a;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #1d2d4a;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: medium;
+  cursor: pointer;
+  display: block;
+  width: 13%;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.boton-vuelos-h {
+  background-color: #fbc921cc;
+}
+
 .hotel-card {
   width: 100%;
   max-width: 320px;
