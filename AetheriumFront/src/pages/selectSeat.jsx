@@ -16,6 +16,7 @@ const SelectSeat = () => {
       navigate('/');
     }
   }, []);
+  const userId = localStorage.getItem("userId");
 
   const [asientosIda, setAsientosIda] = useState([]);
   const [asientosVuelta, setAsientosVuelta] = useState([]);
@@ -44,7 +45,7 @@ const SelectSeat = () => {
     }
   }, [vuelos]);
 
-  const handleSeatClick = (seatNumber, setSelectedSeats, selectedSeats) => {
+  const handleSeatClick = (seatNumber, setSelectedSeats) => {
     setSelectedSeats(prev =>
       prev.includes(seatNumber)
         ? prev.filter(seat => seat !== seatNumber)
@@ -169,15 +170,15 @@ const SelectSeat = () => {
                   return;
                 }
 
-                navigate("/ConfirmReservation", {
+                navigate("/confirmReservation", {
                   state: {
                     vuelos,
-                    pasajeros,
                     selectedSeatsIda,
                     selectedSeatsVuelta,
                     totalPrecio: precioFinal,
                     asientosIda,
                     asientosVuelta,
+                    userId,
                     clase
                   }
                 });
