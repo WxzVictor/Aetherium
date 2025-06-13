@@ -10,6 +10,7 @@ import { getReservationsByUser, deleteReservation } from '../services/reservatio
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const [reservations, setReservations] = useState([]);
   const [showReservations, setShowReservations] = useState(false);
   const [showStats, setShowStats] = useState(false);
@@ -20,12 +21,25 @@ const UserProfile = () => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser && currentUser.emailVerified) {
         try {
+          const firebaseUid = currentUser.uid;
           const token = await getIdToken(currentUser);
-          const data = await getReservationsByUser(currentUser.uid, token);
+
+          const res = await fetch(`/api/user/byfirebase/${firebaseUid}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+
+          if (!res.ok) throw new Error("No se pudo obtener el usuario");
+          const userInfo = await res.json();
+          setUserInfo(userInfo);
+
+          const reservations = await getReservationsByUser(userInfo.userId, token);
+
           setUser(currentUser);
-          setReservations(data);
+          setReservations(reservations);
         } catch (error) {
-          console.error("Error al obtener reservas:", error);
+          console.error("❌ Error al obtener usuario o reservas:", error);
         }
       } else {
         navigate('/login');
@@ -97,11 +111,11 @@ const UserProfile = () => {
 
         <div className="contenedor-formulario">
           <div className="perfilUsuario-form-container">
-            {user && (
+            {userInfo && (
               <div className="perfil-info">
-                <p><strong>{t('name')}:</strong> {user.displayName || 'Usuario'}</p>
-                <p><strong>{t('email')}:</strong> {user.email}</p>
-                <p><strong><a href="#" onClick={handleForgotPassword} className="forgot">{t('contrasena')}</a></strong></p>
+                <p><strong>{t('name')}:</strong> {userInfo.firstName} {userInfo.lastName}</p>
+                <p><strong>{t('email')}:</strong> {userInfo.email}</p>
+                <p><strong><a href="#" onClick={handleForgotPassword} className="forgotPass">{t('contrasena')}</a></strong></p>
               </div>
             )}
 
