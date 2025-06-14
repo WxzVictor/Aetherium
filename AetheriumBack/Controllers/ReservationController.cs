@@ -130,8 +130,7 @@ public class ReservationController : ControllerBase
             seatExtra = ObtenerSuplementoPorAsiento(seatDto.SeatNumber);
         }
 
-        double totalPrice = priceWithMultiplier + seatExtra;
-
+        double totalPrice = dto.TotalPrice ?? (priceWithMultiplier + seatExtra);
 
         // Crear el PDF con los datos de la reserva
         var pdfStream = new MemoryStream();

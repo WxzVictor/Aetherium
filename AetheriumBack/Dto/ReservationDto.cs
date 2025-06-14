@@ -6,4 +6,5 @@ public class ReservationDto
     public int? SeatId { get; set; }
     public DateTimeOffset DateTimeOffset { get; set; }
     public string? SeatClass { get; set; }
+    public double? TotalPrice { get; set; }
 }
