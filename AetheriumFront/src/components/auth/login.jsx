@@ -31,7 +31,7 @@ const Login = () => {
         console.log("userData recibido del backend:", userData);
         const userId = userData.userId;
         localStorage.setItem('userId', userId);
-      }else {
+      } else {
         alert("No se pudo obtener el usuario de la base de datos.");
         return;
       }
@@ -49,12 +49,15 @@ const Login = () => {
 
   useEffect(() => {
     if (userLoggedIn) {
-      const from = location.state?.from || '/flights';
-      const restoreState = {
-        vuelos: location.state?.vuelos,
-        pasajeros: location.state?.pasajeros
-      };
-      navigate(from, { state: restoreState });
+      if (location.state?.combo) {
+        navigate("/selectSeatCombo", { state: location.state.combo });
+      }
+      else if (location.state?.vuelos && location.state?.pasajeros) {
+        navigate("/selectSeat", { state: { vuelos: location.state.vuelos, pasajeros: location.state.pasajeros } });
+      }
+      else {
+        navigate("/flights");
+      }
     }
   }, [userLoggedIn]);
 

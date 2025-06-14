@@ -17,6 +17,7 @@ const Flights = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [suggestionsFrom, setSuggestionsFrom] = useState([]);
   const [suggestionsTo, setSuggestionsTo] = useState([]);
+  const [buscarHotel, setBuscarHotel] = useState(false);
   const [cabinClass, setCabinClass] = useState('economy');
   const navigate = useNavigate();
 
@@ -58,6 +59,10 @@ const Flights = () => {
     }
   };
 
+  function extractCity(string) {
+    return string.split(',')[0].trim();
+  }
+
   const handleSearch = (e) => {
     e.preventDefault();
     if (!from || !departureDate) {
@@ -65,19 +70,30 @@ const Flights = () => {
       return;
     }
 
-    const fromCode = from.match(/\(([A-Z]{3})\)/)?.[1] || from;
-    const toCode = to.match(/\(([A-Z]{3})\)/)?.[1] || to;
+    const fromCity = extractCity(from);
+    const toCity = extractCity(to);
     const totalPassengers = passengers.adults + passengers.children;
     const multiplier = CLASS_MULTIPLIERS[cabinClass];
 
-    navigate(
-      `/resultadoVuelos?from=${fromCode}&to=${toCode}` +
-      `&departureDate=${departureDate}` +
-      `&returnDate=${returnDate || ''}` +
-      `&passengers=${totalPassengers}` +
-      `&cabinClass=${cabinClass}` +
-      `&classMultiplier=${multiplier}`
-    );
+    if (buscarHotel) {
+      navigate(
+        `/resultadoVuelosHotel?from=${fromCity}&to=${toCity}` +
+        `&departureDate=${departureDate}` +
+        `&returnDate=${returnDate || ''}` +
+        `&passengers=${totalPassengers}` +
+        `&cabinClass=${cabinClass}` +
+        `&classMultiplier=${multiplier}`
+      );
+    } else {
+      navigate(
+        `/resultadoVuelos?from=${fromCity}&to=${toCity}` +
+        `&departureDate=${departureDate}` +
+        `&returnDate=${returnDate || ''}` +
+        `&passengers=${totalPassengers}` +
+        `&cabinClass=${cabinClass}` +
+        `&classMultiplier=${multiplier}`
+      );
+    }
   };
 
   const handleKeyDownFrom = (e) => {
@@ -299,7 +315,12 @@ const Flights = () => {
             )}
 
             <div className="grupo-input grupo-checkbox">
-              <input type="checkbox" id="buscarHotel" />
+              <input
+                type="checkbox"
+                id="buscarHotel"
+                checked={buscarHotel}
+                onChange={e => setBuscarHotel(e.target.checked)}
+              />
               <label htmlFor="buscarHotel">{t('labels.searchHotel')}</label>
             </div>
 
