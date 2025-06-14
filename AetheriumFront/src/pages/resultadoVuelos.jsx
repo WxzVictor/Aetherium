@@ -15,7 +15,6 @@ const ResultadoVuelos = () => {
 
     const params = new URLSearchParams(location.search);
     const passengerCount = Math.max(1, parseInt(params.get("passengers") || "1"));
-    const classMultiplier = parseFloat(params.get("classMultiplier") || "1.0");
     const cabinClass = params.get("cabinClass") || "economy";
 
     const [loading, setLoading] = useState(true);
@@ -99,9 +98,9 @@ const ResultadoVuelos = () => {
         };
         if (!user) {
             sessionStorage.setItem('vueloPendiente', JSON.stringify(vuelo));
-            navigate('/login', { state: { from: '/seleccionAsientos', ...state } });
+            navigate('/login', { state: { from: '/selectSeat', ...state } });
         } else {
-            navigate('/seleccionAsientos', { state });
+            navigate('/selectSeat', { state });
         }
     };
 
