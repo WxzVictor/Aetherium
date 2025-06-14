@@ -171,7 +171,7 @@ const UserProfile = () => {
                             </div>
                           ))}
                           <button className="delete-button" onClick={() => handleDelete(grupo.reservaIdPrincipal)}>
-                            {t('deleteReservation')}
+                            {t('eliminarReserva')}
                           </button>
                         </div>
                       ))}

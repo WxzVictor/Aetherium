@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/selectSeat.css";
 import Layout from "../components/common/layout";
+import { useTranslation } from 'react-i18next';
 
 const SelectSeat = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation('selectSeat');
 
   const vuelos = location.state?.vuelos || [];
   const pasajeros = location.state?.pasajeros || 1;
@@ -16,6 +18,7 @@ const SelectSeat = () => {
       navigate('/');
     }
   }, []);
+
   const userId = localStorage.getItem("userId");
 
   const [asientosIda, setAsientosIda] = useState([]);
@@ -26,7 +29,6 @@ const SelectSeat = () => {
   useEffect(() => {
     if (vuelos.length === 0) return;
 
-    // Ida
     fetch(`/api/Flight/${vuelos[0].flightId}/available-seats`)
       .then(res => res.json())
       .then(data => {
@@ -34,7 +36,6 @@ const SelectSeat = () => {
         setAsientosIda(unicos);
       });
 
-    // Vuelta si existe
     if (vuelos[1]) {
       fetch(`/api/Flight/${vuelos[1].flightId}/available-seats`)
         .then(res => res.json())
@@ -56,7 +57,7 @@ const SelectSeat = () => {
   };
 
   const renderSeatGrid = (seats, selectedSeats, setSelectedSeats, flightIndex) => {
-    if (!seats || seats.length === 0) return <div>Cargando asientos...</div>;
+    if (!seats || seats.length === 0) return <div>{t('loadingSeats')}</div>;
 
     const seatMap = {};
     seats.forEach(seat => {
@@ -97,8 +98,8 @@ const SelectSeat = () => {
 
   const obtenerPrecioExtra = (seatNumber) => {
     const num = seatNumber.slice(1);
-    if (num === "1" || num === "3") return 15; // Ventanilla
-    if (num === "2") return 10;                // Pasillo
+    if (num === "1" || num === "3") return 15;
+    if (num === "2") return 10;
     return 0;
   };
 
@@ -106,10 +107,8 @@ const SelectSeat = () => {
     return selectedSeats.reduce((total, seat) => total + obtenerPrecioExtra(seat), 0);
   };
 
-  // Precio base total por todos los pasajeros
   const precioBase = vuelos.reduce((total, vuelo) => total + vuelo.price, 0);
   const totalBase = (precioBase / 100) * pasajeros;
-
   const suplementoTotal = calcularSuplementoTotal(selectedSeatsIda) + calcularSuplementoTotal(selectedSeatsVuelta);
   const precioFinal = totalBase + suplementoTotal;
 
@@ -124,36 +123,36 @@ const SelectSeat = () => {
 
         <div className="contenedor-visible-sS">
           <div className="seat-picker">
-            <h2>Selecciona tu asiento de ida</h2>
+            <h2>{t('selectOutbound')}</h2>
             {renderSeatGrid(asientosIda, selectedSeatsIda, setSelectedSeatsIda, 0)}
             {selectedSeatsIda.length > 0 && (
               <div className="selection-info">
-                Asientos seleccionados de ida: {selectedSeatsIda.join(", ")}
+                {t('selectedOutbound')}: {selectedSeatsIda.join(", ")}
               </div>
             )}
 
             {vuelos[1] && (
               <>
-                <h2 style={{ marginTop: "2rem" }}>Selecciona tu asiento de vuelta</h2>
+                <h2 style={{ marginTop: "2rem" }}>{t('selectReturn')}</h2>
                 {renderSeatGrid(asientosVuelta, selectedSeatsVuelta, setSelectedSeatsVuelta, 1)}
                 {selectedSeatsVuelta.length > 0 && (
                   <div className="selection-info">
-                    Asientos seleccionados de vuelta: {selectedSeatsVuelta.join(", ")}
+                    {t('selectedReturn')}: {selectedSeatsVuelta.join(", ")}
                   </div>
                 )}
               </>
             )}
 
             <div className="legend-seat-prices">
-              <strong>Suplemento por tipo de asiento:</strong>
+              <strong>{t('seatSurcharge')}:</strong>
               <ul style={{ marginTop: "0.5rem", paddingLeft: "1.2rem" }}>
-                <li><strong>Ventanilla:</strong> 15 €</li>
-                <li><strong>Pasillo:</strong> 10 €</li>
+                <li><strong>{t('window')}:</strong> 15 €</li>
+                <li><strong>{t('aisle')}:</strong> 10 €</li>
               </ul>
             </div>
 
             <div className="total-precio">
-              Precio total actualizado: {precioFinal.toFixed(2)} €
+              {t('totalPrice')}: {precioFinal.toFixed(2)} €
             </div>
 
             <button
@@ -161,12 +160,12 @@ const SelectSeat = () => {
               style={{ marginTop: "1rem" }}
               onClick={() => {
                 if (selectedSeatsIda.length !== pasajeros) {
-                  alert(`Selecciona ${pasajeros} asiento(s) para el vuelo de ida.`);
+                  alert(t('selectAllOutbound', { count: pasajeros }));
                   return;
                 }
 
                 if (vuelos[1] && selectedSeatsVuelta.length !== pasajeros) {
-                  alert(`Selecciona ${pasajeros} asiento(s) para el vuelo de vuelta.`);
+                  alert(t('selectAllReturn', { count: pasajeros }));
                   return;
                 }
 
@@ -184,7 +183,7 @@ const SelectSeat = () => {
                 });
               }}
             >
-              Confirmar asientos
+              {t('confirmSeats')}
             </button>
           </div>
         </div>

@@ -92,24 +92,16 @@ const ResultadoVuelos = () => {
     };
 
     const handleReserve = (vuelo) => {
+        const state = {
+            vuelos: vuelo.vuelta ? [vuelo, vuelo.vuelta] : [vuelo],
+            pasajeros: passengerCount,
+            clase: cabinClass
+        };
         if (!user) {
             sessionStorage.setItem('vueloPendiente', JSON.stringify(vuelo));
-            navigate('/login', {
-                state: {
-                    from: '/seleccionAsientos',
-                    vuelos: vuelo.vuelta ? [vuelo, vuelo.vuelta] : [vuelo],
-                    pasajeros: passengerCount,
-                    clase: cabinClass
-                }
-            });
+            navigate('/login', { state: { from: '/seleccionAsientos', ...state } });
         } else {
-            navigate('/seleccionAsientos', {
-                state: {
-                    vuelos: vuelo.vuelta ? [vuelo, vuelo.vuelta] : [vuelo],
-                    pasajeros: passengerCount,
-                    clase: cabinClass
-                }
-            });
+            navigate('/seleccionAsientos', { state });
         }
     };
 
@@ -117,7 +109,7 @@ const ResultadoVuelos = () => {
         <div className="card" key={vuelo.flightId || Math.random()}>
             <div className="info">
                 <strong>{vuelo.airlineName}</strong>
-                <div className="fecha-vuelo" style={{ fontSize: '0.9rem', color: '#555', marginBottom: '0.5rem' }}>
+                <div className="fecha-vuelo">
                     {formatDate(vuelo.departureTime)}
                 </div>
                 <div className="horarios">
@@ -175,19 +167,19 @@ const ResultadoVuelos = () => {
                                     <div className="resultado-vuelos">
                                         {combinedResults.map((par, i) => (
                                             <div key={i} className="combo-card">
-                                                <p className="claseParrafo">Vuelo de ida</p>
+                                                <p className="claseParrafo">{t('oneWay')}</p>
                                                 <div className="combo-vuelo">
                                                     {renderFlightCard(par.ida, false)}
                                                     <div className="separador">⬇</div>
-                                                    <p className="claseParrafo">Vuelo de vuelta</p>
+                                                    <p className="claseParrafo">{t('roundTrip')}</p>
                                                     {renderFlightCard(par.vuelta, false)}
                                                 </div>
                                                 <div className="combo-precio precio">
                                                     <div className="monto">
-                                                        Precio por persona: {((par.ida.price + par.vuelta.price) / 100).toFixed(2)} €
+                                                        {t('pricePerPerson')}: {((par.ida.price + par.vuelta.price) / 100).toFixed(2)} €
                                                     </div>
                                                     <div className="monto">
-                                                        Total para {passengerCount} {passengerCount > 1 ? 'personas' : 'persona'}: {(((par.ida.price + par.vuelta.price) / 100) * passengerCount).toFixed(2)} €
+                                                        {t('totalFor')} {passengerCount} {passengerCount > 1 ? t('people') : t('person')}: {(((par.ida.price + par.vuelta.price) / 100) * passengerCount).toFixed(2)} €
                                                     </div>
                                                     <button className="btn-rV" onClick={() => handleReserve({ ...par.ida, vuelta: par.vuelta })}>
                                                         {t('book')}
@@ -204,16 +196,16 @@ const ResultadoVuelos = () => {
                                         ) : (
                                             outFlights.map((vuelo, i) => (
                                                 <div key={i} className="combo-card">
-                                                    <p className="claseParrafo">Vuelo de ida</p>
+                                                    <p className="claseParrafo">{t('oneWay')}</p>
                                                     <div className="combo-vuelo">
                                                         {renderFlightCard(vuelo, false)}
                                                     </div>
                                                     <div className="combo-precio precio">
                                                         <div className="monto">
-                                                            Precio por persona: {(vuelo.price / 100).toFixed(2)} €
+                                                            {t('pricePerPerson')}: {(vuelo.price / 100).toFixed(2)} €
                                                         </div>
                                                         <div className="monto">
-                                                            Total para {passengerCount} {passengerCount > 1 ? 'personas' : 'persona'}: {((vuelo.price / 100) * passengerCount).toFixed(2)} €
+                                                            {t('totalFor')} {passengerCount} {passengerCount > 1 ? t('people') : t('person')}: {((vuelo.price / 100) * passengerCount).toFixed(2)} €
                                                         </div>
                                                         <button className="btn-rV" onClick={() => handleReserve(vuelo)}>
                                                             {t('book')}
