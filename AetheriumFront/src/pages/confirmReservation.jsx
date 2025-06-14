@@ -1,6 +1,5 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import Layout from "../components/common/layout";
 import "../styles/confirmReservation.css";
 
@@ -10,15 +9,14 @@ const CLASS_MULTIPLIERS = {
   first: 2.0
 };
 
-const obtenerTipoYPrecio = (seat, t) => {
+const obtenerTipoYPrecio = (seat) => {
   const col = seat.slice(1);
-  if (col === "1" || col === "3") return { tipo: t("window"), precio: 15 };
-  if (col === "2") return { tipo: t("aisle"), precio: 10 };
-  return { tipo: t("standard"), precio: 0 };
+  if (col === "1" || col === "3") return { tipo: "Ventanilla", precio: 15 };
+  if (col === "2") return { tipo: "Pasillo", precio: 10 };
+  return { tipo: "Estándar", precio: 0 };
 };
 
 const ConfirmReservation = () => {
-  const { t } = useTranslation("confirmReservation");
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -46,7 +44,7 @@ const ConfirmReservation = () => {
 
   const confirmarReserva = async () => {
     if (!userId) {
-      alert(t("mustLogin"));
+      alert("Debes iniciar sesión para confirmar la reserva.");
       return;
     }
 
@@ -78,6 +76,8 @@ const ConfirmReservation = () => {
       });
     }
 
+    console.log(reservas);
+
     try {
       for (let i = 0; i < reservas.length; i++) {
         const reserva = reservas[i];
@@ -90,7 +90,7 @@ const ConfirmReservation = () => {
         });
 
         if (!response.ok) {
-          alert(t("errorReservation"));
+          alert("Error al guardar la reserva. Por favor, inténtalo de nuevo.");
           return;
         }
       }
@@ -100,7 +100,7 @@ const ConfirmReservation = () => {
       navigate("/perfilUsuario");
     } catch (err) {
       console.error("Error al confirmar reserva:", err);
-      alert(t("reservationError"));
+      alert("Ocurrió un error al guardar tu reserva.");
     }
   };
 
@@ -111,26 +111,25 @@ const ConfirmReservation = () => {
   ) * pasajeros;
 
   const suplementoClase = ((totalPrecio * 100 - precioBaseTotalSinClase) / 100).toFixed(2);
-
   const renderVueloInfo = (vuelo, titulo) => (
     <div className="card" style={{ marginBottom: "1rem" }}>
       <h3>{titulo}</h3>
       <div className="info">
         <strong>{vuelo.airlineName}</strong>
         <div>{vuelo.departureAirport.city} ({vuelo.departureAirport.code}) → {vuelo.arrivalAirport.city} ({vuelo.arrivalAirport.code})</div>
-        <div>{t("departure")}: {new Date(vuelo.departureTime).toLocaleString()}</div>
-        <div>{t("arrival")}: {new Date(vuelo.arrivalTime).toLocaleString()}</div>
+        <div>Salida: {new Date(vuelo.departureTime).toLocaleString()}</div>
+        <div>Llegada: {new Date(vuelo.arrivalTime).toLocaleString()}</div>
         <div>
-          {t("class")}: {clase.charAt(0).toUpperCase() + clase.slice(1)}
+          Clase: {clase.charAt(0).toUpperCase() + clase.slice(1)}
           {multiplicador > 1 && <span> ({suplementoClase} €)</span>}
         </div>
-        <div>{t("pricePerPerson")}: {(vuelo.price / 100).toFixed(2)} €</div>
+        <div>Precio por persona: {(vuelo.price / 100).toFixed(2)} €</div>
       </div>
     </div>
   );
 
   const renderAsientos = (asientos, titulo) => {
-    const detalles = asientos.map(asiento => obtenerTipoYPrecio(asiento, t));
+    const detalles = asientos.map(asiento => obtenerTipoYPrecio(asiento));
     const subtotal = detalles.reduce((sum, d) => sum + d.precio, 0);
 
     return (
@@ -139,12 +138,12 @@ const ConfirmReservation = () => {
         <div className="asientos-lista">
           {detalles.map((d, i) => (
             <div className="asiento-item" key={i}>
-              {t("seat")}: {asientos[i]} &nbsp;–&nbsp; {d.tipo} <span>({d.precio} €)</span>
+              Asiento: {asientos[i]} &nbsp;–&nbsp; {d.tipo} <span>({d.precio} €)</span>
             </div>
           ))}
         </div>
         <div style={{ marginTop: "0.5rem", fontWeight: "bold" }}>
-          {t("totalSurcharge")}: {subtotal.toFixed(2)} €
+          Suplemento total: {subtotal.toFixed(2)} €
         </div>
       </div>
     );
@@ -161,20 +160,20 @@ const ConfirmReservation = () => {
 
         <div className="contenedor-visible-cR">
           <div className="resultado-vuelos-container">
-            <h1>{t("title")}</h1>
+            <h1>Confirmar Reserva</h1>
 
-            {vuelos[0] && renderVueloInfo(vuelos[0], t("outboundFlight"))}
-            {vuelos[1] && renderVueloInfo(vuelos[1], t("returnFlight"))}
+            {vuelos[0] && renderVueloInfo(vuelos[0], "Vuelo de ida")}
+            {vuelos[1] && renderVueloInfo(vuelos[1], "Vuelo de vuelta")}
 
-            {renderAsientos(selectedSeatsIda, t("outboundSeats"))}
-            {vuelos[1] && renderAsientos(selectedSeatsVuelta, t("returnSeats"))}
+            {renderAsientos(selectedSeatsIda, "Asientos de ida")}
+            {vuelos[1] && renderAsientos(selectedSeatsVuelta, "Asientos de vuelta")}
 
             <div className="total-precio" style={{ marginTop: "1rem", fontWeight: "bold" }}>
-              {t("finalTotal")}: {totalPrecio.toFixed(2)} €
+              Total final: {totalPrecio.toFixed(2)} €
             </div>
 
             <button className="btn" onClick={confirmarReserva}>
-              {t("confirmReservation")}
+              Confirmar Reserva
             </button>
           </div>
         </div>
