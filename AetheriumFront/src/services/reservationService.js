@@ -43,7 +43,7 @@ export const getReservationsByUser = async (userId, token) => {
 
 export const deleteReservation = async (reservationId, token) => {
   try {
-    const response = await fetch(`https://localhost:5120/api/reservation/${reservationId}`, {
+    const response = await fetch(`/api/reservation/${reservationId}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,

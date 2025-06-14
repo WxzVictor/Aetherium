@@ -334,28 +334,30 @@ public class ReservationController : ControllerBase
         return Ok(response);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteReservation(int id)
+   [HttpDelete("{id}")]
+public async Task<IActionResult> DeleteReservation(int id)
+{
+    Reservation? reservation = await _context.Reservation
+        .Include(r => r.Seat) // Asegura que incluimos el asiento para poder modificarlo
+        .FirstOrDefaultAsync(r => r.ReservationId == id);
+
+    if (reservation is null)
+        return NotFound(new {
+            error = "Reservation not found",
+            reservationId = id
+        });
+
+    // Si hay un asiento reservado, lo liberamos
+    if (reservation.SeatId.HasValue && reservation.Seat is not null)
     {
-        Reservation? reservation = await _context.Reservation
-            .Include(r => r.Seat)
-            .FirstOrDefaultAsync(r => r.ReservationId == id);
-
-        if (reservation is null)
-            return NotFound(new {
-                error = "Reservation not found",
-                reservationId = id
-            });
-
-        if (reservation.SeatId.HasValue)
-        {
-            reservation.Seat.SeatStatus = false;
-            _context.Seat.Update(reservation.Seat);
-        }
-
-        _context.Reservation.Remove(reservation);
-        await _context.SaveChangesAsync();
-
-        return Ok(new { message = "Reservation deleted successfully" });
+        reservation.Seat.SeatStatus = false; // Marcar como disponible
+        _context.Seat.Update(reservation.Seat);
     }
+
+    _context.Reservation.Remove(reservation);
+    await _context.SaveChangesAsync();
+
+    return Ok(new { message = "Reservation deleted successfully and seat released" });
+}
+
 }

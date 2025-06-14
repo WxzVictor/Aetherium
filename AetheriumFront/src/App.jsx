@@ -16,7 +16,7 @@ import ConfirmReservation from './pages/confirmReservation';
 import SelectSeat  from './pages/selectSeat';
 
 
-// ✅ Solo para proteger rutas específicas
+
 const ProtectedRoute = ({ children }) => {
   const [user, setUser] = useState(undefined);
 
