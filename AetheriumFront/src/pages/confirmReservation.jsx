@@ -30,7 +30,7 @@ const ConfirmReservation = () => {
   const asientosIda = location.state?.asientosIda || [];
   const asientosVuelta = location.state?.asientosVuelta || [];
   const userId = location.state?.userId;
-  const clase = location.state?.clase || "Turista";
+  const clase = location.state?.clase || "economy";
 
   const buscarSeatId = (seatNumber, asientos) => {
     const match = asientos.find(s => s.seatNumber === seatNumber);
@@ -54,38 +54,39 @@ const ConfirmReservation = () => {
 
     selectedSeatsIda.forEach(seatNumber => {
       const seatId = buscarSeatId(seatNumber, asientosIda);
-      const precio = calcularPrecioIndividual(vuelos[0], seatNumber, clase);
       reservas.push({
         UserId: userId,
         FlightId: vuelos[0].flightId,
         SeatId: seatId,
         DateTimeOffset: new Date().toISOString(),
         SeatClass: clase,
-        TotalPrice: parseFloat(precio)
+        TotalPrice: parseFloat(calcularPrecioIndividual(vuelos[0], seatNumber, clase))
       });
     });
 
     if (vuelos[1]) {
       selectedSeatsVuelta.forEach(seatNumber => {
         const seatId = buscarSeatId(seatNumber, asientosVuelta);
-        const precio = calcularPrecioIndividual(vuelos[1], seatNumber, clase);
         reservas.push({
           UserId: userId,
-          FlightId: vuelos[1]?.flightId,
+          FlightId: vuelos[1].flightId,
           SeatId: seatId,
           DateTimeOffset: new Date().toISOString(),
           SeatClass: clase,
-          TotalPrice: parseFloat(precio)
+          TotalPrice: parseFloat(calcularPrecioIndividual(vuelos[1], seatNumber, clase))
         });
       });
     }
 
     try {
-      for (const reserva of reservas) {
+      for (let i = 0; i < reservas.length; i++) {
+        const reserva = reservas[i];
+        const sendEmail = i === reservas.length - 1;
+
         const response = await fetch("http://localhost:5120/api/reservation", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(reserva)
+          body: JSON.stringify({ ...reserva, SendEmail: sendEmail })
         });
 
         if (!response.ok) {
@@ -94,7 +95,8 @@ const ConfirmReservation = () => {
         }
       }
 
-      alert(t("reservationConfirmed"));
+
+      alert("Reserva confirmada. Los asientos han sido bloqueados.");
       navigate("/perfilUsuario");
     } catch (err) {
       console.error("Error al confirmar reserva:", err);
@@ -107,7 +109,7 @@ const ConfirmReservation = () => {
     (sum, vuelo) => sum + (vuelo.price / multiplicador),
     0
   ) * pasajeros;
-  
+
   const suplementoClase = ((totalPrecio * 100 - precioBaseTotalSinClase) / 100).toFixed(2);
 
   const renderVueloInfo = (vuelo, titulo) => (
