@@ -7,4 +7,5 @@ public class ReservationDto
     public DateTimeOffset DateTimeOffset { get; set; }
     public string? SeatClass { get; set; }
     public double? TotalPrice { get; set; }
+    public bool SendEmail { get; set; } = true;
 }

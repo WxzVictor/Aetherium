@@ -23,7 +23,7 @@ public class Seat
     public Flight Flight { get; set; }
     public Reservation? Reservation { get; set; }
 
-    private Seat() { }
+    public Seat() { }
 
     public Seat(string[] attributes)
     {
