@@ -77,18 +77,6 @@ const ConfirmReservationCombo = () => {
                 }
             }
 
-            // Reservar hotel
-            await fetch("http://localhost:5120/api/hotelreservation", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    UserId: userId,
-                    HotelId: hotel.hotelId,
-                    CheckIn: hotel.checkInTime,
-                    CheckOut: hotel.checkOutTime
-                })
-            });
-
             alert("Reserva de vuelo y hotel confirmada.");
             navigate("/perfilUsuario");
         } catch {
