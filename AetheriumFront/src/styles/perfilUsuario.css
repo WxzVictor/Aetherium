@@ -82,6 +82,25 @@ button:hover {
   color: #3f598a;
 }
 
+.delete-button {
+  background: none;
+  background-color: #FDC921;
+  border: none;
+  padding: 0.4rem 0.8rem 0.7rem 0.8rem;
+  border-radius: 20px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: 0.3s;
+  color: #1d2d4a;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.delete-button:hover {
+  background-color: #f1d67a;
+  color: #3f598a;
+}
+
 .reservas-cards-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -112,7 +131,7 @@ button:hover {
 
 .reserva-route {
   font-size: 1rem;
-  color: #FDC921;
+  color: #1d2d4a;
 }
 
 .reserva-fecha {
@@ -125,7 +144,6 @@ button:hover {
   font-size: 0.9rem;
 }
 
-/* Nuevas clases movidas desde JSX */
 .perfil-info {
   margin-bottom: 20px;
 }
@@ -138,4 +156,17 @@ button:hover {
 
 .stats-section {
   margin-top: 30px;
+}
+
+.forgotPass {
+  display: block;
+  margin-top: 20px;
+  color: #1d2d4a;
+  font-size: 13px;
+  max-width: 27%;
+  text-decoration: none;
+}
+
+.forgotPass:hover {
+  color: #3f598a;
 }
