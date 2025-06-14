@@ -19,7 +19,7 @@ import SelectSeatCombo from './pages/selectSeatCombo';
 import ConfirmReservationCombo from './pages/confirmReservationCombo';
 
 
-// ✅ Solo para proteger rutas específicas
+
 const ProtectedRoute = ({ children }) => {
   const [user, setUser] = useState(undefined);
 
