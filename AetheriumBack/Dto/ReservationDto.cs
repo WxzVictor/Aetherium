@@ -5,4 +5,5 @@ public class ReservationDto
     public int FlightId { get; set; }
     public int? SeatId { get; set; }
     public DateTimeOffset DateTimeOffset { get; set; }
+    public string? SeatClass { get; set; }
 }

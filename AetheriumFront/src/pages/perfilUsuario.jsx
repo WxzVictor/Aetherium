@@ -17,6 +17,25 @@ const UserProfile = () => {
   const navigate = useNavigate();
   const { t } = useTranslation('userProfile');
 
+  const agruparReservas = (reservas) => {
+    const map = new Map();
+
+    reservas.forEach(reserva => {
+      const key = `${reserva.flightId.flightId}-${new Date(reserva.flightId.departureTime).toISOString().split('T')[0]}`;
+      if (!map.has(key)) {
+        map.set(key, {
+          vuelo: reserva.flightId,
+          fecha: new Date(reserva.flightId.departureTime),
+          reservas: [],
+          reservaIdPrincipal: reserva.reservationId,
+        });
+      }
+      map.get(key).reservas.push(reserva);
+    });
+
+    return Array.from(map.values());
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser && currentUser.emailVerified) {
@@ -35,7 +54,6 @@ const UserProfile = () => {
           setUserInfo(userInfo);
 
           const reservations = await getReservationsByUser(userInfo.userId, token);
-
           setUser(currentUser);
           setReservations(reservations);
         } catch (error) {
@@ -62,17 +80,18 @@ const UserProfile = () => {
   };
 
   const calcularHorasTotales = () => {
-    return reservations.reduce((total, r) => {
-      const salida = new Date(r.flightId.departureTime);
-      const llegada = new Date(r.flightId.arrivalTime);
+    const grupos = agruparReservas(reservations);
+    return grupos.reduce((total, g) => {
+      const salida = new Date(g.vuelo.departureTime);
+      const llegada = new Date(g.vuelo.arrivalTime);
       return total + (llegada - salida) / (1000 * 60 * 60);
     }, 0).toFixed(1);
   };
 
   const companiaMasUsada = () => {
     const count = {};
-    reservations.forEach(r => {
-      const name = r.flightId.airlineName;
+    agruparReservas(reservations).forEach(g => {
+      const name = g.vuelo.airlineName;
       count[name] = (count[name] || 0) + 1;
     });
     return Object.entries(count).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A';
@@ -80,8 +99,8 @@ const UserProfile = () => {
 
   const destinoFavorito = () => {
     const count = {};
-    reservations.forEach(r => {
-      const city = r.flightId.arrivalAirport.city;
+    agruparReservas(reservations).forEach(g => {
+      const city = g.vuelo.arrivalAirport.city;
       count[city] = (count[city] || 0) + 1;
     });
     return Object.entries(count).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A';
@@ -110,15 +129,15 @@ const UserProfile = () => {
         <div>
           <h1>{t('title')}</h1>
 
-        <div className="contenedor-formulario">
-          <div className="perfilUsuario-form-container">
-            {userInfo && (
-              <div className="perfil-info">
-                <p><strong>{t('name')}:</strong> {userInfo.firstName} {userInfo.lastName}</p>
-                <p><strong>{t('email')}:</strong> {userInfo.email}</p>
-                <p><strong><a href="#" onClick={handleForgotPassword} className="forgotPass">{t('contrasena')}</a></strong></p>
-              </div>
-            )}
+          <div className="contenedor-formulario">
+            <div className="perfilUsuario-form-container">
+              {userInfo && (
+                <div className="perfil-info">
+                  <p><strong>{t('name')}:</strong> {userInfo.firstName} {userInfo.lastName}</p>
+                  <p><strong>{t('email')}:</strong> {userInfo.email}</p>
+                  <p><strong><a href="#" onClick={handleForgotPassword} className="forgotPass">{t('contrasena')}</a></strong></p>
+                </div>
+              )}
 
               <div className="toggle-buttons">
                 <button onClick={() => setShowReservations(!showReservations)}>
@@ -134,20 +153,24 @@ const UserProfile = () => {
                   <h2>{t('reservationsTitle')}</h2>
                   {reservations.length > 0 ? (
                     <div className="reservas-cards-container">
-                      {reservations.map((reserva) => (
-                        <div key={reserva.reservationId} className="reserva-card">
-                          <div className="reserva-header">
-                            <span className="reserva-route">
-                              {reserva.flightId.departureAirport.city} ➜ {reserva.flightId.arrivalAirport.city}
-                            </span>
-                            <span className="reserva-fecha">{new Date(reserva.flightId.departureTime).toLocaleDateString()}</span>
-                          </div>
-                          <div className="reserva-detalles">
-                            <div><strong>{t('table.salida')}:</strong> {new Date(reserva.flightId.departureTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
-                            <div><strong>{t('table.llegada')}:</strong> {new Date(reserva.flightId.arrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
-                            <div><strong>{t('table.compania')}:</strong> {reserva.flightId.airlineName}</div>
-                          </div>
-                          <button className="delete-button" onClick={() => handleDelete(reserva.reservationId)}>
+                      {agruparReservas(reservations).map((grupo) => (
+                        <div key={grupo.reservaIdPrincipal} className="reserva-card">
+                          {grupo.reservas.map((reserva) => (
+                            <div key={reserva.reservationId} className="reserva-billete">
+                              <div className="reserva-header">
+                                <span className="reserva-route">
+                                  {reserva.flightId.departureAirport.city} ➜ {reserva.flightId.arrivalAirport.city}
+                                </span>
+                                <span className="reserva-fecha">{new Date(reserva.flightId.departureTime).toLocaleDateString()}</span>
+                              </div>
+                              <div className="reserva-detalles">
+                                <div><strong>{t('table.salida')}:</strong> {new Date(reserva.flightId.departureTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                                <div><strong>{t('table.llegada')}:</strong> {new Date(reserva.flightId.arrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                                <div><strong>{t('table.compania')}:</strong> {reserva.flightId.airlineName}</div>
+                              </div>
+                            </div>
+                          ))}
+                          <button className="delete-button" onClick={() => handleDelete(grupo.reservaIdPrincipal)}>
                             {t('deleteReservation')}
                           </button>
                         </div>
@@ -162,7 +185,7 @@ const UserProfile = () => {
               {showStats && (
                 <div className="stats-section">
                   <h2>{t('statsTitle')}</h2>
-                  <p><strong>{t('totalFlights')}:</strong> {reservations.length}</p>
+                  <p><strong>{t('totalFlights')}:</strong> {agruparReservas(reservations).length}</p>
                   <p><strong>{t('totalHours')}:</strong> {calcularHorasTotales()}h</p>
                   <p><strong>{t('mostUsedAirline')}:</strong> {companiaMasUsada()}</p>
                   <p><strong>{t('favoriteDestination')}:</strong> {destinoFavorito()}</p>

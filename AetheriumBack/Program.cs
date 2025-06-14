@@ -1,6 +1,7 @@
 using AetheriumBack.Database;
 using AetheriumBack.Utils;
 using Microsoft.EntityFrameworkCore;
+using QuestPDF.Infrastructure;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ builder.Services.AddDbContext<AetheriumContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllers();
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -42,5 +44,8 @@ if (!context.Seat.Any())
 {
     await app.Services.SeedDataAsync();
 }
+
+// Configurar la licencia de QuestPDF
+QuestPDF.Settings.License = LicenseType.Community;
 
 app.Run();

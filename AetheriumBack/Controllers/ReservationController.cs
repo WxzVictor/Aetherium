@@ -4,6 +4,14 @@ using AetheriumBack.Dto;
 using AetheriumBack.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Options;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
+using AetheriumBack.Utils;
 
 namespace AetheriumBack.Controllers;
 
@@ -12,10 +20,37 @@ namespace AetheriumBack.Controllers;
 public class ReservationController : ControllerBase
 {
     private readonly AetheriumContext _context;
-    public ReservationController(AetheriumContext context)
+    private readonly SmtpSettings _smtpSettings;
+
+    public ReservationController(AetheriumContext context, IOptions<SmtpSettings> smtpSettings)
     {
         _context = context;
+        _smtpSettings = smtpSettings.Value;
     }
+
+    private double ObtenerMultiplicadorClase(string clase)
+    {
+        return clase.ToLower() switch
+        {
+            "economy" => 1.0,
+            "business" => 1.5,
+            "first" => 2.0,
+            _ => 1.0
+        };
+    }
+
+    private double ObtenerSuplementoPorAsiento(string seatNumber)
+    {
+        var col = seatNumber.Length > 1 ? seatNumber.Substring(1) : "";
+        return col switch
+        {
+            "1" or "3" => 15.0,
+            "2" => 10.0,
+            _ => 0.0
+        };
+    }
+
+
 
     [HttpPost]
     public async Task<IActionResult> CreateReservation([FromBody] ReservationDto dto)
@@ -83,6 +118,73 @@ public class ReservationController : ControllerBase
 
         _context.Reservation.Add(reservation);
         await _context.SaveChangesAsync();
+
+        double basePrice = flight.Price / 100.0;
+
+        double multiplier = ObtenerMultiplicadorClase(dto.SeatClass ?? "economy");
+        double priceWithMultiplier = basePrice * multiplier;
+
+        double seatExtra = 0.0;
+        if (seatDto != null)
+        {
+            seatExtra = ObtenerSuplementoPorAsiento(seatDto.SeatNumber);
+        }
+
+        double totalPrice = priceWithMultiplier + seatExtra;
+
+
+        // Crear el PDF con los datos de la reserva
+        var pdfStream = new MemoryStream();
+
+        var document = Document.Create(container =>
+        {
+            container.Page(page =>
+            {
+                page.Margin(20);
+                page.Content().Column(col =>
+                {
+                    col.Item().Text("🛫 Confirmación de Reserva").FontSize(20).Bold();
+                    col.Item().Text($"Nombre: {user.FirstName} {user.LastName}");
+                    col.Item().Text($"Correo: {user.Email}");
+                    col.Item().Text($"Vuelo: {flight.DepartureAirport.City} ➜ {flight.ArrivalAirport.City}");
+                    col.Item().Text($"Fecha salida: {flight.DepartureTime:dd/MM/yyyy HH:mm}");
+                    col.Item().Text($"Fecha llegada: {flight.ArrivalTime:dd/MM/yyyy HH:mm}");
+                    col.Item().Text($"Código de vuelo: {flight.FlightCode}");
+                    col.Item().Text($"Precio total (con clase y asiento): {totalPrice:0.00} €");
+                });
+            });
+        });
+        document.GeneratePdf(pdfStream);
+        pdfStream.Position = 0;
+
+        var message = new MimeMessage();
+        message.From.Add(MailboxAddress.Parse(_smtpSettings.User));
+        message.To.Add(MailboxAddress.Parse(user.Email));
+        message.Subject = "Su reserva ha sido confirmada ✅";
+
+        var bodyBuilder = new BodyBuilder
+        {
+            TextBody = "Gracias por reservar con Aetherium. Adjuntamos los detalles de su vuelo en un PDF.",
+        };
+        bodyBuilder.Attachments.Add("reserva.pdf", pdfStream.ToArray(), ContentType.Parse("application/pdf"));
+
+        message.Body = bodyBuilder.ToMessageBody();
+
+        // Enviar email con SMTP
+        try
+        {
+            using var smtp = new SmtpClient();
+            smtp.ServerCertificateValidationCallback = (s, c, h, e) => true;
+            await smtp.ConnectAsync(_smtpSettings.Server, _smtpSettings.Port, SecureSocketOptions.Auto);
+            await smtp.AuthenticateAsync(_smtpSettings.User, _smtpSettings.Password);
+            await smtp.SendAsync(message);
+            await smtp.DisconnectAsync(true);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("❌ Error al enviar el correo: " + ex.Message);
+        }
+
 
         ReservationResponseDto response = new ReservationResponseDto
         {

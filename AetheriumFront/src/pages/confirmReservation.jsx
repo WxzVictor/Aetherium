@@ -28,7 +28,7 @@ const ConfirmReservation = () => {
   const asientosIda = location.state?.asientosIda || [];
   const asientosVuelta = location.state?.asientosVuelta || [];
   const userId = location.state?.userId;
-  const clase = location.state?.clase || "economy";
+  const clase = location.state?.clase || "Turista";
 
   const buscarSeatId = (seatNumber, asientos) => {
     const match = asientos.find(s => s.seatNumber === seatNumber);
@@ -36,58 +36,60 @@ const ConfirmReservation = () => {
   };
 
   const confirmarReserva = async () => {
-  if (!userId) {
-    alert("Debes iniciar sesión para confirmar la reserva.");
-    return;
-  }
-
-  const reservas = [];
-
-  selectedSeatsIda.forEach(seatNumber => {
-    const seatId = buscarSeatId(seatNumber, asientosIda);
-    reservas.push({
-      UserId: userId,
-      FlightId: vuelos[0].flightId,
-      SeatId: seatId,
-      DateTimeOffset: new Date().toISOString()
-    });
-  });
-
-  if (vuelos[1]) {
-    selectedSeatsVuelta.forEach(seatNumber => {
-      const seatId = buscarSeatId(seatNumber, asientosVuelta);
-      reservas.push({
-        UserId: userId,
-        FlightId: vuelos[1]?.flightId,
-        SeatId: seatId,
-        DateTimeOffset: new Date().toISOString()
-      });
-    });
-  }
-  console.log(reservas);
-
-  try {
-    for (const reserva of reservas) {
-      const response = await fetch("http://localhost:5120/api/reservation", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(reserva)
-      });
-
-      if (!response.ok) {
-        alert("Error al guardar la reserva. Por favor, inténtalo de nuevo.");
-        return;
-      }
+    if (!userId) {
+      alert("Debes iniciar sesión para confirmar la reserva.");
+      return;
     }
 
-    alert("Reserva confirmada. Los asientos han sido bloqueados.");
-    navigate("/perfilUsuario");
-  } catch (err) {
-    console.error("Error al confirmar reserva:", err);
-    alert("Ocurrió un error al guardar tu reserva.");
-  }
-};
-const multiplicador = CLASS_MULTIPLIERS[clase.toLowerCase()] || 1.0;
+    const reservas = [];
+
+    selectedSeatsIda.forEach(seatNumber => {
+      const seatId = buscarSeatId(seatNumber, asientosIda);
+      reservas.push({
+        UserId: userId,
+        FlightId: vuelos[0].flightId,
+        SeatId: seatId,
+        DateTimeOffset: new Date().toISOString(),
+        SeatClass: clase
+      });
+    });
+
+    if (vuelos[1]) {
+      selectedSeatsVuelta.forEach(seatNumber => {
+        const seatId = buscarSeatId(seatNumber, asientosVuelta);
+        reservas.push({
+          UserId: userId,
+          FlightId: vuelos[1]?.flightId,
+          SeatId: seatId,
+          DateTimeOffset: new Date().toISOString(),
+          SeatClass: clase
+        });
+      });
+    }
+    console.log(reservas);
+
+    try {
+      for (const reserva of reservas) {
+        const response = await fetch("http://localhost:5120/api/reservation", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(reserva)
+        });
+
+        if (!response.ok) {
+          alert("Error al guardar la reserva. Por favor, inténtalo de nuevo.");
+          return;
+        }
+      }
+
+      alert("Reserva confirmada. Los asientos han sido bloqueados.");
+      navigate("/perfilUsuario");
+    } catch (err) {
+      console.error("Error al confirmar reserva:", err);
+      alert("Ocurrió un error al guardar tu reserva.");
+    }
+  };
+  const multiplicador = CLASS_MULTIPLIERS[clase.toLowerCase()] || 1.0;
   const precioBaseTotalSinClase = vuelos.reduce(
     (sum, vuelo) => sum + (vuelo.price / multiplicador),
     0
