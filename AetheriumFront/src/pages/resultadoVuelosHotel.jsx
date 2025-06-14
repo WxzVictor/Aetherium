@@ -113,7 +113,7 @@ const ResultadoVuelosHotel = () => {
         return (
             <div className="combo-card" key={idx}>
                 <div className="combo-vuelo">
-                    <h3>Vuelo</h3>
+                    <h3 className="title-rVh">Vuelo</h3>
                     {combo.vuelos.map((vuelo, i) => {
                         const suplemento = vuelo.price * (multiplicador - 1);
                         const suplementoEuro = (suplemento / 100).toFixed(2);
@@ -134,7 +134,7 @@ const ResultadoVuelosHotel = () => {
                 </div>
 
                 <div className="combo-hotel">
-                    <h3>Hotel</h3>
+                    <h3 className="title-rVh">Hotel</h3>
                     <div className="card hotel-card">
                         <strong>{combo.hotel.hotelName}</strong>
                         <div>
@@ -152,7 +152,7 @@ const ResultadoVuelosHotel = () => {
                 </div>
 
                 <div className="combo-precio precio">
-                    <div className="monto">
+                    <div className="monto-rVh">
                         Total vuelo + hotel (clase {clase}): {totalCombo} €
                     </div>
 
