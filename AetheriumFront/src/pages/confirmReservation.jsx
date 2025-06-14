@@ -37,6 +37,13 @@ const ConfirmReservation = () => {
     return match?.seatId || null;
   };
 
+  const calcularPrecioIndividual = (vuelo, seatNumber, clase) => {
+    const base = vuelo.price / 100;
+    const mult = CLASS_MULTIPLIERS[clase.toLowerCase()] || 1.0;
+    const { precio: extra } = obtenerTipoYPrecio(seatNumber);
+    return (base * mult + extra).toFixed(2);
+  };
+
   const confirmarReserva = async () => {
     if (!userId) {
       alert(t("mustLogin"));
@@ -47,24 +54,28 @@ const ConfirmReservation = () => {
 
     selectedSeatsIda.forEach(seatNumber => {
       const seatId = buscarSeatId(seatNumber, asientosIda);
+      const precio = calcularPrecioIndividual(vuelos[0], seatNumber, clase);
       reservas.push({
         UserId: userId,
         FlightId: vuelos[0].flightId,
         SeatId: seatId,
         DateTimeOffset: new Date().toISOString(),
-        SeatClass: clase
+        SeatClass: clase,
+        TotalPrice: parseFloat(precio)
       });
     });
 
     if (vuelos[1]) {
       selectedSeatsVuelta.forEach(seatNumber => {
         const seatId = buscarSeatId(seatNumber, asientosVuelta);
+        const precio = calcularPrecioIndividual(vuelos[1], seatNumber, clase);
         reservas.push({
           UserId: userId,
           FlightId: vuelos[1]?.flightId,
           SeatId: seatId,
           DateTimeOffset: new Date().toISOString(),
-          SeatClass: clase
+          SeatClass: clase,
+          TotalPrice: parseFloat(precio)
         });
       });
     }
@@ -96,6 +107,7 @@ const ConfirmReservation = () => {
     (sum, vuelo) => sum + (vuelo.price / multiplicador),
     0
   ) * pasajeros;
+  
   const suplementoClase = ((totalPrecio * 100 - precioBaseTotalSinClase) / 100).toFixed(2);
 
   const renderVueloInfo = (vuelo, titulo) => (
