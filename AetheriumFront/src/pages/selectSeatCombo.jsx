@@ -85,8 +85,9 @@ const SelectSeatCombo = () => {
                     className={`seat ${isSelected ? "selected" : ""} ${isUnavailable ? "disabled" : ""}`}
                     onClick={() => !isUnavailable && handleSeatClick(seat.seatNumber, setSelectedSeats, selectedSeats)}
                     disabled={isUnavailable}
+                    title={isUnavailable ? "Ocupado" : "Disponible"}
                   >
-                    {seat.seatNumber}
+                    {isUnavailable ? "❌" : seat.seatNumber}
                   </button>
                 );
               })}
