@@ -5,4 +5,5 @@ public class SeatResponseDto
     public string SeatNumber { get; set; }
     public string SeatClass { get; set; } 
     public string SeatType { get; set; }
+    public bool SeatStatus { get; set; }
 }

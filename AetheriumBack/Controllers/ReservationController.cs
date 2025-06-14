@@ -22,6 +22,8 @@ public class ReservationController : ControllerBase
     private readonly AetheriumContext _context;
     private readonly SmtpSettings _smtpSettings;
 
+    private static List<(Reservation Reserva, Flight Vuelo, Seat? Asiento)> _reservasPendientes = new();
+
     public ReservationController(AetheriumContext context, IOptions<SmtpSettings> smtpSettings)
     {
         _context = context;
@@ -73,6 +75,7 @@ public class ReservationController : ControllerBase
             .Include(f => f.DepartureAirport)
             .Include(f => f.ArrivalAirport)
             .FirstOrDefaultAsync(f => f.FlightId == dto.FlightId);
+
 
         if (flight is null)
             return NotFound(new {
@@ -132,56 +135,81 @@ public class ReservationController : ControllerBase
 
         double totalPrice = dto.TotalPrice ?? (priceWithMultiplier + seatExtra);
 
-        // Crear el PDF con los datos de la reserva
-        var pdfStream = new MemoryStream();
-
-        var document = Document.Create(container =>
+        _reservasPendientes.Add((reservation, flight, seatDto is null ? null : new Seat
         {
-            container.Page(page =>
+            SeatId = seatDto.SeatId,
+            SeatNumber = seatDto.SeatNumber,
+            SeatClass = Enum.Parse<SeatClass>(seatDto.SeatClass),
+            SeatType = Enum.Parse<SeatType>(seatDto.SeatType)
+        }));
+
+
+        if (dto.SendEmail)
+        {
+            var pdfStream = new MemoryStream();
+
+            var document = Document.Create(container =>
             {
-                page.Margin(20);
-                page.Content().Column(col =>
+                container.Page(page =>
                 {
-                    col.Item().Text("🛫 Confirmación de Reserva").FontSize(20).Bold();
-                    col.Item().Text($"Nombre: {user.FirstName} {user.LastName}");
-                    col.Item().Text($"Correo: {user.Email}");
-                    col.Item().Text($"Vuelo: {flight.DepartureAirport.City} ➜ {flight.ArrivalAirport.City}");
-                    col.Item().Text($"Fecha salida: {flight.DepartureTime:dd/MM/yyyy HH:mm}");
-                    col.Item().Text($"Fecha llegada: {flight.ArrivalTime:dd/MM/yyyy HH:mm}");
-                    col.Item().Text($"Código de vuelo: {flight.FlightCode}");
-                    col.Item().Text($"Precio total (con clase y asiento): {totalPrice:0.00} €");
+                    page.Margin(20);
+                    page.Content().Column(col =>
+                    {
+                        col.Item().Text("🛫 Confirmación de Reserva").FontSize(20).Bold();
+                        col.Item().Text($"Nombre: {user.FirstName} {user.LastName}");
+                        col.Item().Text($"Correo: {user.Email}");
+
+                        foreach (var (res, vuelo, asiento) in _reservasPendientes.Where(r => r.Reserva.UserId == dto.UserId))
+                        {
+                            col.Item().LineHorizontal(1);
+                            col.Item().Text($"Vuelo: {vuelo.DepartureAirport.City} ➜ {vuelo.ArrivalAirport.City}");
+                            col.Item().Text($"Fecha salida: {vuelo.DepartureTime:dd/MM/yyyy HH:mm}");
+                            col.Item().Text($"Fecha llegada: {vuelo.ArrivalTime:dd/MM/yyyy HH:mm}");
+                            col.Item().Text($"Código de vuelo: {vuelo.FlightCode}");
+
+                            if (asiento != null)
+                            {
+                                double extra = ObtenerSuplementoPorAsiento(asiento.SeatNumber);
+                                double mult = ObtenerMultiplicadorClase(dto.SeatClass ?? "economy");
+                                double total = vuelo.Price / 100.0 * mult + extra;
+                                col.Item().Text($"Asiento: {asiento.SeatNumber} – {asiento.SeatType} ({extra:0.00} € extra)");
+                                col.Item().Text($"Precio total: {total:0.00} €");
+                            }
+                        }
+                    });
                 });
             });
-        });
-        document.GeneratePdf(pdfStream);
-        pdfStream.Position = 0;
 
-        var message = new MimeMessage();
-        message.From.Add(MailboxAddress.Parse(_smtpSettings.User));
-        message.To.Add(MailboxAddress.Parse(user.Email));
-        message.Subject = "Su reserva ha sido confirmada ✅";
+            document.GeneratePdf(pdfStream);
+            pdfStream.Position = 0;
 
-        var bodyBuilder = new BodyBuilder
-        {
-            TextBody = "Gracias por reservar con Aetherium. Adjuntamos los detalles de su vuelo en un PDF.",
-        };
-        bodyBuilder.Attachments.Add("reserva.pdf", pdfStream.ToArray(), ContentType.Parse("application/pdf"));
+            var message = new MimeMessage();
+            message.From.Add(MailboxAddress.Parse(_smtpSettings.User));
+            message.To.Add(MailboxAddress.Parse(user.Email));
+            message.Subject = "Su reserva ha sido confirmada ✅";
 
-        message.Body = bodyBuilder.ToMessageBody();
+            var bodyBuilder = new BodyBuilder
+            {
+                TextBody = "Gracias por reservar con Aetherium. Adjuntamos los detalles de sus vuelos.",
+            };
+            bodyBuilder.Attachments.Add("reserva.pdf", pdfStream.ToArray(), ContentType.Parse("application/pdf"));
+            message.Body = bodyBuilder.ToMessageBody();
 
-        // Enviar email con SMTP
-        try
-        {
-            using var smtp = new SmtpClient();
-            smtp.ServerCertificateValidationCallback = (s, c, h, e) => true;
-            await smtp.ConnectAsync(_smtpSettings.Server, _smtpSettings.Port, SecureSocketOptions.Auto);
-            await smtp.AuthenticateAsync(_smtpSettings.User, _smtpSettings.Password);
-            await smtp.SendAsync(message);
-            await smtp.DisconnectAsync(true);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("❌ Error al enviar el correo: " + ex.Message);
+            try
+            {
+                using var smtp = new SmtpClient();
+                smtp.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                await smtp.ConnectAsync(_smtpSettings.Server, _smtpSettings.Port, SecureSocketOptions.Auto);
+                await smtp.AuthenticateAsync(_smtpSettings.User, _smtpSettings.Password);
+                await smtp.SendAsync(message);
+                await smtp.DisconnectAsync(true);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("❌ Error al enviar el correo: " + ex.Message);
+            }
+
+            _reservasPendientes.RemoveAll(r => r.Reserva.UserId == dto.UserId);
         }
 
 
