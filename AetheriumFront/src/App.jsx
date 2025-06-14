@@ -55,7 +55,7 @@ function App() {
         <Route path="/aboutUs" element={<AboutUS />} />
         <Route path="/FAQ-Page" element={<FAQ />} />
         <Route path="/resultadoVuelos" element={<ResultadoVuelos />} />
-        <Route path="/seleccionAsientos" element={<SelectSeat />} />
+        <Route path="/selectSeat" element={<SelectSeat />} />
         <Route path="/hoteles" element={<Hoteles />} />
         <Route path="/ConfirmReservation" element={<ConfirmReservation />} />
         <Route path="/resultadoVuelosHotel" element={<ResultadoVuelosHotel />} />
