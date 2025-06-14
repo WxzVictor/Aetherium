@@ -334,13 +334,14 @@ public class FlightController : ControllerBase
     public async Task<IActionResult> GetAvailableSeats(int flightId)
     {
         IEnumerable<SeatResponseDto> availableSeats = await _context.Seat
-            .Where(s => s.FlightId == flightId && !s.SeatStatus)
+            .Where(s => s.FlightId == flightId)
             .Select(s => new SeatResponseDto
             {
                 SeatId = s.SeatId,
                 SeatNumber = s.SeatNumber,
                 SeatClass = s.SeatClass.ToString(),
-                SeatType = s.SeatType.ToString()
+                SeatType = s.SeatType.ToString(),
+                SeatStatus = s.SeatStatus
             })
             .ToListAsync();
 
