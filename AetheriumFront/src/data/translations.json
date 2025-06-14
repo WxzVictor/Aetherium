@@ -144,7 +144,7 @@
       "totalHours": "Horas totales voladas",
       "mostUsedAirline": "Compañía más usada",
       "favoriteDestination": "Destino favorito",
-      "reservationsTitle": "📅 Próximas Reservas",
+      "reservationsTitle": "📅 Mis Reservas",
       "eliminarReserva": "Eliminar reserva",
       "table": {
         "origen": "Origen",
@@ -348,7 +348,7 @@
       "totalHours": "Total hours flown",
       "mostUsedAirline": "Most used airline",
       "favoriteDestination": "Favorite destination",
-      "reservationsTitle": "📅 Upcoming Reservations",
+      "reservationsTitle": "📅 My Reservations",
       "eliminarReserva": "Delete reservation",
       "table": {
         "origen": "From",
