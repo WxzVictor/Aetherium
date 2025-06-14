@@ -347,19 +347,15 @@ public class ReservationController : ControllerBase
 public async Task<IActionResult> DeleteReservation(int id)
 {
     Reservation? reservation = await _context.Reservation
-        .Include(r => r.Seat) // Asegura que incluimos el asiento para poder modificarlo
+        .Include(r => r.Seat)
         .FirstOrDefaultAsync(r => r.ReservationId == id);
 
     if (reservation is null)
-        return NotFound(new {
-            error = "Reservation not found",
-            reservationId = id
-        });
+        return NotFound("Reservation not found");
 
-    // Si hay un asiento reservado, lo liberamos
     if (reservation.SeatId.HasValue && reservation.Seat is not null)
     {
-        reservation.Seat.SeatStatus = false; // Marcar como disponible
+        reservation.Seat.SeatStatus = false;
         _context.Seat.Update(reservation.Seat);
     }
 
