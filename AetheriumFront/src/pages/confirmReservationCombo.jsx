@@ -31,7 +31,7 @@ const ConfirmReservationCombo = () => {
     const hotel = location.state?.hotel;
     const precioVuelos = vuelos.reduce((sum, vuelo) => sum + vuelo.price, 0) / 100;
     const precioHotel = hotel ? hotel.pricePerNight / 100 : 0;
-    const totalFinal = (precioVuelos + precioHotel).toFixed(2);
+    const totalFinal = location.state?.totalPrecio;
 
     const buscarSeatId = (seatNumber, asientos) => {
         const match = asientos.find(s => s.seatNumber === seatNumber);
@@ -97,11 +97,22 @@ const ConfirmReservationCombo = () => {
     };
 
     const multiplicador = CLASS_MULTIPLIERS[clase.toLowerCase()] || 1.0;
-    const precioBaseTotalSinClase = vuelos.reduce(
-        (sum, vuelo) => sum + (vuelo.price / multiplicador),
+    const precioBasePorPasajero = vuelos.reduce(
+        (sum, vuelo) => sum + (vuelo.price / 100),
         0
-    ) * pasajeros;
-    const suplementoClase = ((totalFinal * 100 - precioBaseTotalSinClase) / 100).toFixed(2);
+    );
+
+    const precioBaseTotal = precioBasePorPasajero * pasajeros;
+
+    const suplementoAsientos = [
+        ...selectedSeatsIda,
+        ...selectedSeatsVuelta
+    ].reduce((sum, seat) => sum + obtenerTipoYPrecio(seat).precio, 0);
+
+    const suplementoClase = (
+        parseFloat(totalFinal) - precioBaseTotal - suplementoAsientos - precioHotel
+    ).toFixed(2);
+
 
     const renderVueloInfo = (vuelo, titulo) => (
         <div className="card" style={{ marginBottom: "1rem" }}>

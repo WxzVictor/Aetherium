@@ -9,7 +9,8 @@ const SelectSeatCombo = () => {
 
   const vuelos = location.state?.vuelos || [];
   const pasajeros = location.state?.pasajeros || 1;
-  const clase = location.state?.clase || "Turista";
+  const clase = location.state?.clase || "economy";
+  const totalBaseOriginal = parseFloat(location.state?.totalPrecio || "0");
   const hotel = location.state?.hotel;
 
   useEffect(() => {
@@ -109,7 +110,7 @@ const SelectSeatCombo = () => {
 
   // Precio base total por todos los pasajeros
   const precioBase = vuelos.reduce((total, vuelo) => total + vuelo.price, 0);
-  const totalBase = (precioBase / 100) * pasajeros;
+  const totalBase = totalBaseOriginal;
 
   const suplementoTotal = calcularSuplementoTotal(selectedSeatsIda) + calcularSuplementoTotal(selectedSeatsVuelta);
   const precioFinal = totalBase + suplementoTotal;
