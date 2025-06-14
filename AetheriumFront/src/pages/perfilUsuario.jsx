@@ -106,12 +106,21 @@ const UserProfile = () => {
     return Object.entries(count).sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A';
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("¿Estás seguro de que quieres eliminar esta reserva?")) return;
+  const handleDelete = async (ids) => {
+    const confirmText = Array.isArray(ids)
+      ? "¿Seguro que quieres eliminar todas las reservas de este grupo?"
+      : "¿Estás seguro de que quieres eliminar esta reserva?";
+    if (!window.confirm(confirmText)) return;
+
     try {
       const token = await getIdToken(user);
-      await deleteReservation(id, token);
-      setReservations(prev => prev.filter(r => r.reservationId !== id));
+      const idsArray = Array.isArray(ids) ? ids : [ids];
+
+      for (const id of idsArray) {
+        await deleteReservation(id, token);
+      }
+
+      setReservations(prev => prev.filter(r => !idsArray.includes(r.reservationId)));
     } catch (error) {
       alert("Error al eliminar la reserva." + error);
     }
@@ -158,19 +167,34 @@ const UserProfile = () => {
                           {grupo.reservas.map((reserva) => (
                             <div key={reserva.reservationId} className="reserva-billete">
                               <div className="reserva-header">
-                                <span className="reserva-route">
-                                  {reserva.flightId.departureAirport.city} ➜ {reserva.flightId.arrivalAirport.city}
-                                </span>
-                                <span className="reserva-fecha">{new Date(reserva.flightId.departureTime).toLocaleDateString()}</span>
-                              </div>
-                              <div className="reserva-detalles">
-                                <div><strong>{t('table.salida')}:</strong> {new Date(reserva.flightId.departureTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
-                                <div><strong>{t('table.llegada')}:</strong> {new Date(reserva.flightId.arrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
-                                <div><strong>{t('table.compania')}:</strong> {reserva.flightId.airlineName}</div>
+                                <div className="reserva-header-left">
+                                  <span className="reserva-route">
+                                    {reserva.flightId.departureAirport.city} ➜ {reserva.flightId.arrivalAirport.city}
+                                  </span>
+                                  <div className="reserva-detalles">
+                                    <div><strong>{t('table.salida')}:</strong> {new Date(reserva.flightId.departureTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                                    <div><strong>{t('table.llegada')}:</strong> {new Date(reserva.flightId.arrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                                    <div><strong>{t('table.compania')}:</strong> {reserva.flightId.airlineName}</div>
+                                    <div><strong>Asiento:</strong> {reserva.seatId?.seatNumber || '—'}</div>
+                                  </div>
+                                </div>
+                                <div className="reserva-header-right">
+                                  <span className="reserva-fecha">{new Date(reserva.flightId.departureTime).toLocaleDateString()}</span>
+                                  <button
+                                    className="delete-button small"
+                                    onClick={() => handleDelete(reserva.reservationId)}
+                                  >
+                                    🗑 Eliminar billete
+                                  </button>
+                                </div>
                               </div>
                             </div>
                           ))}
-                          <button className="delete-button" onClick={() => handleDelete(grupo.reservaIdPrincipal)}>
+
+                          <button
+                            className="delete-button"
+                            onClick={() => handleDelete(grupo.reservas.map(r => r.reservationId))}
+                          >
                             {t('eliminarReserva')}
                           </button>
                         </div>

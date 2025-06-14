@@ -119,9 +119,22 @@ button:hover, .delete-button:hover {
 .reserva-header {
   display: flex;
   justify-content: space-between;
-  font-weight: bold;
-  color: #333;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
+
+.reserva-header-left {
+  flex: 1;
+}
+
+.reserva-header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
 
 .reserva-route {
   font-size: 1rem;
@@ -162,5 +175,17 @@ button:hover, .delete-button:hover {
 }
 
 .forgotPass:hover {
+  color: #3f598a;
+}
+
+.delete-button.small {
+  background-color: #FDC921;
+  color: #1d2d4a;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.delete-button.small:hover {
+  background-color: #f1d67a;
   color: #3f598a;
 }
