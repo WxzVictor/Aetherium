@@ -52,36 +52,23 @@ public class ReservationController : ControllerBase
         };
     }
 
-
-
     [HttpPost]
     public async Task<IActionResult> CreateReservation([FromBody] ReservationDto dto)
     {
         if (dto.UserId <= 0 || dto.FlightId <= 0)
-            return BadRequest(new {
-                error = "Validation error",
-                message = "UserId and FlightId are required and must be greater than zero.",
-                received = new { dto.UserId, dto.FlightId }
-            });
+            return BadRequest("UserId and FlightId must be greater than zero");
 
         User? user = await _context.User.FindAsync(dto.UserId);
         if (user is null)
-            return NotFound(new {
-                error = "User not found",
-                userId = dto.UserId
-            });
+            return NotFound($"User with Id {dto.UserId} not found");
 
         Flight? flight = await _context.Flight
             .Include(f => f.DepartureAirport)
             .Include(f => f.ArrivalAirport)
             .FirstOrDefaultAsync(f => f.FlightId == dto.FlightId);
 
-
         if (flight is null)
-            return NotFound(new {
-                error = "Flight not found",
-                flightId = dto.FlightId
-            });
+            return NotFound($"Flight with Id {dto.FlightId} not found");
 
         SeatResponseDto? seatDto = null;
 
@@ -89,15 +76,9 @@ public class ReservationController : ControllerBase
         {
             Seat? seat = await _context.Seat.FindAsync(dto.SeatId.Value);
             if (seat is null)
-                return NotFound(new {
-                    error = "Seat not found",
-                    seatId = dto.SeatId.Value
-                });
+                return NotFound($"Seat with Id {dto.SeatId.Value} not found");
             if (seat.SeatStatus)
-                return BadRequest(new {
-                    error = "Seat already reserved",
-                    seatId = seat.SeatId
-                });
+                return BadRequest($"Seat with Id {seat.SeatId} is already reserved");
 
             seat.SeatStatus = true;
             _context.Seat.Update(seat);
@@ -123,32 +104,32 @@ public class ReservationController : ControllerBase
         await _context.SaveChangesAsync();
 
         double basePrice = flight.Price / 100.0;
-
         double multiplier = ObtenerMultiplicadorClase(dto.SeatClass ?? "economy");
         double priceWithMultiplier = basePrice * multiplier;
 
         double seatExtra = 0.0;
-        if (seatDto != null)
+        if (seatDto is not null)
         {
             seatExtra = ObtenerSuplementoPorAsiento(seatDto.SeatNumber);
         }
 
         double totalPrice = dto.TotalPrice ?? (priceWithMultiplier + seatExtra);
 
-        _reservasPendientes.Add((reservation, flight, seatDto is null ? null : new Seat
+        Seat? seatMemory = seatDto is null ? null : new Seat
         {
             SeatId = seatDto.SeatId,
             SeatNumber = seatDto.SeatNumber,
             SeatClass = Enum.Parse<SeatClass>(seatDto.SeatClass),
             SeatType = Enum.Parse<SeatType>(seatDto.SeatType)
-        }));
+        };
 
+        _reservasPendientes.Add((reservation, flight, seatMemory));
 
         if (dto.SendEmail)
         {
-            var pdfStream = new MemoryStream();
+            MemoryStream pdfStream = new();
 
-            var document = Document.Create(container =>
+            IDocument document = Document.Create(container =>
             {
                 container.Page(page =>
                 {
@@ -159,20 +140,20 @@ public class ReservationController : ControllerBase
                         col.Item().Text($"Nombre: {user.FirstName} {user.LastName}");
                         col.Item().Text($"Correo: {user.Email}");
 
-                        foreach (var (res, vuelo, asiento) in _reservasPendientes.Where(r => r.Reserva.UserId == dto.UserId))
+                        foreach ((Reservation res, Flight flight, Seat? seat) in _reservasPendientes.Where(r => r.Reserva.UserId == dto.UserId))
                         {
                             col.Item().LineHorizontal(1);
-                            col.Item().Text($"Vuelo: {vuelo.DepartureAirport.City} ➜ {vuelo.ArrivalAirport.City}");
-                            col.Item().Text($"Fecha salida: {vuelo.DepartureTime:dd/MM/yyyy HH:mm}");
-                            col.Item().Text($"Fecha llegada: {vuelo.ArrivalTime:dd/MM/yyyy HH:mm}");
-                            col.Item().Text($"Código de vuelo: {vuelo.FlightCode}");
+                            col.Item().Text($"Vuelo: {flight.DepartureAirport.City} ➜ {flight.ArrivalAirport.City}");
+                            col.Item().Text($"Fecha salida: {flight.DepartureTime:dd/MM/yyyy HH:mm}");
+                            col.Item().Text($"Fecha llegada: {flight.ArrivalTime:dd/MM/yyyy HH:mm}");
+                            col.Item().Text($"Código de vuelo: {flight.FlightCode}");
 
-                            if (asiento != null)
+                            if (seat is not null)
                             {
-                                double extra = ObtenerSuplementoPorAsiento(asiento.SeatNumber);
+                                double extra = ObtenerSuplementoPorAsiento(seat.SeatNumber);
                                 double mult = ObtenerMultiplicadorClase(dto.SeatClass ?? "economy");
-                                double total = vuelo.Price / 100.0 * mult + extra;
-                                col.Item().Text($"Asiento: {asiento.SeatNumber} – {asiento.SeatType} ({extra:0.00} € extra)");
+                                double total = flight.Price / 100.0 * mult + extra;
+                                col.Item().Text($"Asiento: {seat.SeatNumber} – {seat.SeatType} ({extra:0.00} € extra)");
                                 col.Item().Text($"Precio total: {total:0.00} €");
                             }
                         }
@@ -183,12 +164,12 @@ public class ReservationController : ControllerBase
             document.GeneratePdf(pdfStream);
             pdfStream.Position = 0;
 
-            var message = new MimeMessage();
+            MimeMessage message = new MimeMessage();
             message.From.Add(MailboxAddress.Parse(_smtpSettings.User));
             message.To.Add(MailboxAddress.Parse(user.Email));
             message.Subject = "Su reserva ha sido confirmada ✅";
 
-            var bodyBuilder = new BodyBuilder
+            BodyBuilder bodyBuilder = new()
             {
                 TextBody = "Gracias por reservar con Aetherium. Adjuntamos los detalles de sus vuelos.",
             };
@@ -197,7 +178,7 @@ public class ReservationController : ControllerBase
 
             try
             {
-                using var smtp = new SmtpClient();
+                using SmtpClient smtp = new();
                 smtp.ServerCertificateValidationCallback = (s, c, h, e) => true;
                 await smtp.ConnectAsync(_smtpSettings.Server, _smtpSettings.Port, SecureSocketOptions.Auto);
                 await smtp.AuthenticateAsync(_smtpSettings.User, _smtpSettings.Password);
@@ -384,6 +365,12 @@ public class ReservationController : ControllerBase
         _context.Reservation.Remove(reservation);
         await _context.SaveChangesAsync();
 
-        return Ok(new { message = "Reservation deleted successfully" });
+        ReservationDeleteResponseDto response = new()
+        {
+            ReservationId = reservation.ReservationId,
+            DeletedAt = DateTimeOffset.UtcNow
+        };
+
+        return Ok(response);
     }
 }

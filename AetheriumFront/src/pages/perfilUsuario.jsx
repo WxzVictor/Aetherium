@@ -191,12 +191,14 @@ const UserProfile = () => {
                             </div>
                           ))}
 
-                          <button
-                            className="delete-button"
-                            onClick={() => handleDelete(grupo.reservas.map(r => r.reservationId))}
-                          >
-                            {t('eliminarReserva')}
-                          </button>
+                          {grupo.reservas.length > 1 && (
+                            <button
+                              className="delete-button"
+                              onClick={() => handleDelete(grupo.reservas.map(r => r.reservationId))}
+                            >
+                              {t('eliminarReserva')}
+                            </button>
+                          )}
                         </div>
                       ))}
                     </div>
