@@ -110,7 +110,6 @@ const SelectSeatCombo = () => {
   };
 
   // Precio base total por todos los pasajeros
-  const precioBase = vuelos.reduce((total, vuelo) => total + vuelo.price, 0);
   const totalBase = totalBaseOriginal;
 
   const suplementoTotal = calcularSuplementoTotal(selectedSeatsIda) + calcularSuplementoTotal(selectedSeatsVuelta);
