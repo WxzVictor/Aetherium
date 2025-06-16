@@ -15,6 +15,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app/out .
 
+# Importante para Railway (usa el puerto asignado por variable de entorno)
 ENV ASPNETCORE_URLS=http://+:8000
 EXPOSE 8000
 
