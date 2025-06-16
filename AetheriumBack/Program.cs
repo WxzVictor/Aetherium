@@ -21,7 +21,7 @@ builder.Services.AddCors(options =>
                         .AllowAnyMethod());
 });
 
-var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+var port = Environment.GetEnvironmentVariable("PORT") ?? "3000";
 builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 WebApplication app = builder.Build();
